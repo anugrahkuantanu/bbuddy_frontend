@@ -6,13 +6,10 @@ import '../../../../../core/core.dart';
 import 'package:provider/provider.dart';
 import '/config/config.dart';
 import '../../../bloc/bloc.dart';
-
-
-
-
+import './widget/widget.dart';
 
 class CheckInHome extends StatelessWidget {
-  const CheckInHome({Key key = const Key('myHomePage')}) : super(key: key);
+  const CheckInHome({Key? key}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -56,117 +53,62 @@ class CheckInHome extends StatelessWidget {
   }
 
   List<Widget> _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize, double textSize, Color textColor, Color backgroundColor, double buttonHeight, double screenWidth) {
-      List<Widget> feelingButtons = [];
+    List<Widget> feelingButtons = [];
 
-      for (int i = 0; i < feelings.length; i += 2) {
-          List<Widget> rowChildren = [];
+    for (int i = 0; i < feelings.length; i += 2) {
+      List<Widget> rowChildren = [];
 
-          // First button
-          rowChildren.add(
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                  border: Border.all(
-                    color: Colors.black.withOpacity(0.0),
-                    width: 0.0,
-                  ),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _navigateToFeelingFormScreen(context, feelings[i]['name'], textColor, backgroundColor);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.transparent,
-                    elevation: 0,
-                  ),
-                  child: Column(children: [
-                    Text(
-                      feelings[i]['emoji'],
-                      style: TextStyle(
-                        fontSize: emojiSize,
-                      ),
-                    ),
-                    SizedBox(height: 0.02.sh),
-                    Text(
-                      feelings[i]['name'],
-                      style: TextStyle(
-                        color: textColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: textSize,
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
+      // First button
+      rowChildren.add(
+        Expanded(
+          child: 
+          EntityButton(
+            entity: feelings[i]['name'],
+            emoji: feelings[i]['emoji'],
+            textColor: textColor,
+            fontSize: textSize,
+            onTap: () => _navigateToFeelingFormScreen(context, feelings[i]['name'], textColor, backgroundColor),
+            emojiSize: emojiSize,
+          ),
+        ),
+      );
+
+      // If there's another feeling after the current one, add it
+      if (i + 1 < feelings.length) {
+        rowChildren.add(SizedBox(width: screenWidth * 0.05.w));
+
+        // Second button
+        rowChildren.add(
+          Expanded(
+            child: 
+            EntityButton(
+              entity: feelings[i + 1]['name'],
+              emoji: feelings[i + 1]['emoji'],
+              textColor: textColor,
+              fontSize: textSize,
+              onTap: () => _navigateToFeelingFormScreen(context, feelings[i + 1]['name'], textColor, backgroundColor),
+              icon: null,  // Again, assuming you're not using icons
+              emojiSize: emojiSize,
             ),
-          );
-
-          // If there's another feeling after the current one, add it
-          if (i + 1 < feelings.length) {
-            rowChildren.add(SizedBox(width: screenWidth * 0.05.w));
-
-            // Second button
-            rowChildren.add(
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(
-                      color: Colors.black.withOpacity(0.0),
-                      width: 0.0,
-                    ),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _navigateToFeelingFormScreen(context, feelings[i + 1]['name'], textColor, backgroundColor);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.transparent,
-                      elevation: 0,
-                    ),
-                    child: Column(children: [
-                      Text(
-                        feelings[i + 1]['emoji'],
-                        style: TextStyle(
-                          fontSize: emojiSize,
-                        ),
-                      ),
-                      SizedBox(height: buttonHeight * 0.2),
-                      Text(
-                        feelings[i + 1]['name'],
-                        style: TextStyle(
-                          color: textColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: textSize,
-                        ),
-                      ),
-                    ]),
-                  ),
-                ),
-              ),
-            );
-          }
-
-          feelingButtons.add(SizedBox(height: 0.12.sh));
-          feelingButtons.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: rowChildren,
-          ));
+          ),
+        );
       }
-      return feelingButtons;
+
+      feelingButtons.add(SizedBox(height: 0.12.sh));
+      feelingButtons.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: rowChildren,
+      ));
+    }
+    return feelingButtons;
   }
 
-void _navigateToFeelingFormScreen(BuildContext context, String feelingName, Color textColor, Color backgroundColor) {
-
+  void _navigateToFeelingFormScreen(BuildContext context, String feelingName, Color textColor, Color backgroundColor) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => FeelingFormScreen(feeling: feelingName, textColor: textColor, backgroundColor: backgroundColor),
       ),
     );
-}
-
+  }
 }
