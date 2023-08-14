@@ -8,6 +8,8 @@ class EntityButton extends StatelessWidget {
   final VoidCallback? onTap;
   final double? fontSize;
   final IconData? icon;
+  final Color? backgroundColor;
+  final ButtonStyle? buttonStyle;
 
   const EntityButton({
     this.entity = "",
@@ -17,29 +19,36 @@ class EntityButton extends StatelessWidget {
     this.textColor = Colors.black,
     this.onTap,
     this.fontSize = 14.0,
+    this.backgroundColor,
+    this.buttonStyle,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 5,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          children: [
-            if (emoji != null) Text(emoji!, style: TextStyle(fontSize: emojiSize, color: textColor)), // Use Text widget to display emoji
-            Text(
-              entity ?? "",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: textColor,
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-              ),
+    return ElevatedButton(
+      onPressed: onTap,
+      style: buttonStyle ?? ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,   // Transparent background
+        foregroundColor: Colors.transparent, // No ripple effect
+        shadowColor: Colors.transparent, // No shadow
+        elevation: 0, // No elevation
+      ),
+      child: Column(
+        children: [
+          if (emoji != null) Text(emoji!, style: TextStyle(fontSize: emojiSize, color: textColor)),
+          if (icon != null) Icon(icon!, size: emojiSize, color: textColor),
+          Text(
+            entity ?? "",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: textColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
+

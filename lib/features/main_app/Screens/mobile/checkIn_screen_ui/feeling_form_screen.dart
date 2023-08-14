@@ -3,12 +3,14 @@ import './reasons_screen.dart';
 import '/features/main_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../bloc/bloc.dart';
+import './widget/widget.dart';
 
 class FeelingFormScreen extends StatefulWidget {
-  FeelingFormScreen({Key? key, 
-  required this.feeling,
-  required this.backgroundColor,
-  required this.textColor,
+  FeelingFormScreen({
+    Key? key,
+    required this.feeling,
+    required this.backgroundColor,
+    required this.textColor,
   }) : super(key: key);
 
   final String feeling;
@@ -33,15 +35,40 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            ReasonScreen(feeling: widget.feeling, feelingForm: feelingForm, textColor: widget.textColor, backgroundColor: widget.backgroundColor),
+        builder: (context) => ReasonScreen(
+          feeling: widget.feeling,
+          feelingForm: feelingForm,
+          textColor: widget.textColor,
+          backgroundColor: widget.backgroundColor,
+        ),
       ),
     );
   }
 
+  List<Widget> _buildFeelingFormButtons() {
+    List<Widget> rows = [];
+    List<String> feelingForms = _bloc.feelingForms[widget.feeling]!;
+
+    for (int i = 0; i < feelingForms.length; i += 2) {
+      var rowButtons = <Widget>[
+        Expanded(child: _buildFeelingFormButton(feelingForms[i]))
+      ];
+
+      if (i + 1 < feelingForms.length) {
+        rowButtons.add(SizedBox(width: 16.0));
+        rowButtons.add(
+            Expanded(child: _buildFeelingFormButton(feelingForms[i + 1])));
+      }
+
+      rows.add(Row(children: rowButtons));
+      rows.add(SizedBox(height: 16.0));
+    }
+
+    return rows;
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: widget.backgroundColor,
       appBar: AppBar(
@@ -53,7 +80,7 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
             color: widget.textColor,
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.white), // Set the icon color to white
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -64,7 +91,8 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
                 Container(
                   padding: EdgeInsets.all(10.0.w),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
+                    borderRadius:
+                        BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
                   ),
                   child: Text(
                     "What manifestation of ${widget.feeling.toLowerCase()} are you feeling?",
@@ -77,18 +105,7 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
                   ),
                 ),
                 SizedBox(height: 40),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Wrap(
-                      spacing: 20.0,
-                      runSpacing: 30.0,
-                      children: _bloc.feelingForms[widget.feeling]!
-                          .map((feelingForm) => _buildFeelingFormButton(feelingForm))
-                          .toList(),
-                    ),
-                  ),
-                ),
+                ..._buildFeelingFormButtons(),
               ],
             ),
           ),
@@ -98,26 +115,18 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
   }
 
   Widget _buildFeelingFormButton(String feelingForm) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width / 2.5,
-      child: OutlinedButton(
-        onPressed: () => _handleButtonPress(feelingForm),
-        style: ThemeHelper().buttonStyle().copyWith(
-          backgroundColor: MaterialStateProperty.all<Color>(
-            _bloc.buttonColors[widget.feeling] ?? Color(0xFF0077C2),
-          ),
-          padding: MaterialStateProperty.all<EdgeInsets>(
-            EdgeInsets.all(16.0),
-          ),
+    return EntityButton(
+      entity: feelingForm,
+      textColor: widget.textColor,
+      fontSize: _bloc.computeTextSize(MediaQuery.of(context).size.width).sp,
+      onTap: () => _handleButtonPress(feelingForm),
+      emojiSize: null,
+      buttonStyle: ThemeHelper().buttonStyle().copyWith(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          _bloc.buttonColors[widget.feeling] ?? Color(0xFF0077C2),
         ),
-        child: Text(
-          feelingForm,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: widget.textColor,
-            fontWeight: FontWeight.bold,
-            fontSize: _bloc.computeTextSize(MediaQuery.of(context).size.width).sp,
-          ),
+        padding: MaterialStateProperty.all<EdgeInsets>(
+          EdgeInsets.all(16.0),
         ),
       ),
     );
