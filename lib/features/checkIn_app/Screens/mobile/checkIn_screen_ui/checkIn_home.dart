@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './feeling_form_screen.dart';
-import '/features/checkIn_app/utils/helpers.dart';
+import '/features/main_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/core.dart';
 import 'package:provider/provider.dart';

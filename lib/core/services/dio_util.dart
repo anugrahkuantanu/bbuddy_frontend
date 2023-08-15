@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import '/core/services/login.dart';
-import '../../features/checkIn_app/models/token.dart';
+import '../../features/auth_mod/services/login.dart';
+import '/features/auth_mod/models/model.dart';
 import '/core/services/storage.dart';
 import 'dart:convert';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './reasons_screen.dart';
-import '/features/checkIn_app/utils/helpers.dart';
+import '../../../../main_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../bloc/bloc.dart';
 import './widget/widget.dart';

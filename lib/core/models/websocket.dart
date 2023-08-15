@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:universal_io/io.dart';
-import '/core/services/login.dart';
+import '../../features/auth_mod/services/login.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart';
 //import 'package:web_socket_channel/html.dart';
-import '../models/token.dart';
+import '/features/auth_mod/models/model.dart';
 
 class WebSocket {
   WebSocketChannel? _channel;

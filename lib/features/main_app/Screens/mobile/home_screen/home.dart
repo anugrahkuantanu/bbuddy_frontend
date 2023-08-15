@@ -39,12 +39,6 @@ class _HomeState extends State<Home> {
             const Text('This is the first page'),
             ElevatedButton(
               onPressed: () {
-                Nav.to(context, '/about');
-              },
-              child: const Text('Goto About Page'),
-            ),
-            ElevatedButton(
-              onPressed: () {
                 setState(() {
                   dayAndNight = false;
                   tm.setThemeMode(dayAndNight);

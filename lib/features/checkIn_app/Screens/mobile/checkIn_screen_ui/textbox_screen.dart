@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './chat_screen.dart';
-import '/features/checkIn_app/utils/helpers.dart';
+import '/features/main_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextBox extends StatefulWidget {
@@ -10,7 +10,7 @@ class TextBox extends StatefulWidget {
   final Color backgroundColor;
   final Color textColor;
 
-  TextBox({
+  const TextBox({
     required this.feeling,
     required this.feelingForm,
     required this.reasonEntity,
@@ -141,6 +141,7 @@ class _TextBoxState extends State<TextBox> {
                                     reasonEntity: widget.reasonEntity,
                                     reason: inputText,
                                     isPastCheckin: false,
+                                    backgroundColor: widget.backgroundColor,
                                   ),
                                 ),
                               );

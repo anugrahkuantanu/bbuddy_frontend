@@ -1,5 +1,5 @@
-import '../../features/checkIn_app/models/main/checkIn.dart';
-import '../../features/checkIn_app/models/message.dart';
+import '../models/checkIn.dart';
+import '../models/model.dart';
 import 'package:dio/dio.dart';
 import '/core/services/constants.dart';
 import '/core/services/dio_util.dart';

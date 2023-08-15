@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '/core/services/constants.dart';
 import '/core/services/storage.dart';
-import '../../features/checkIn_app/models/user.dart';
 import 'package:dio/dio.dart';
 import '/core/services/dio_util.dart';
 import 'dart:convert';
-import '../../features/checkIn_app/models/token.dart';
+import '../models/model.dart';
 
 Future<String> registerUser(UserCreate newUser) async {
   final dio = Dio();

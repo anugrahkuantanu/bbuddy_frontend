@@ -1,7 +1,7 @@
 import 'package:clean_architecture/features/checkIn_app/controllers/controller.dart';
 import 'package:flutter/material.dart';
-import '/features/checkIn_app/models/message.dart';
-import '/core/services/checkIn.dart';
+import '../../../models/model.dart';
+import '../../../services/checkIn_service.dart';
 import 'package:provider/provider.dart';
 import '/core/services/stats.dart';
 
@@ -12,6 +12,8 @@ class ChatScreen extends StatefulWidget {
   final String reason;
   final bool isPastCheckin;
   final String? aiResponse;
+  final Color backgroundColor;
+  final Color? textColor;
 
 
   const ChatScreen({
@@ -21,7 +23,10 @@ class ChatScreen extends StatefulWidget {
     required this.reasonEntity,
     required this.reason,
     required this.isPastCheckin,
+    required this.backgroundColor,
+    this.textColor,
     this.aiResponse
+
   }) : super(key: key);
 
   @override
@@ -37,6 +42,8 @@ class ChatScreenState extends State<ChatScreen> {
   bool screenAtBottom = false;
   bool isScrolledUp = false;
   bool showExitButton = false;
+  final checkInService = CheckInService();
+
 
   @override
 void initState() {
@@ -75,7 +82,7 @@ void initState() {
       isTyping = true;
     });
 
-    final response = await getCheckInResponse(
+    final response = await checkInService.getCheckInResponse(
         widget.feeling, widget.feelingForm, widget.reasonEntity, widget.reason);
 
     setState(() {
@@ -101,7 +108,7 @@ void initState() {
       });
     });
 
-    storeCheckIn(widget.feeling, widget.feelingForm, widget.reasonEntity,
+    checkInService.storeCheckIn(widget.feeling, widget.feelingForm, widget.reasonEntity,
         widget.reason, response);
 
     final counterStats = Provider.of<CounterStats>(context, listen: false);
@@ -142,9 +149,9 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2D425F),
+      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0xFF2D425F),
+        backgroundColor: widget.backgroundColor,
         elevation:
               0,
         title: Text(''),

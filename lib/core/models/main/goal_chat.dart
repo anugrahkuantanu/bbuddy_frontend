@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import '/features/checkIn_app/models/token.dart';
-import '/features/checkIn_app/models/websocket.dart';
+import '../websocket.dart';
 
 import '/core/services/constants.dart';
 
-import '/core/services/login.dart';
+import '../../../features/auth_mod/services/login.dart';
+import '/features/auth_mod/models/model.dart';
 
 class GoalChat {
   WebSocket? _webSocket;
