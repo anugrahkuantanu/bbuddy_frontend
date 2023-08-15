@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ReasonScreenBloc {
   final List<String> entities = [
@@ -67,22 +68,23 @@ class ReasonScreenBloc {
 
   double computeEmojiSize(double screenWidth) {
     if (screenWidth < 380) {
-      return screenWidth * 0.08;
+      return screenWidth * 0.08.w;
     } else if (screenWidth < 400) {
-      return screenWidth * 0.10;
+      return screenWidth * 0.10.w;
     } else {
-      return screenWidth * 0.09;
+      return screenWidth * 0.09.w;
     }
   }
 
   double computeTextSize(double screenWidth) {
-    if (screenWidth < 380) {
-      return 15;
-    } else if (screenWidth < 400) {
-      return 17;
-    } else {
-      return 16;
-    }
+    // if (screenWidth < 380) {
+    //   return 15.sp;
+    // } else if (screenWidth < 400) {
+    //   return 17.sp;
+    // } else {
+    //   return 16.sp;
+    // }
+    return 14.sp;
   }
 
   double computeHighSpace(double screenWidth, double screenHeight) {

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import '/features/main_app/models/token.dart';
-import '/features/main_app/models/websocket.dart';
+import '/features/checkIn_app/models/token.dart';
+import '/features/checkIn_app/models/websocket.dart';
 
 import '/core/services/constants.dart';
 

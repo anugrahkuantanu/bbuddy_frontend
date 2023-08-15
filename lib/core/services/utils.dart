@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '/features/main_app/models/main/reflection.dart';
+import '../../features/checkIn_app/models/main/reflection.dart';
 
 List<ReflectionPerTopic> parseReflections(String responseBody) {
     print(responseBody);

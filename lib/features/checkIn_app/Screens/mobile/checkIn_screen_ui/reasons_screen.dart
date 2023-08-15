@@ -6,7 +6,7 @@ import './widget/widget.dart';
 
 
 class ReasonScreen extends StatefulWidget {
-  ReasonScreen({Key? key, 
+  const ReasonScreen({Key? key, 
   required this.feeling, 
   required this.feelingForm,
   required this.backgroundColor,
@@ -45,13 +45,13 @@ class _ReasonScreenState extends State<ReasonScreen>
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                title: Text('Enter a reason'),
+                title: const Text('Enter a reason'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Enter a one-word reason',
+                      decoration:const InputDecoration(
+                      hintText: 'Enter a one-word reason',
                       ),
                       onChanged: (value) {
                         enteredReason = value.trim();
@@ -61,7 +61,7 @@ class _ReasonScreenState extends State<ReasonScreen>
                       },
                     ),
                     if (showError)
-                      Text(
+                      const Text(
                         'Please enter a single word.',
                         style: TextStyle(
                           color: Colors.red,
@@ -72,7 +72,7 @@ class _ReasonScreenState extends State<ReasonScreen>
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                   TextButton(
                     onPressed: () {
@@ -85,6 +85,8 @@ class _ReasonScreenState extends State<ReasonScreen>
                               feeling: widget.feeling,
                               feelingForm: widget.feelingForm,
                               reasonEntity: enteredReason,
+                              backgroundColor: widget.backgroundColor,
+                              textColor: widget.textColor,
                             ),
                           ),
                         );
@@ -94,7 +96,7 @@ class _ReasonScreenState extends State<ReasonScreen>
                         });
                       }
                     },
-                    child: Text('OK'),
+                    child: const Text('OK'),
                   ),
                 ],
               );
@@ -111,85 +113,86 @@ class _ReasonScreenState extends State<ReasonScreen>
             feeling: widget.feeling,
             feelingForm: widget.feelingForm,
             reasonEntity: entity,
+            backgroundColor: widget.backgroundColor,
+            textColor: widget.textColor,
           ),
         ),
       );
     }
   }
   
-@override
-Widget build(BuildContext context) {
-  double screenWidth = MediaQuery.of(context).size.width;
-  double screenHeight = MediaQuery.of(context).size.height;
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
-  double emojiSize = _bloc.computeEmojiSize(screenWidth);
-  double textSize = _bloc.computeTextSize(screenWidth);
-  double high_space = _bloc.computeHighSpace(screenWidth, screenHeight);
-  
-  double entityButtonWidth = screenWidth / 4; // Adjusted for some padding and spacing
+    double emojiSize = _bloc.computeEmojiSize(screenWidth);
+    double textSize = _bloc.computeTextSize(screenWidth);
+    double highSpace = _bloc.computeHighSpace(screenWidth, screenHeight);
+    
+    double entityButtonWidth = screenWidth / 4; // Adjusted for some padding and spacing
 
-  return Scaffold(
-    backgroundColor: widget.backgroundColor,
-    appBar: AppBar(
+    return Scaffold(
       backgroundColor: widget.backgroundColor,
-      elevation: 0,
-      title: Text(
-        '',
-        style: TextStyle(color: widget.textColor),
+      appBar: AppBar(
+        backgroundColor: widget.backgroundColor,
+        elevation: 0,
+        title: Text(
+          '',
+          style: TextStyle(color: widget.textColor),
+        ),
+        iconTheme: IconThemeData(color: widget.textColor),
       ),
-      iconTheme: IconThemeData(color: widget.textColor),
-    ),
-    body: SafeArea(
-      child: Padding(
-        padding: EdgeInsets.all(16.0.w),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10.0.w),
-                child: Text(
-                  "Select a reason associated with your ${widget.feeling}",
-                  style: TextStyle(
-                    fontSize: 22.0.sp,
-                    fontWeight: FontWeight.bold,
-                    color: widget.textColor,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(16.0.w),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10.0.w),
+                  child: Text(
+                    "Select a reason associated with your ${widget.feeling}",
+                    style: TextStyle(
+                      fontSize: 22.0.sp,
+                      fontWeight: FontWeight.bold,
+                      color: widget.textColor,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-              SizedBox(height: 40),
-              Container(
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0.w),
-                    child: Wrap(
-                      spacing: 10.0.w,
-                      runSpacing: high_space,
-                      children: _bloc.entities.map((entity) {
-                        return SizedBox(
-                          width: entityButtonWidth,
-                          child: EntityButton(
-                            entity: entity,
-                            icon: _bloc.getIcon(entity),
-                            emojiSize: emojiSize,
-                            textColor: widget.textColor,
-                            onTap: () => _handleButtonPress(entity),
-                            fontSize: textSize,
-                          ),
-                        );
-                      }).toList(),
+                SizedBox(height: 40),
+                Container(
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0.w),
+                      child: Wrap(
+                        // spacing: 10.0.w,
+                        spacing: 25.0.w,
+                        runSpacing: highSpace,
+                        children: _bloc.entities.map((entity) {
+                          return SizedBox(
+                            width: entityButtonWidth,
+                            child: EntityButton(
+                              entity: entity,
+                              icon: _bloc.getIcon(entity),
+                              emojiSize: emojiSize,
+                              textColor: widget.textColor,
+                              onTap: () => _handleButtonPress(entity),
+                              fontSize: textSize,
+
+                            ),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
-
-
-
+    );
+  }
 }

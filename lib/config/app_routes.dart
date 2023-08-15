@@ -1,15 +1,17 @@
 import '../core/classes/route_manager.dart';
 import '../features/auth_mod/auth_app.dart';
 import '../features/main_app/app.dart';
-// import '../features/feature-2/feature_app.dart';
-// import '../features/lead_mod/lead_app.dart';
+import '../features/checkIn_app/checkIn_app.dart';
+import '../features/reflection_app/reflection_app.dart';
+import '../features/goal_app/goal_app.dart';
 
 
 class Routes extends RouteManager {
   Routes() {
     addAll(AuthApp().routes);
     addAll(App().routes);
-    // addAll(LeadApp().routes);
-    // addAll(FeatureApp().routes);
+    addAll(CheckInApp().routes);
+    addAll(GoalApp().routes);
+    addAll(ReflectionApp().routes);
   }
 }

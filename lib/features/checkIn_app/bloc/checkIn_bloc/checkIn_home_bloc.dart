@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '/config/config.dart';
 
 class CheckInHomeBloc {
+  
   final List<Map<String, dynamic>> feelings = [
     {"name": "Angry", "emoji": "😠"},
     {"name": "Anxious", "emoji": "😟"},
@@ -25,11 +27,11 @@ class CheckInHomeBloc {
 
 
   double computeEmojiSize(double screenWidth) {
-    return screenWidth * 0.12;
+    return screenWidth * 0.12.w;
   }
 
   double computeTextSize(double screenWidth) {
-    return screenWidth > 414 ? 16 : 18;
+    return screenWidth > 414 ? 16.sp : 18.sp;
   }
 
   double computeButtonHeight(double screenWidth, double screenHeight) {

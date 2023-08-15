@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import './chat_screen.dart';
-import '/features/main_app/utils/helpers.dart';
+import '/features/checkIn_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextBox extends StatefulWidget {
   final String feeling;
   final String feelingForm;
   final String reasonEntity;
+  final Color backgroundColor;
+  final Color textColor;
 
   TextBox({
     required this.feeling,
     required this.feelingForm,
     required this.reasonEntity,
+    required this.backgroundColor,
+    required this.textColor,
+    
   });
 
   @override
@@ -27,17 +32,17 @@ class _TextBoxState extends State<TextBox> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color(0xFF2D425F),
+      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-              backgroundColor: Color(0xFF2D425F),
+              backgroundColor: widget.backgroundColor,
               elevation: 0, // Remove the line dividing the AppBar and the rest of the screen
               title: Text(
                 '',
                 style: TextStyle(
-                  color: Colors.white, // Set the color of the font to white
+                  color: widget.textColor, // Set the color of the font to white
                 ),
               ),
-              iconTheme: IconThemeData(color: Colors.white),
+              iconTheme: IconThemeData(color: widget.textColor),
             ),
       body: SafeArea(
         child: Padding(
@@ -56,7 +61,7 @@ class _TextBoxState extends State<TextBox> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: widget.textColor,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -80,7 +85,7 @@ class _TextBoxState extends State<TextBox> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: screenWidth * 0.005),
+                    border: Border.all(color: widget.textColor, width: screenWidth * 0.005),
                     borderRadius: BorderRadius.circular(screenWidth * 0.03),
                   ),
                   child: Column(
@@ -94,7 +99,7 @@ class _TextBoxState extends State<TextBox> {
                             contentPadding: const EdgeInsets.all(10.0),
                             hintText: "Write your answer",
                             hintStyle: TextStyle(
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: widget.textColor,
                         fontWeight: FontWeight.bold,
                       ),
                           ),
@@ -146,11 +151,11 @@ class _TextBoxState extends State<TextBox> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF2D425F),
+                              color: widget.backgroundColor,
                             ),
                           ),
                           style: ThemeHelper().buttonStyle().copyWith(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all<Color>(widget.textColor),
                           ),
                         ),
                       ),

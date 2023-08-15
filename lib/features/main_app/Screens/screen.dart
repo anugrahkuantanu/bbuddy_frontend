@@ -1,1 +1,1 @@
-export 'mobile/checkIn_screen_ui/checkIn_home.dart';
+export 'mobile/home_screen/home.dart';

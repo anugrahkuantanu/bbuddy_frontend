@@ -26,7 +26,8 @@ class _GoalHomeState extends State<GoalHome> {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title!),
+        title: Text(widget.title ?? 'Default Title'),
+
         actions: actionsMenu(context),
       ),
       body: SizedBox(

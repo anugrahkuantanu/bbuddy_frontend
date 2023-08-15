@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './reasons_screen.dart';
-import '/features/main_app/utils/helpers.dart';
+import '/features/checkIn_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../bloc/bloc.dart';
 import './widget/widget.dart';
@@ -67,6 +67,24 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
     return rows;
   }
 
+    Widget _buildFeelingFormButton(String feelingForm) {
+    return EntityButton(
+      entity: feelingForm,
+      textColor: widget.textColor,
+      fontSize: _bloc.computeTextSize(MediaQuery.of(context).size.width).sp,
+      onTap: () => _handleButtonPress(feelingForm),
+      emojiSize: null,
+      buttonStyle: ThemeHelper().buttonStyle().copyWith(
+        backgroundColor: MaterialStateProperty.all<Color>(
+          _bloc.buttonColors[widget.feeling] ?? Color(0xFF0077C2),
+        ),
+        padding: MaterialStateProperty.all<EdgeInsets>(
+          EdgeInsets.all(16.0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,21 +132,5 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
     );
   }
 
-  Widget _buildFeelingFormButton(String feelingForm) {
-    return EntityButton(
-      entity: feelingForm,
-      textColor: widget.textColor,
-      fontSize: _bloc.computeTextSize(MediaQuery.of(context).size.width).sp,
-      onTap: () => _handleButtonPress(feelingForm),
-      emojiSize: null,
-      buttonStyle: ThemeHelper().buttonStyle().copyWith(
-        backgroundColor: MaterialStateProperty.all<Color>(
-          _bloc.buttonColors[widget.feeling] ?? Color(0xFF0077C2),
-        ),
-        padding: MaterialStateProperty.all<EdgeInsets>(
-          EdgeInsets.all(16.0),
-        ),
-      ),
-    );
-  }
+
 }

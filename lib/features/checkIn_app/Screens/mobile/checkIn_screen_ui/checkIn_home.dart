@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './feeling_form_screen.dart';
-import '/features/main_app/utils/helpers.dart';
+import '/features/checkIn_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/core.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +36,7 @@ class CheckInHome extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(screenWidth * 0.05.w),
+            padding: EdgeInsets.all(screenWidth * 0.04.w),
             child: Column(
               children: [
                 Helper().ScreenHeadingContainer(context, 'How are you feeling?'),
@@ -94,7 +94,7 @@ class CheckInHome extends StatelessWidget {
         );
       }
 
-      feelingButtons.add(SizedBox(height: 0.12.sh));
+      feelingButtons.add(SizedBox(height: 0.10.sh));
       feelingButtons.add(Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: rowChildren,

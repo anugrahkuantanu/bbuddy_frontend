@@ -1,6 +1,6 @@
-import 'package:clean_architecture/features/main_app/controllers/controller.dart';
+import 'package:clean_architecture/features/checkIn_app/controllers/controller.dart';
 import 'package:flutter/material.dart';
-import '/features/main_app/models/message.dart';
+import '/features/checkIn_app/models/message.dart';
 import '/core/services/checkIn.dart';
 import 'package:provider/provider.dart';
 import '/core/services/stats.dart';

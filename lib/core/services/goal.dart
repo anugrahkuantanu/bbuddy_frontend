@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import '/core/services/constants.dart';
 import '/core/services/dio_util.dart';
-import '/features/main_app/models/main/goal.dart';
-import '/features/main_app/models/message.dart';
+import '../../features/checkIn_app/models/main/goal.dart';
+import '../../features/checkIn_app/models/message.dart';
 import 'package:flutter/material.dart';
 
 Future<List<Goal>> getGoalHistory() async {

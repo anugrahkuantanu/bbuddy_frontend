@@ -1,4 +1,4 @@
-import '/features/main_app/models/message.dart';
+import '/features/checkIn_app/models/message.dart';
 
 
 class CheckIn{

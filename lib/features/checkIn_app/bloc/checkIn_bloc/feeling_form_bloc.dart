@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FeelingFormBloc {
   final Map<String, Color> buttonColors = {
@@ -75,11 +76,11 @@ class FeelingFormBloc {
 
   double computeTextSize(double screenWidth) {
     if (screenWidth < 380) {
-      return 15;
+      return 15.w;
     } else if (screenWidth < 400) {
-      return 16;
+      return 16.w;
     } else {
-      return 17;
+      return 17.w;
     }
   }
 }

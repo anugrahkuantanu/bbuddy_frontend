@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class EntityButton extends StatelessWidget {
+
   final String? entity;
   final String? emoji; // Change this to accept a String for the emoji
   final double? emojiSize;
