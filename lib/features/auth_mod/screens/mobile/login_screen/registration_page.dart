@@ -1,13 +1,14 @@
 import '../login_screen/login_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../login_screen/common/theme_helper.dart';
-import '../login_screen/widgets/header_widget.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
+import '../../../utils/theme_helper.dart';
 import '../../../models/model.dart';
 import '../../../services/login.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../screens/screen.dart';
+import 'package:provider/provider.dart';
+import '/config/config.dart';
+
+
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -33,9 +34,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
   bool isRegistering = false;
   @override
   Widget build(BuildContext context) {
+
+    var tm = context.watch<ThemeProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF2D425F),
+        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         elevation: 0,
         title: Text(
           'Create Account',
@@ -45,7 +48,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ),
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      backgroundColor: Color(0xFF2D425F),
+      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -59,41 +62,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        // GestureDetector(
-                        //   child: Stack(
-                        //     children: [
-                        //       Container(
-                        //         padding: EdgeInsets.all(10),
-                        //         decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(100),
-                        //           border:
-                        //               Border.all(width: 5, color: Colors.white),
-                        //           color: Colors.white,
-                        //           boxShadow: [
-                        //             BoxShadow(
-                        //               color: Colors.black12,
-                        //               blurRadius: 20,
-                        //               offset: const Offset(5, 5),
-                        //             ),
-                        //           ],
-                        //         ),
-                        //         child: Icon(
-                        //           Icons.person,
-                        //           color: Colors.grey.shade300,
-                        //           size: 80.0,
-                        //         ),
-                        //       ),
-                        //       Container(
-                        //         padding: EdgeInsets.fromLTRB(80, 80, 0, 0),
-                        //         child: Icon(
-                        //           Icons.add_circle,
-                        //           color: Colors.grey.shade700,
-                        //           size: 25.0,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         SizedBox(
                           height: 60,
                         ),
@@ -342,71 +310,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             },
                           ),
                         ),
-                        /*SizedBox(height: 30.0),
-                        Text("Or create account using social media",  style: TextStyle(color: Colors.grey),),
-                        SizedBox(height: 25.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.googlePlus, size: 35,
-                                color: HexColor("#EC2D2F"),),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog("Google Plus","You tap on GooglePlus social icon.",context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                            SizedBox(width: 30.0,),
-                            GestureDetector(
-                              child: Container(
-                                padding: EdgeInsets.all(0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(width: 5, color: HexColor("#40ABF0")),
-                                  color: HexColor("#40ABF0"),
-                                ),
-                                child: FaIcon(
-                                  FontAwesomeIcons.twitter, size: 23,
-                                  color: HexColor("#FFFFFF"),),
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog("Twitter","You tap on Twitter social icon.",context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                            SizedBox(width: 30.0,),
-                            GestureDetector(
-                              child: FaIcon(
-                                FontAwesomeIcons.facebook, size: 35,
-                                color: HexColor("#3E529C"),),
-                              onTap: () {
-                                setState(() {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return ThemeHelper().alartDialog("Facebook",
-                                          "You tap on Facebook social icon.",
-                                          context);
-                                    },
-                                  );
-                                });
-                              },
-                            ),
-                          ],
-                        ),*/
                       ],
                     ),
                   ),
@@ -416,21 +319,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           ],
         ),
       ),
-      floatingActionButton: Align(
-        alignment: Alignment.bottomLeft,
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Icon(
-          Icons.arrow_back,
-          size: 30,
-          color: Colors.white,
-        ),
-        backgroundColor: Color(0xFF404659)
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 }

@@ -1,12 +1,11 @@
 import 'dart:async';
-
-// import 'package:Bbuddy/app.dart';
 import 'package:flutter/material.dart';
 
-import '../login_screen/login_page.dart';
 import '../../../services/login.dart';
 import '../../../models/model.dart';
 import '../../../../../app.dart';
+
+import '../../../screens/screen.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key, required this.title}) : super(key: key);

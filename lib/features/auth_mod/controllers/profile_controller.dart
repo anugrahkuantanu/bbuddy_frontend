@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/mobile/profile_mobile.screen.dart';
+import '../screens/screen.dart';
 
 class ProfileController extends StatelessWidget {
   const ProfileController({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class ProfileController extends StatelessWidget {
     return Title(
       title: 'Profile Section',
       color: Colors.blue,
-      child: const ProfileMobileScreen(),
+      child: ProfilePage(),
     );
   }
 }

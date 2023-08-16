@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/mobile/register_mobile_screen.dart';
+import '../screens/screen.dart';
 
 class RegisterController extends StatelessWidget {
   const RegisterController({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class RegisterController extends StatelessWidget {
     return Title(
       title: 'Login Section',
       color: Colors.blue,
-      child: const RegisterMobileScreen(),
+      child: RegistrationPage(),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/mobile/forget_mobile_screen.dart';
+import '../screens/screen.dart';
 
 class ForgetController extends StatelessWidget {
   const ForgetController({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class ForgetController extends StatelessWidget {
     return Title(
       title: 'Forget Section',
       color: Colors.blue,
-      child: const ForgetMobileScreen(),
+      child: const ForgotPasswordPage(),
     );
   }
 }

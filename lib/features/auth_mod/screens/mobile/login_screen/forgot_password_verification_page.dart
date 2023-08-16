@@ -1,11 +1,8 @@
+import 'package:clean_architecture/features/features.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../login_screen/common/theme_helper.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
-
-import '../login_screen/profile_page.dart';
-import '../login_screen/widgets/header_widget.dart';
 
 class ForgotPasswordVerificationPage extends StatefulWidget {
   const ForgotPasswordVerificationPage({Key? key}) : super(key: key);

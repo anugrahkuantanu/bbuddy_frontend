@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'config/config.dart';
-import '/features/auth_mod/screens/mobile/login_screen/login_page.dart';
-import '/features/auth_mod/screens/mobile/login_screen/splash_screen.dart';
 import 'features/auth_mod/services/service.dart';
-
+import './features/auth_mod/screens/screen.dart';
  
 
  

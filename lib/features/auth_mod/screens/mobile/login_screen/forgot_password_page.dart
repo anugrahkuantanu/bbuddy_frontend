@@ -1,7 +1,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import '../login_screen/common/theme_helper.dart';
+import '../../../utils/theme_helper.dart';
 import '../login_screen/forgot_password_verification_page.dart';
 import '../login_screen/login_page.dart';
 import '../login_screen/widgets/header_widget.dart';
