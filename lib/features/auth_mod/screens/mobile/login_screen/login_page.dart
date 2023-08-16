@@ -10,7 +10,7 @@ import '../login_screen/widgets/header_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../services/login.dart';
 import 'package:dio/dio.dart';
-import '../../../../../main.dart';
+import '../../../../../app.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

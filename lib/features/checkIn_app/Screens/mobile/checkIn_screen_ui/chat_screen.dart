@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../models/model.dart';
 import '../../../services/checkIn_service.dart';
 import 'package:provider/provider.dart';
-import '/core/services/stats.dart';
+import '../../../../main_app/services/stats.dart';
 
 class ChatScreen extends StatefulWidget {
   final String feeling;

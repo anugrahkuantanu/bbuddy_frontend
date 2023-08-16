@@ -1,4 +1,4 @@
-import '/core/services/reflections.dart';
+import '../../../features/reflection_app/services/reflections.dart';
 
 class BaseInsight {
   final String content;

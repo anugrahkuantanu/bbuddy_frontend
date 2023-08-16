@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '/core/services/constants.dart';
 import '/core/services/dio_util.dart';
-import '../models/stats.dart';
+import '../../../core/models/stats.dart';
 
 Future<void> updateStats(UserStats? stat) async {
   final dio = Dio(BaseOptions(baseUrl: baseURL));

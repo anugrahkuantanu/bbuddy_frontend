@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../login_screen/login_page.dart';
 import '../../../services/login.dart';
 import '../../../models/model.dart';
-import '../../../../../main.dart';
+import '../../../../../app.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key, required this.title}) : super(key: key);

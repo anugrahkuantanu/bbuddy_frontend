@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import '/core/services/constants.dart';
 import '/core/services/utils.dart';
 import '/core/services/dio_util.dart';
-import '../models/main/reflection.dart';
+import '../../../core/models/main/reflection.dart';
 
 Future<List> getReflectionTopics() async {
   final dio = Dio(BaseOptions(baseUrl: baseURL));
