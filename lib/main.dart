@@ -8,7 +8,6 @@ import '/features/main_app/services/service.dart';
 import 'app.dart';
 
 
-
 void main() async {
   runApp(
     MultiProvider(
@@ -19,7 +18,7 @@ void main() async {
           create: (_) => UserDetailsProvider(),
         ),
         ChangeNotifierProvider(create: (_) => CounterStats()),// add other providers here if needed
-
+        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
       ],
       child: AppStarter(),
     ),
