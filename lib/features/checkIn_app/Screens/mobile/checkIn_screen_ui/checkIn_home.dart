@@ -31,7 +31,9 @@ class CheckInHome extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: bloc.getAppBarColor(tm),
         title: const Text('Check-In'),
+        centerTitle: true,
         actions: actionsMenu(context),
+        automaticallyImplyLeading: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(

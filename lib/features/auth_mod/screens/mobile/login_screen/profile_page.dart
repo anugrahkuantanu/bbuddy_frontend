@@ -4,6 +4,12 @@ import 'package:provider/provider.dart';
 import '../login_screen/login_page.dart';
 import '../../../services/login.dart';
 import '/core/services/storage.dart';
+import '/config/config.dart';
+import '../../../../../core/core.dart';
+import '../../../services/service.dart';
+import '../../../screens/screen.dart';
+import './widgets/widget.dart';
+
 
 
 class ProfilePage extends StatefulWidget {
@@ -36,54 +42,17 @@ class _ProfilePageState extends State<ProfilePage> {
     double _drawerFontSize = 17;
     double screenWidth = MediaQuery.of(context).size.width;
     final userDetails = Provider.of<UserDetailsProvider>(context);
+    var tm = context.watch<ThemeProvider>();
     //print(userDetails.details?.firstName);
     return Scaffold(
-      backgroundColor: Color(0xFF2D425F),
+      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Color(0xFF2D425F),
-        elevation: 0,
-        title: Text(
-          'My Profile',
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-        actions: [
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: PopupMenuButton<String>(
-              icon: Icon(Icons.more_horiz, color: Colors.white),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              itemBuilder: (BuildContext context) {
-                return [
-                  // PopupMenuItem<String>(
-                  //   value: 'edit',
-                  //   child: Text('Edit Profile'),
-                  // ),
-                  PopupMenuItem<String>(
-                    value: 'logout',
-                    child: Text('Log out'),
-                  ),
-                ];
-              },
-              onSelected: (String value) {
-                if (value == 'edit') {
-                  // edit profile action
-                } else if (value == 'logout') {
-                   
-                  //   logout(context);
-                  // // logout action
-                }
-              },
-            ),
-          ),
-        ],
+        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
+        title: const Text('Profile'),
+        centerTitle: true,
+        actions: actionsMenu(context),
+        // automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Column(
@@ -160,49 +129,4 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-class UserInfoItem extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final String value;
 
-  UserInfoItem({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    final displayValue = value.isNotEmpty ? value : '-';
-
-    return Row(
-      children: [
-        Icon(icon),
-        SizedBox(width: screenWidth * 0.01.w),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 16.sp,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              displayValue,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 14.sp,
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
