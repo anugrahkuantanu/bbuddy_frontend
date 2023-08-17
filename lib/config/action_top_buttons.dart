@@ -14,18 +14,28 @@ class ActionTopButtons extends ActionButtons {
           ),
           ButtonData(
             icon: Icons.account_circle_outlined,
-            label: 'Prifile',
+            label: 'Profile',
             link: '/profile',
           ),
-        //       IconButton(
-        // onPressed: () {
-        //   Nav.to(context, '/profile');
-        // },
-        // icon: const Icon(Icons.account_circle_outlined)),
           ButtonData(
             icon: Icons.logout,
             label: 'Logout',
             link: '/logout',
+          ),
+          ButtonData(
+            icon: Icons.circle,
+            label: 'register',
+            link: '/register',
+          ),
+          ButtonData(
+            icon: Icons.circle,
+            label: 'forget',
+            link: '/forget',
+          ),
+          ButtonData(
+            icon: Icons.circle,
+            label: 'testlogin',
+            link: '/testlogin',
           ),
         ]);
 }

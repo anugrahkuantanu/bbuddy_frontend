@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-import '../../../services/login.dart';
-import '../../../models/model.dart';
 import '../../../../../app.dart';
-
-import '../../../screens/screen.dart';
+import './widgets/widget.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key? key, required this.title}) : super(key: key);
@@ -38,24 +35,6 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  /*void _decideNavigation() async {
-    Token? accessToken = await getAccessToken();
-    if (accessToken != null) {
-      //print(accessToken.toJson());
-      // Navigate to the app's home page
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => MyApp()),
-        (route) => false,
-      );
-    } else {
-      // Navigate to the login screen
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginPage()),
-        (route) => false,
-      );
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,17 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Container(
             height: 300.0,
             width: 300.0,
-            child: Center(
-              child: ClipOval(
-                child: Image.asset(
-                  //'assets/images/BBuddy_logo.png',
-                  'assets/images/BBuddy_logo2.png', //replace with your image path
-                  width: 280,
-                  height: 280,
-                  //fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            child: LoginLogo(width: 280, height:280),
           ),
         ),
       ),

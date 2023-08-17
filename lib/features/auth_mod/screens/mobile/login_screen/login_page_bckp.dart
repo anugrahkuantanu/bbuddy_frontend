@@ -3,7 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../../../main_app/utils/helpers.dart';
 // import '../login_screen/forgot_password_page.dart';
-import '../login_screen/registration_page.dart';
+import 'registration_ui.dart';
 // import 'package:Bbuddy/app.dart';
 import 'package:provider/provider.dart';
 import '../../../services/login.dart';
