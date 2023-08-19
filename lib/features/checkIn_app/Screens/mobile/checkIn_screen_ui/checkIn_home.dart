@@ -33,7 +33,7 @@ class CheckInHome extends StatelessWidget {
         title: const Text('Check-In'),
         centerTitle: true,
         actions: actionsMenu(context),
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(

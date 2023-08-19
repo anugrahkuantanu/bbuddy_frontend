@@ -3,18 +3,6 @@ import '../features/features.dart';
 /// In this file we will be writing all API Endpoints using this application
 
 class ApiEndpoint {
-  // News Server
-  // static const rapidUrl = 'https://free-news.p.rapidapi.com';
-  // static const news = rapidUrl + '/v1/search';
-
-  // // Server Links
-  // static const baseUrl = 'https://apps.shibajidebnath.com/';
-  // static const api = baseUrl + 'api/';
-
-  // // Enqueries Endpoints
-  // static const enqueries = api + 'enqueries?populate=*&sort[0]=id%3Adesc';
-  // static const enquery = api + 'enqueries';
-
   // const String baseURL = 'http://localhost:8000';
   static const String baseURL = 'https://api.bbuddy.ai';
   // const String baseWSURL = 'ws://localhost:8000/ws';

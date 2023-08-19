@@ -6,7 +6,7 @@ import '../../../bloc/bloc.dart';
 import './widget/widget.dart';
 
 class FeelingFormScreen extends StatefulWidget {
-  FeelingFormScreen({
+  const FeelingFormScreen({
     Key? key,
     required this.feeling,
     required this.backgroundColor,
@@ -48,6 +48,10 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
   List<Widget> _buildFeelingFormButtons() {
     List<Widget> rows = [];
     List<String> feelingForms = _bloc.feelingForms[widget.feeling]!;
+    // List<String> feelingForms = _bloc.feelingForms.containsKey(widget.feeling) 
+    // ? _bloc.feelingForms[widget.feeling]! 
+    // : [];
+
 
     for (int i = 0; i < feelingForms.length; i += 2) {
       var rowButtons = <Widget>[
@@ -84,6 +88,7 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
       ),
     );
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +136,4 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
       ),
     );
   }
-
-
 }

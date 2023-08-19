@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/core/services/constants.dart';
+import '/config/config.dart';
 import '/core/services/storage.dart';
 import 'package:dio/dio.dart';
 import '/core/services/dio_util.dart';
@@ -10,7 +10,7 @@ Future<String> registerUser(UserCreate newUser) async {
   final dio = Dio();
   try {
     final response = await dio.post(
-      '$baseURL/register',
+      '$ApiEndpoint.baseURL/register',
       data: newUser.toJson(),
     );
     if (response.statusCode == 200) {
@@ -37,7 +37,7 @@ Future<String> loginForAccessToken(FormData loginData) async {
 
     // Make the POST request
     Response response =
-        await dio.post('$baseURL/login/access-token', data: loginData);
+        await dio.post('$ApiEndpoint.baseURL/login/access-token', data: loginData);
 
     // Handle the response
     if (response.statusCode == 200) {
@@ -70,7 +70,7 @@ Future<String> loginForAccessToken(FormData loginData) async {
 }
 
 Future<void> getCurrentUserDetails() async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   // code here
   dio.interceptors.add(AuthInterceptor(dio));
   try {

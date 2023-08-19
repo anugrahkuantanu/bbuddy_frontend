@@ -1,5 +1,5 @@
 import 'dart:convert';
-import '../models/main/reflection.dart';
+import '../../features/reflection_app/models/reflection.dart';
 
 List<ReflectionPerTopic> parseReflections(String responseBody) {
     print(responseBody);

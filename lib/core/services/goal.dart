@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import '/core/services/constants.dart';
+import '/config/config.dart';
 import '/core/services/dio_util.dart';
 import '../models/main/goal.dart';
 import '../models/main/message.dart';
-import 'package:flutter/material.dart';
 
 Future<List<Goal>> getGoalHistory() async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   // code here
   dio.interceptors.add(AuthInterceptor(dio));
   try {
@@ -30,7 +29,7 @@ Future<List<Goal>> getGoalHistory() async {
 }
 
 Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   // code here
   dio.interceptors.add(AuthInterceptor(dio));
   try {
@@ -53,7 +52,7 @@ Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
 }
 
 Future<void> updateGoal(Goal goal) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   try {
     final response = await dio.post(
@@ -68,7 +67,7 @@ Future<void> updateGoal(Goal goal) async {
 
 Future<bool> deleteGoal(int goalId) async {
   try{
-    final dio = Dio(BaseOptions(baseUrl: baseURL));
+    final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
     dio.interceptors.add(AuthInterceptor(dio));
     final response = await dio.delete('/delete_goal/$goalId');
     if (response.statusCode == 200){
@@ -83,7 +82,7 @@ Future<bool> deleteGoal(int goalId) async {
 }
 
 Future<Goal> setPersonalGoal(Goal goal) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   try {
     final response = await dio.post(
@@ -99,7 +98,7 @@ Future<Goal> setPersonalGoal(Goal goal) async {
 
 Stream<List<Message>> fetchChatHistory(int goalId, int page, int pageSize) async* {
   try {
-    final dio = Dio(BaseOptions(baseUrl: baseURL));
+    final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
     final response = await dio.get('/chat_history/$goalId', queryParameters: {
       'page': page,
       'page_size': pageSize,

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import '../websocket.dart';
 
-import '/core/services/constants.dart';
+import '/config/config.dart';
 
 import '../../../features/auth_mod/services/login.dart';
 import '/features/auth_mod/models/model.dart';
@@ -33,7 +33,7 @@ class GoalChat {
   
   void connect() async {
     Token? accessToken = await getAccessToken();
-    _webSocket?.connect('${baseWSURL}/${goalId}?authorization=${accessToken!.accessToken}');
+    _webSocket?.connect('${ApiEndpoint.baseWSURL}/${goalId}?authorization=${accessToken!.accessToken}');
   }
 
   void _handleMessage(dynamic data) {

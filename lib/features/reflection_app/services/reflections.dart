@@ -1,13 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'dart:convert';
 import 'package:dio/dio.dart';
-import '/core/services/constants.dart';
-import '/core/services/utils.dart';
+import '/config/config.dart';
 import '/core/services/dio_util.dart';
-import '../../../core/models/main/reflection.dart';
+import '../models/reflection.dart';
 
 Future<List> getReflectionTopics() async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
 
   try {
@@ -27,7 +25,7 @@ Future<List> getReflectionTopics() async {
 
 Future<List<Reflection>> getReflectionHistory(
     {DateTime? startDate, DateTime? endDate}) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   // code here
   dio.interceptors.add(AuthInterceptor(dio));
   try {
@@ -54,7 +52,7 @@ Future<List<Reflection>> getReflectionHistory(
 
 Future<Reflection> getMoodReflections(
     List topics, List? userReflections, String heading) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   final response = await dio.post(
     '/mood_reflection',
@@ -79,7 +77,7 @@ class ReflectionHeading extends ChangeNotifier {
 
   Future<void> fetchHeading(List topics) async {
     final response = await dio.post(
-      '$baseURL/reflection_heading',
+      '$ApiEndpoint.baseURL/reflection_heading',
       data: {'topics': topics},
     );
     if (response.statusCode == 200) {
@@ -92,7 +90,7 @@ class ReflectionHeading extends ChangeNotifier {
 }
 
 Future<int> countReflections() async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   try {
     final response = await dio.get('/count_reflections');

@@ -1,13 +1,13 @@
 import '../models/checkIn.dart';
 import '../models/model.dart';
 import 'package:dio/dio.dart';
-import '/core/services/constants.dart';
+import '/config/config.dart';
 import '/core/services/dio_util.dart';
 
 
 Future<String> getCheckInResponse(String feeling, String feelingForm,
     String reasonEntity, String reason) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   final response = await dio.post(
     '/mood_check_in',
@@ -31,7 +31,7 @@ Future<void> storeCheckIn(String feeling, String feelingForm,
   final String feeling_message =
       "I am feeling ${feeling} and ${feelingForm} about my ${reasonEntity}.";
 
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   try {
     final response = await dio.post(
@@ -48,7 +48,7 @@ Future<void> storeCheckIn(String feeling, String feelingForm,
 }
 
 Future<List<CheckIn>> getCheckInHistory({int lastK = 4}) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   try {
     final response = await dio.get(
@@ -84,7 +84,7 @@ Future<List<CheckIn>> getCheckInHistory({int lastK = 4}) async {
 }
 
 Future<int> countCheckIn() async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   try {
     final response = await dio.get('/count_mood_check_in');

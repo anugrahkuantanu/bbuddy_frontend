@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../login_screen/login_page.dart';
+import 'login_ui.dart';
 import '../../../services/login.dart';
 import '/core/services/storage.dart';
 import '/config/config.dart';

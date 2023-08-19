@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import '/core/services/constants.dart';
+import '/config/config.dart';
 import '/core/services/dio_util.dart';
-import '../../../core/models/stats.dart';
+import '../models/stats.dart';
 
 Future<void> updateStats(UserStats? stat) async {
-  final dio = Dio(BaseOptions(baseUrl: baseURL));
+  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
   try {
     final response = await dio.post('/update_stats', data: stat!.toJson());
@@ -59,7 +59,7 @@ class CounterStats extends ChangeNotifier {
   }
 
   Future<void> getCounterStats() async {
-    final dio = Dio(BaseOptions(baseUrl: baseURL));
+    final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
     dio.interceptors.add(AuthInterceptor(dio));
     try {
       final response = await dio.get('/counter_stats');

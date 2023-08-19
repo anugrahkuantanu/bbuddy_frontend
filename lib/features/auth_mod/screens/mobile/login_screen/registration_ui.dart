@@ -7,7 +7,7 @@ import './widgets/widget.dart';
 import '../../../../../core/core.dart';
 
 import 'package:flutter/scheduler.dart';
-import '../../../bloc/bloc.dart';
+import '../../../blocs/bloc.dart';
 
 
 

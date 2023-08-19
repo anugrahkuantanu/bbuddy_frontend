@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../config/config.dart';
 import '../../../../core/core.dart';
-import '../../Screens/mobile/home_screen/home.dart' as mobile;
+import '../../Screens/mobile/home_screen/screen.dart' as mobile;
 
 class HomeController extends StatelessController {
   final String _title = 'Home Page';
@@ -20,7 +20,7 @@ class HomeController extends StatelessController {
 
     return Display(
       title: _title,
-      mobile: mobile.Home(title: _title),
+      mobile: mobile.HomePage(),
     );
   }
 }
