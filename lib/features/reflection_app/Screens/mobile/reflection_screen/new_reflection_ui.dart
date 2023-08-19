@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './view_reflection_results.dart';
+import 'view_reflection_results_ui.dart';
 import '../../../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/config/config.dart';

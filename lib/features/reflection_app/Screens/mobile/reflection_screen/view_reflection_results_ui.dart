@@ -5,79 +5,9 @@ import '../../../../reflection_app/services/service.dart';
 import '../../../../main_app/services/service.dart';
 import 'reflection_home_ui.dart';
 import '../../../models/model.dart';
-import 'dart:async';
+import '../../../blocs/bloc.dart';
 
 
-abstract class ReflectionResultState {}
-
-class ReflectionResultInitial extends ReflectionResultState {}
-
-class ReflectionResultLoading extends ReflectionResultState {}
-
-class ReflectionResultLoaded extends ReflectionResultState {
-  final Reflection reflection;
-
-  ReflectionResultLoaded(this.reflection);
-}
-
-class ReflectionResultError extends ReflectionResultState {}
-
-
-// event
-
-abstract class ReflectionResultEvent {}
-
-class LoadMoodReflections extends ReflectionResultEvent {
-  final List topics;
-  final List? userReflections;
-  final String heading;
-  final Reflection? reflection;
-
-  LoadMoodReflections(this.topics, this.userReflections, this.heading, this.reflection);
-}
-
-
-//bloc
-
-class ReflectionResultBloc {
-  final _stateController = StreamController<ReflectionResultState>();
-  StreamSink<ReflectionResultState> get _inState => _stateController.sink;
-  Stream<ReflectionResultState> get state => _stateController.stream;
-
-  final _eventController = StreamController<ReflectionResultEvent>();
-  Sink<ReflectionResultEvent> get eventSink => _eventController.sink;
-
-  ReflectionResultBloc() {
-    _eventController.stream.listen(_mapEventToState);
-  }
-
-void _mapEventToState(ReflectionResultEvent event) async {
-    if (event is LoadMoodReflections) {
-      _inState.add(ReflectionResultLoading());
-      if (event.reflection != null) {
-        _inState.add(ReflectionResultLoaded(event.reflection!));
-      } else {
-        try {
-          final response = await getMoodReflections(event.topics, event.userReflections, event.heading);
-          if (response is Reflection) {
-            _inState.add(ReflectionResultLoaded(response));
-            // Handle Provider logic here or in the widget depending on how you want to structure it.
-          } else {
-            _inState.add(ReflectionResultError());
-          }
-        } catch (e) {
-          _inState.add(ReflectionResultError());
-        }
-      }
-    }
-}
-
-
-  void dispose() {
-    _stateController.close();
-    _eventController.close();
-  }
-}
 
 
 
@@ -104,9 +34,10 @@ class _ViewReflectionResultsState extends State<ViewReflectionResults> {
   late ReflectionResultBloc reflectionResultBloc;
 
   @override
-  void initState() {
+void initState() {
     super.initState();
-    reflectionResultBloc = ReflectionResultBloc();
+    final counterStats = Provider.of<CounterStats>(context, listen: false);
+    reflectionResultBloc = ReflectionResultBloc(counterStats: counterStats);
     reflectionResultBloc.eventSink.add(LoadMoodReflections(
       widget.topics,
       widget.userReflections,
@@ -127,10 +58,6 @@ class _ViewReflectionResultsState extends State<ViewReflectionResults> {
             appBar: AppBar(
               backgroundColor: widget.backgroundColor,
               elevation: 0,
-              title: Padding(
-                padding: EdgeInsets.only(left: 100.w, top: 10.w),
-                child: CircularProgressIndicator(),
-              ),
               iconTheme: IconThemeData(color: Colors.white),
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),

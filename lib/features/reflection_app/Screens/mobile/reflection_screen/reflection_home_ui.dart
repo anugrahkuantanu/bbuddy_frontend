@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../checkIn_app/services/service.dart';
-import './view_reflection_results.dart';
+import 'view_reflection_results_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/config/config.dart';
 import '../../../../../core/core.dart';
