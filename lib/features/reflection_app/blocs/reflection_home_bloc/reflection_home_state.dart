@@ -6,8 +6,6 @@ class ReflectionHomeInitial extends ReflectionHomeState {}
 
 class ReflectionHomeLoading extends ReflectionHomeState {}
 
-
-
 class ReflectionHomeInsufficientCheckIns extends ReflectionHomeState {}
 
 class ReflectionHomeHasEnoughCheckIns extends ReflectionHomeState {

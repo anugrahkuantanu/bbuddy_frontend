@@ -5,9 +5,8 @@ import '../../models/model.dart';
 import 'package:provider/provider.dart';
 import '../../blocs/bloc.dart';
 import '../../Screens/screen.dart';
-import '../../../checkIn_app/services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../../checkIn_app/services/service.dart';
 
 
 class ReflectionHomeBloc extends Bloc<ReflectionHomeEvent, ReflectionHomeState> {
@@ -44,7 +43,7 @@ class ReflectionHomeBloc extends Bloc<ReflectionHomeEvent, ReflectionHomeState> 
       try {
           final counterStats = Provider.of<CounterStats>(context, listen: false);
           int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
-
+        
           if (checkInCount < 3) {
               showDialog(
                   context: context,

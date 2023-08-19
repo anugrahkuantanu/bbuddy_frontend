@@ -57,7 +57,7 @@ class ReflectionCard extends StatelessWidget {
                         fontSize: 15.sp,
                         color: Colors.white),
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                    maxLines: 1,
                   ),
                 ),
               ),

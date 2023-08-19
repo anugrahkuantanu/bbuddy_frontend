@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../checkIn_app/services/service.dart';
 import './view_reflection_results.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,8 @@ class ReflectionHome extends StatefulWidget {
 
 class _ReflectionHomeState extends State<ReflectionHome> {
   late final ReflectionHomeBloc _bloc;
+  
+  
 
   @override
   void initState() {
@@ -35,11 +38,12 @@ class _ReflectionHomeState extends State<ReflectionHome> {
 
   @override
   Widget build(BuildContext context) {
+    
     return BlocProvider(
       create: (context) => _bloc,
       child: BlocBuilder<ReflectionHomeBloc, ReflectionHomeState>(
         builder: (context, state) {
-          if (state is ReflectionHomeLoading) {
+            if (state is ReflectionHomeLoading) {
             return _buildLoadingUI();
           } else if (state is ReflectionHomeHasEnoughCheckIns) {
             return _buildHasEnoughCheckInsUI(state.history);
@@ -49,17 +53,19 @@ class _ReflectionHomeState extends State<ReflectionHome> {
             return _buildErrorUI(state.errorMessage);
           }
           return Container(); // Fallback
-        },
+          }
       ),
     );
   }
 
   Widget _buildLoadingUI() {
+        var tm = context.watch<ThemeProvider>();
+    Color? backgroundColor = tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100];
     return Scaffold(
-      backgroundColor: Color(0xFF2D425F),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
         title: Text('Reflections'),
-        backgroundColor: Color(0xFF2D425F),
+        backgroundColor: backgroundColor,
       ),
       body: Center(child: CircularProgressIndicator()),
     );
@@ -67,43 +73,47 @@ class _ReflectionHomeState extends State<ReflectionHome> {
 
   Widget _buildHasEnoughCheckInsUI(List history) {
     var tm = context.watch<ThemeProvider>();
+    Color? backgroundColor = tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
+        backgroundColor: backgroundColor,
         title: const Text(''),
-        actions: actionsMenuLogin(context),
+        actions: actionsMenu(context),
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
+      backgroundColor: backgroundColor,
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            mainAxisSpacing: 16.0,
-            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0.w,
+            crossAxisSpacing: 16.0.w,
             childAspectRatio: 0.75,
           ),
           itemCount: history.length,
           itemBuilder: (context, index) {
-          final reflection = history[index];
+          final reflection = history[index]!;
           return 
            ReflectionCard(
-              heading: "My Heading",
-              topicReflections: history[index].topicReflections ?? [],
+              heading: history[index].heading!,
+              // topicReflections: history[index].topicReflections ?? [],
+              topicReflections: history[index].topicReflections!,
               reflection: reflection,
               onTap: (topics, reflection) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => ViewReflectionResults(
+                      backgroundColor: backgroundColor,
                       topics: topics.map((reflectionPerTopic) => reflectionPerTopic.topic).toList(),
                       reflection: reflection,
+
                     ),
                   ),
                 );
               },
-              cardWidth: 200,
+              cardWidth: 200.w,
             );
           },
         ),
@@ -125,7 +135,7 @@ class _ReflectionHomeState extends State<ReflectionHome> {
       appBar: AppBar(
         backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         title: const Text(''),
-        actions: actionsMenuLogin(context),
+        actions: actionsMenu(context),
         automaticallyImplyLeading: false,
       ),
       backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
@@ -170,7 +180,7 @@ class _ReflectionHomeState extends State<ReflectionHome> {
       appBar: AppBar(
         backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         title: const Text(''),
-        actions: actionsMenuLogin(context),
+        actions: actionsMenu(context),
         automaticallyImplyLeading: false,
       ),
       backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],

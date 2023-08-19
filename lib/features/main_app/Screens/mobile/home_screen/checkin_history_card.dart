@@ -14,7 +14,7 @@ class CheckInHistoryCard extends StatefulWidget {
   final Color backgroundColor;
 
   const CheckInHistoryCard({
-    this.textColor,
+    this.textColor = Colors.black,
     required this.backgroundColor,
   });
 
