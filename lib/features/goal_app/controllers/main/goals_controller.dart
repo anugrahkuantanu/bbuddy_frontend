@@ -13,7 +13,7 @@ class GoalsController extends StatelessController {
   Display view(BuildContext context) {
     return Display(
       title: 'Goals',
-      mobile: const mobile.GoalHome(),
+      mobile: mobile.GoalHome(),
     );
   }
 }

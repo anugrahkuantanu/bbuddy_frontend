@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '/config/config.dart';
-import '/core/services/storage.dart';
+import '../../goal_app/services/storage.dart';
 import 'package:dio/dio.dart';
-import '/core/services/dio_util.dart';
+import '../../goal_app/services/dio_util.dart';
 import 'dart:convert';
 import '../models/model.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'login_ui.dart';
 import '../../../services/login.dart';
-import '/core/services/storage.dart';
+import '../../../../goal_app/services/storage.dart';
 import '/config/config.dart';
 import '../../../../../core/core.dart';
 import '../../../services/service.dart';

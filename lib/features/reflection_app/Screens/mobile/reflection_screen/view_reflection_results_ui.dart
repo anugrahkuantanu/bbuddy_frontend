@@ -8,10 +8,6 @@ import '../../../models/model.dart';
 import '../../../blocs/bloc.dart';
 
 
-
-
-
-
 class ViewReflectionResults extends StatefulWidget {
   final List topics;
   final List? userReflections;

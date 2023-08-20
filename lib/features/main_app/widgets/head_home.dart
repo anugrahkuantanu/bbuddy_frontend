@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../../../auth_mod/screens/screen.dart';
+import '../../auth_mod/screens/screen.dart';
 import '../widgets/widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../../services/service.dart';
-import '../../../../auth_mod/services/service.dart';
+import '../services/service.dart';
+import '../../auth_mod/services/service.dart';
 
 
 

@@ -3,7 +3,7 @@ import './reasons_screen.dart';
 import '../../../../main_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../bloc/bloc.dart';
-import './widget/widget.dart';
+import '../../../widget/widget.dart';
 
 class FeelingFormScreen extends StatefulWidget {
   const FeelingFormScreen({

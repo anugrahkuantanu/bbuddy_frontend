@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import '../../features/auth_mod/services/login.dart';
+import '../../auth_mod/services/login.dart';
 import '/features/auth_mod/models/model.dart';
-import '/core/services/storage.dart';
+import '../services/storage.dart';
 import 'dart:convert';
 
 

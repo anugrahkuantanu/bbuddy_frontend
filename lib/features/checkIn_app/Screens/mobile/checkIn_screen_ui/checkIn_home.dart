@@ -6,7 +6,7 @@ import '../../../../../core/core.dart';
 import 'package:provider/provider.dart';
 import '/config/config.dart';
 import '../../../bloc/bloc.dart';
-import './widget/widget.dart';
+import '../../../widget/widget.dart';
 
 class CheckInHome extends StatelessWidget {
   const CheckInHome({Key? key}) : super(key: key);

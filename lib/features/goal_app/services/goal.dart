@@ -2,9 +2,8 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import '/config/config.dart';
-import '/core/services/dio_util.dart';
-import '../models/main/goal.dart';
-import '../models/main/message.dart';
+import '../services/dio_util.dart';
+import '../models/model.dart';
 
 Future<List<Goal>> getGoalHistory() async {
   final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));

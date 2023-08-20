@@ -2,7 +2,7 @@ import '../models/checkIn.dart';
 import '../models/model.dart';
 import 'package:dio/dio.dart';
 import '/config/config.dart';
-import '/core/services/dio_util.dart';
+import '../../goal_app/services/dio_util.dart';
 
 
 Future<String> getCheckInResponse(String feeling, String feelingForm,

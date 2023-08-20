@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import './textbox_screen.dart';
 import '../../../bloc/bloc.dart';
-import './widget/widget.dart';
+import '../../../widget/widget.dart';
 
 
 class ReasonScreen extends StatefulWidget {
