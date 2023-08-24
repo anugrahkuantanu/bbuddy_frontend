@@ -1,5 +1,5 @@
 import 'package:clean_architecture/config/config.dart';
-import 'package:clean_architecture/features/auth_mod/screens/mobile/login_screen/widgets/widget.dart';
+import 'package:clean_architecture/features/auth_mod/screens/widgets/widget.dart';
 import 'package:clean_architecture/features/features.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import '../../../../../core/core.dart';
-import '../../../screens/screen.dart';
-import '../../../blocs/bloc.dart';
+import 'screen.dart';
+import '../../blocs/bloc.dart';
 
 
 class ForgotPasswordVerificationPage extends StatefulWidget {

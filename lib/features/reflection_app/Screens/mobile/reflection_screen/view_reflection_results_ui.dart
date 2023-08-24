@@ -5,7 +5,7 @@ import '../../../../reflection_app/services/service.dart';
 import '../../../../main_app/services/service.dart';
 import 'reflection_home_ui.dart';
 import '../../../models/model.dart';
-import '../../../blocs/bloc.dart';
+import '../../blocs/bloc.dart';
 
 
 class ViewReflectionResults extends StatefulWidget {

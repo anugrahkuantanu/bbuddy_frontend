@@ -5,7 +5,6 @@ import 'features/auth_mod/services/service.dart';
 import '/features/reflection_app/services/service.dart';
 import '/features/main_app/services/service.dart';
 import 'app.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart'; // Make sure to import the necessary package
 
 // void main() async {
 //   runApp(

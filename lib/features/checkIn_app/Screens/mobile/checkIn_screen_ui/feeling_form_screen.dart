@@ -8,14 +8,14 @@ import '../../../widget/widget.dart';
 class FeelingFormScreen extends StatefulWidget {
   const FeelingFormScreen({
     Key? key,
-    required this.feeling,
-    required this.backgroundColor,
-    required this.textColor,
+    this.feeling = "",
+    this.backgroundColor = Colors.black,
+    this.textColor = Colors.white,
   }) : super(key: key);
 
-  final String feeling;
-  final Color backgroundColor;
-  final Color textColor;
+  final String? feeling;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   @override
   _FeelingFormScreenState createState() => _FeelingFormScreenState();
@@ -31,15 +31,15 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
     _bloc = FeelingFormBloc();
   }
 
-  void _handleButtonPress(String feelingForm) {
+  void _handleButtonPress(String? feelingForm) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ReasonScreen(
-          feeling: widget.feeling,
-          feelingForm: feelingForm,
-          textColor: widget.textColor,
-          backgroundColor: widget.backgroundColor,
+          feeling: widget.feeling ?? "",
+          feelingForm: feelingForm ?? "",
+          textColor: widget.textColor ?? Colors.black,
+          backgroundColor: widget.backgroundColor ?? Colors.black,
         ),
       ),
     );
@@ -47,10 +47,10 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
 
   List<Widget> _buildFeelingFormButtons() {
     List<Widget> rows = [];
-    List<String> feelingForms = _bloc.feelingForms[widget.feeling]!;
-    // List<String> feelingForms = _bloc.feelingForms.containsKey(widget.feeling) 
-    // ? _bloc.feelingForms[widget.feeling]! 
-    // : [];
+    List<String> feelingForms = _bloc.feelingForms.containsKey(widget.feeling) 
+    ? _bloc.feelingForms[widget.feeling]! 
+    : [];
+
 
 
     for (int i = 0; i < feelingForms.length; i += 2) {
@@ -118,7 +118,7 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
                         BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
                   ),
                   child: Text(
-                    "What manifestation of ${widget.feeling.toLowerCase()} are you feeling?",
+                    "What manifestation of ${widget.feeling!.toLowerCase()} are you feeling?",
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,

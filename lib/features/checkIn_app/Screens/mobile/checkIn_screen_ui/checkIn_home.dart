@@ -65,31 +65,28 @@ class CheckInHome extends StatelessWidget {
         Expanded(
           child: 
           EntityButton(
-            entity: feelings[i]['name'],
-            emoji: feelings[i]['emoji'],
+            entity: feelings[i]['name']!,
+            emoji: feelings[i]['emoji']!,
             textColor: textColor,
             fontSize: textSize,
-            onTap: () => _navigateToFeelingFormScreen(context, feelings[i]['name'], textColor, backgroundColor),
+            onTap: () => _navigateToFeelingFormScreen(context, feelings[i]['name']!, textColor, backgroundColor),
             emojiSize: emojiSize,
           ),
         ),
       );
-
-      // If there's another feeling after the current one, add it
       if (i + 1 < feelings.length) {
         rowChildren.add(SizedBox(width: screenWidth * 0.05.w));
-
-        // Second button
         rowChildren.add(
           Expanded(
             child: 
-            EntityButton(
-              entity: feelings[i + 1]['name'],
-              emoji: feelings[i + 1]['emoji'],
+
+              EntityButton(
+              entity: feelings[i + 1]['name']!,
+              emoji: feelings[i + 1]['emoji']!,
               textColor: textColor,
               fontSize: textSize,
               onTap: () => _navigateToFeelingFormScreen(context, feelings[i + 1]['name'], textColor, backgroundColor),
-              icon: null,  // Again, assuming you're not using icons
+              icon: null,
               emojiSize: emojiSize,
             ),
           ),
@@ -105,12 +102,15 @@ class CheckInHome extends StatelessWidget {
     return feelingButtons;
   }
 
-  void _navigateToFeelingFormScreen(BuildContext context, String feelingName, Color textColor, Color backgroundColor) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FeelingFormScreen(feeling: feelingName, textColor: textColor, backgroundColor: backgroundColor),
-      ),
-    );
+  void _navigateToFeelingFormScreen(BuildContext context, String? feelingName, Color? textColor, Color? backgroundColor) {
+    // if (feelingName != null && textColor != null && backgroundColor != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => 
+          FeelingFormScreen(feeling: feelingName ?? "", textColor: textColor ?? Colors.black, backgroundColor: backgroundColor ?? Colors.black),
+        ),
+      );
+    // }
   }
 }

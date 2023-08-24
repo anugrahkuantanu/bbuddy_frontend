@@ -5,8 +5,8 @@ import 'view_reflection_results_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/config/config.dart';
 import '../../../../../core/core.dart';
-import '../../../blocs/bloc.dart';
-import '../../../widgets/widget.dart';
+import '../../blocs/bloc.dart';
+import '../../widgets/widget.dart';
 
 
 class ReflectionHome extends StatefulWidget {

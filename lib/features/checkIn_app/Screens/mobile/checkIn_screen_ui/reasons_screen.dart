@@ -7,15 +7,15 @@ import '../../../widget/widget.dart';
 
 class ReasonScreen extends StatefulWidget {
   const ReasonScreen({Key? key, 
-  required this.feeling, 
-  required this.feelingForm,
-  required this.backgroundColor,
-  required this.textColor,
+  this.feeling, 
+  this.feelingForm,
+  this.backgroundColor,
+  this.textColor,
   }): super(key: key);
-  final String feeling;
-  final String feelingForm;
-  final Color backgroundColor;
-  final Color textColor;
+  final String? feeling;
+  final String? feelingForm;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   @override
   _ReasonScreenState createState() => _ReasonScreenState();

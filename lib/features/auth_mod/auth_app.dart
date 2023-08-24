@@ -1,6 +1,6 @@
 import '../../core/classes/route_manager.dart';
 import 'controllers/controllers.dart';
-import './screens/screen.dart';
+import 'screens/mobile/login_screen/screen.dart';
 
 class AuthApp extends RouteManager {
   static const String name = '';

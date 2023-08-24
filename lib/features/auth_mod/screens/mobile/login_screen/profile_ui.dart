@@ -7,8 +7,8 @@ import '../../../../goal_app/services/storage.dart';
 import '/config/config.dart';
 import '../../../../../core/core.dart';
 import '../../../services/service.dart';
-import '../../../screens/screen.dart';
-import './widgets/widget.dart';
+import 'screen.dart';
+import '../../widgets/widget.dart';
 
 
 

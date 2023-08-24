@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EntityButton extends StatelessWidget {
 
@@ -29,21 +30,21 @@ class EntityButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: buttonStyle ?? ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,   // Transparent background
+        backgroundColor: backgroundColor ?? Colors.transparent,   // Transparent background
         foregroundColor: Colors.transparent, // No ripple effect
         shadowColor: Colors.transparent, // No shadow
         elevation: 0, // No elevation
       ),
       child: Column(
         children: [
-          if (emoji != null) Text(emoji!, style: TextStyle(fontSize: emojiSize, color: textColor)),
-          if (icon != null) Icon(icon!, size: emojiSize, color: textColor),
+          if (emoji != null) Text(emoji!, style: TextStyle(fontSize: emojiSize ?? 20.w, color: textColor ?? Colors.transparent)),
+          if (icon != null) Icon(icon!, size: emojiSize ?? 20.w, color: textColor ?? Colors.transparent),
           Text(
             entity ?? "",
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: textColor,
-              fontSize: fontSize,
+              color: textColor ?? Colors.black,
+              fontSize: fontSize ?? 20.w,
               fontWeight: FontWeight.bold,
             ),
           ),

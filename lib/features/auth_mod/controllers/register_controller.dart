@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/screen.dart';
+import '../screens/mobile/login_screen/screen.dart';
 
 class RegisterController extends StatelessWidget {
   const RegisterController({Key? key}) : super(key: key);

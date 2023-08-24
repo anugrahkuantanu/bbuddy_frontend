@@ -4,18 +4,18 @@ import '/features/main_app/utils/helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextBox extends StatefulWidget {
-  final String feeling;
-  final String feelingForm;
-  final String reasonEntity;
-  final Color backgroundColor;
-  final Color textColor;
+  final String? feeling;
+  final String? feelingForm;
+  final String? reasonEntity;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   const TextBox({
-    required this.feeling,
-    required this.feelingForm,
-    required this.reasonEntity,
-    required this.backgroundColor,
-    required this.textColor,
+    this.feeling,
+    this.feelingForm,
+    this.reasonEntity,
+    this.backgroundColor,
+    this.textColor,
     
   });
 
@@ -57,7 +57,7 @@ class _TextBoxState extends State<TextBox> {
                 //   borderRadius: BorderRadius.circular(screenWidth * 0.03),
                 // ),
                 child: Text(
-                  'Share more about what\'s making you ${widget.feeling.toLowerCase()}',
+                  'Share more about what\'s making you ${widget.feeling!.toLowerCase()}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _TextBoxState extends State<TextBox> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: widget.textColor, width: screenWidth * 0.005),
+                    border: Border.all(color: widget.textColor ?? Colors.transparent, width: screenWidth * 0.005),
                     borderRadius: BorderRadius.circular(screenWidth * 0.03),
                   ),
                   child: Column(
@@ -136,12 +136,12 @@ class _TextBoxState extends State<TextBox> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ChatScreen(
-                                    feeling: widget.feeling.toLowerCase(),
-                                    feelingForm: widget.feelingForm.toLowerCase(),
-                                    reasonEntity: widget.reasonEntity,
+                                    feeling: widget.feeling!.toLowerCase(),
+                                    feelingForm: widget.feelingForm!.toLowerCase(),
+                                    reasonEntity: widget.reasonEntity ?? "",
                                     reason: inputText,
                                     isPastCheckin: false,
-                                    backgroundColor: widget.backgroundColor,
+                                    backgroundColor: widget.backgroundColor ?? Colors.blueGrey,
                                   ),
                                 ),
                               );
@@ -156,7 +156,7 @@ class _TextBoxState extends State<TextBox> {
                             ),
                           ),
                           style: ThemeHelper().buttonStyle().copyWith(
-                            backgroundColor: MaterialStateProperty.all<Color>(widget.textColor),
+                            backgroundColor: MaterialStateProperty.all<Color>(widget.textColor ?? Colors.black),
                           ),
                         ),
                       ),

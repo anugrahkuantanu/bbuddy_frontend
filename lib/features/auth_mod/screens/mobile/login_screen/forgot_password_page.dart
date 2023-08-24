@@ -4,12 +4,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'login_ui.dart';
-import '../login_screen/widgets/header_widget.dart';
-import '../../../blocs/bloc.dart';
+import '../../widgets/header_widget.dart';
+import '../../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import './widgets/widget.dart';
+import '../../widgets/widget.dart';
 import '../../../../../core/core.dart';
-import '../../../screens/screen.dart';
+import 'screen.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);

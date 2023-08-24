@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../models/model.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../screens/screen.dart';
-import './widgets/widget.dart';
+import 'screen.dart';
+import '../../widgets/widget.dart';
 
 import '../../../../../core/core.dart';
 
 import 'package:flutter/scheduler.dart';
-import '../../../blocs/bloc.dart';
+import '../../blocs/bloc.dart';
 
 
 

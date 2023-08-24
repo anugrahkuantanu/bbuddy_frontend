@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '/config/config.dart';
 import '../../../../../core/core.dart';
-import '../../../blocs/bloc.dart';
+import '../../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import '../../../../../../app.dart';
-import '../../../screens/mobile/login_screen/widgets/widget.dart';
+import '../../widgets/widget.dart';
 import '../../../services/service.dart';
-import '../../../screens/screen.dart';
+import 'screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
