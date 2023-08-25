@@ -4,9 +4,9 @@ import '../../widgets/widget.dart';
 import '/config/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import '../../../../checkIn_app/services/service.dart';
-import '../../../../checkIn_app/models/checkIn.dart';
-import '../../../../checkIn_app/Screens/screen.dart';
+import '../../../../check_in_app/services/service.dart';
+import '../../../../check_in_app/models/check_in.dart';
+import '../../../../check_in_app/screens/screen.dart';
 
 
 class CheckInHistoryCard extends StatefulWidget {

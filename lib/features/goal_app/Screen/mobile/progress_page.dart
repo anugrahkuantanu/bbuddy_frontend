@@ -1,279 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../screen.dart';
-import '../widgets/widget.dart';
 import '../../models/model.dart';
-import '../../services/service.dart';
-import '../../../main_app/utils/helpers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:async';
 import '/config/config.dart';
-
-
-
-// event
-abstract class ProgressEvent {}
-
-class InitializePersonalGoal extends ProgressEvent {
-  late Goal goal;
-  bool generateMilestones;
-  InitializePersonalGoal({required this.goal, this.generateMilestones = false});
-}
-
-class DeleteGoal extends ProgressEvent {
-  final Goal goal;
-  DeleteGoal ({required this.goal});
-}
-
-
-class DeleteMilestone extends ProgressEvent {
-  final int index;
-  final Goal goal;
-
-  DeleteMilestone({
-    required this.index,
-    required this.goal
-  });
-}
-
-class ChangeMilestoneStatus extends ProgressEvent {
-  final int index;
-  final bool status;
-  final Goal goal;
-  int finishedCount;
-
-  ChangeMilestoneStatus({
-  required this.index,
-  required this.status,
-  required this.goal,
-  required this.finishedCount
-});
-
-}
-
-class EditMilestone extends ProgressEvent {
-  final int index;
-  final String content;
-  final Goal goal;
-
-  EditMilestone({
-    required this.index, 
-    required this.content,
-    required this.goal
-    });
-}
-
-class AddSubMilestone extends ProgressEvent {
-  final Goal goal;
-  final Milestone milestone;
-  final int index;
-
-
-  AddSubMilestone({
-    required this.milestone,
-    required this.goal,
-    required this.index
-    });
-}
-
-class NavigateToChat extends ProgressEvent {
-  final int goalId;
-
-  NavigateToChat({required this.goalId});
-}
-
-class InitiateCall extends ProgressEvent {
-  final int goalId;
-
-  InitiateCall({required this.goalId});
-}
-
-class UpdateGoal extends ProgressEvent {
-  final Goal goal;
-  UpdateGoal({required this.goal});
-}
-
-class AddMilestone extends ProgressEvent {
-  final Goal goal;
-  final Milestone milestone;
-
-  AddMilestone({required this.goal, required this.milestone});
-}
+import '/core/utils/utils.dart';
+import '../blocs/bloc.dart';
 
 
 
 
-
-
-// state
-abstract class ProgressState{}
-
-class ProgressLoading extends ProgressState{}
-
-class ProgressLoaded extends ProgressState{
-  final Goal goal;
-  ProgressLoaded({required this.goal});
-}
-
-
-class ProgressError extends ProgressState{
-  final String errorMessage;
-  ProgressError({required this.errorMessage});
-}
-
-class GoalDeleted extends ProgressState{
-  final Goal goal;
-  GoalDeleted({required this.goal});
-}
-class NavigateToChatState extends ProgressState {
-  final int goalId;
-
-  NavigateToChatState({required this.goalId});
-}
-
-class InitiateCallState extends ProgressState {
-  final int goalId;
-
-  InitiateCallState({required this.goalId});
-}
-
-
-
-
-// bloc
-
-class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
-  final Goal goal;
-
-  ProgressBloc({required this.goal}) : super(ProgressLoading());
-
-  @override
-  Stream<ProgressState> mapEventToState(ProgressEvent event) async* {
-    if (event is InitializePersonalGoal) {
-      yield* _initializePersonalGoal(event);
-    } else if (event is DeleteGoal) {
-      yield* _deleteGoal(event);
-    } else if (event is DeleteMilestone) {
-      yield* _deleteMilestone(event);
-    } else if (event is ChangeMilestoneStatus) {
-      yield* _changeMilestoneStatus(event);
-    } else if (event is EditMilestone) {
-      yield* _editMilestone(event);
-    } else if (event is AddSubMilestone) {
-      yield* _addSubMilestone(event);
-    } else if (event is NavigateToChat) {
-      yield* _navigateToChat(event);
-    } else if (event is InitiateCall) {
-      yield* _initiateCall(event);
-    } else if (event is UpdateGoal) {
-      yield* _updateGoal(event);
-    } else if (event is AddMilestone) {
-      yield* _addMilestone(event);
-    }
-  }
-
-  Stream<ProgressState> _initializePersonalGoal(InitializePersonalGoal event) async* {
-    yield ProgressLoading();
-    try {
-      Goal newGoal;
-      if (event.generateMilestones) {
-        newGoal = await setPersonalGoal(event.goal);
-      } else {
-        newGoal = event.goal;
-      }
-      yield ProgressLoaded(goal: newGoal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _deleteGoal(DeleteGoal event) async* {
-    try {
-      bool isDeleted = await deleteGoal(event.goal.id!);
-      if (isDeleted) {
-        yield GoalDeleted(goal: event.goal);
-      } else {
-        yield ProgressError(errorMessage: "Failed to delete goal");
-      }
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _deleteMilestone(DeleteMilestone event) async* {
-    try {
-      event.goal.milestones.removeAt(event.index);
-      yield ProgressLoaded(goal: event.goal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _changeMilestoneStatus(ChangeMilestoneStatus event) async* {
-    try {
-      event.goal.milestones[event.index].status = event.status;
-      yield ProgressLoaded(goal: event.goal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _editMilestone(EditMilestone event) async* {
-    try {
-      event.goal.milestones[event.index].content = event.content;
-      yield ProgressLoaded(goal: event.goal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _addSubMilestone(AddSubMilestone event) async* {
-    try {
-      event.goal.milestones[event.index].tasks.add(event.milestone);
-      yield ProgressLoaded(goal: event.goal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _navigateToChat(NavigateToChat event) async* {
-    try {
-      // Here, we'll directly navigate to the chat page, but it's not the best practice.
-      // Instead, you could use a separate navigation manager or handle this in the UI listener.
-      yield NavigateToChatState(goalId: event.goalId);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _initiateCall(InitiateCall event) async* {
-    try {
-      // Similar to the navigateToChat function, this can be handled in the UI listener.
-      yield InitiateCallState(goalId: event.goalId);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _updateGoal(UpdateGoal event) async* {
-    try {
-      yield ProgressLoaded(goal: event.goal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _addMilestone(AddMilestone event) async* {
-    try {
-      event.goal.milestones.add(event.milestone);
-      yield ProgressLoaded(goal: event.goal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-
-}
 
 
 
@@ -334,13 +70,13 @@ class ProgressPageState extends State<ProgressPage> {
         },
         builder: (context, state) {
           if (state is ProgressLoading){
-            return _buildLoadingUI();
+            return LoadingUI(title: "Progress",);
           }
           else if (state is ProgressLoaded) {
             return _buildProgressUI(state.goal);
           } 
           else {
-            return _buildErrorUI('Unknown Error');  // Fallback
+            return ErrorUI(errorMessage: "Some error occurred"); // Fallback
           }
         },
       ),
@@ -364,15 +100,6 @@ class ProgressPageState extends State<ProgressPage> {
     );
   }
 
-  Widget _buildLoadingUI() {
-  var tm = context.watch<ThemeProvider>();
-  return Scaffold(
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
   Widget _buildProgressUI(Goal goal) {
   int finishedCount = goal.finishedMilestoneCount();
   double text_xl = 20.0.w;
@@ -533,22 +260,22 @@ class ProgressPageState extends State<ProgressPage> {
                 return CheckBoxTile(
                   value: milestone.status,
                   onDelete: () {
-                    context.read<ProgressBloc>().add(DeleteMilestone(goal: goal, index: index));
+                    _progressBloc.add(DeleteMilestone(goal: goal, index: index));
                   },
                   onChanged: (bool? value) {
                     if (value != null) {
-                      context.read<ProgressBloc>().add(ChangeMilestoneStatus(goal: goal, index: index, status: value, finishedCount: finishedCount));
+                      _progressBloc.add(ChangeMilestoneStatus(goal: goal, index: index, status: value, finishedCount: finishedCount));
                     }
                   },
                   onEdit: (content) {
-                    context.read<ProgressBloc>().add(EditMilestone(goal: goal, index: index, content: content));
+                    _progressBloc.add(EditMilestone(goal: goal, index: index, content: content));
                   },
                   onAdd: () {
                     // Milestone newSubMilestone = Milestone(content: "New Sub-Milestone");
                     // context.read<ProgressBloc>().add(AddSubMilestone(goal: goal, milestone: newSubMilestone, index: index));
                   },
                   onUpdateGoal: () {
-                    context.read<ProgressBloc>().add(UpdateGoal(goal: goal));  // Example event to handle goal updates
+                    _progressBloc.add(UpdateGoal(goal: goal));  // Example event to handle goal updates
                   },
                   title: milestone.content,
                   backgroundColor: Color.fromRGBO(17, 32, 55, 1.0),
@@ -563,18 +290,4 @@ class ProgressPageState extends State<ProgressPage> {
     ),
   );
 }
-
-
-
-  Widget _buildErrorUI(String errorMessage) {
-    return Scaffold(
-      backgroundColor: Color(0xFF2D425F),
-      body: Center(
-        child: Text(
-          'Error: $errorMessage',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
-        ),
-      ),
-    );
-  }
 }

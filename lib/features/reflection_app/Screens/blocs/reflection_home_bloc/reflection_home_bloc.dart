@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../blocs/bloc.dart';
 import '../../screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../checkIn_app/services/service.dart';
+import '../../../../check_in_app/services/service.dart';
 
 
 class ReflectionHomeBloc extends Bloc<ReflectionHomeEvent, ReflectionHomeState> {

@@ -1,7 +1,7 @@
 import '../core/classes/route_manager.dart';
 import '../features/auth_mod/auth_app.dart';
 import '../features/main_app/app.dart';
-import '../features/checkIn_app/checkIn_app.dart';
+import '../features/check_in_app/checkIn_app.dart';
 import '../features/reflection_app/reflection_app.dart';
 import '../features/goal_app/goal_app.dart';
 

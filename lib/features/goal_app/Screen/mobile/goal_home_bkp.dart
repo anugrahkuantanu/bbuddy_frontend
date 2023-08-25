@@ -347,44 +347,6 @@ class GoalHomeState extends State<GoalHome> {
     );
   }
 
-  /*Widget buildNoReflectionsScreen() {
-    const text_color = Colors.white;
-    return Scaffold(
-      backgroundColor: Color(0xFF2D425F),
-      body: Center(
-        child: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            style: TextStyle(
-              fontSize: 18.0,
-              color: text_color,
-            ),
-            children: [
-              TextSpan(
-                text: 'You need\n\n',
-              ),
-              TextSpan(
-                text: count > 0 ? '$count' : '3',
-                style: TextStyle(
-                  fontSize: 52.0,
-                  fontWeight: FontWeight.bold,
-                  color: text_color,
-                ),
-              ),
-              TextSpan(
-                style: TextStyle(
-                  fontSize: 18.0,
-                  color: text_color,
-                ),
-                text: '\n\nReflection(s) to set a Goal',
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
-
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {

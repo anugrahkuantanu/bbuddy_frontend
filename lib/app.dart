@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'config/config.dart';
 import 'features/auth_mod/services/service.dart';
-import 'features/auth_mod/screens/mobile/login_screen/screen.dart';
+import 'features/auth_mod/screens/screen.dart';
  
 
  

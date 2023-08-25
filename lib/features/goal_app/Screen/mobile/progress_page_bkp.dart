@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../screen.dart';
-import '../widgets/widget.dart';
 import '../../models/model.dart';
 import '../../services/service.dart';
-import '../../../main_app/utils/helpers.dart';
+import '/core/utils/utils.dart';
 
 @immutable
 class ProgressPage extends StatefulWidget {

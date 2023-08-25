@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/mobile/login_screen/screen.dart';
+import '../screens/screen.dart';
 
 class ForgetController extends StatelessWidget {
   const ForgetController({Key? key}) : super(key: key);
