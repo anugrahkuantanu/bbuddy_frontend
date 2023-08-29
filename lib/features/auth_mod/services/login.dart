@@ -37,8 +37,7 @@ Future<String> loginForAccessToken(FormData loginData) async {
 
     // Make the POST request
     Response response =
-        await dio.post('$ApiEndpoint.baseURL/login/access-token', data: loginData);
-
+        await dio.post('${ApiEndpoint.baseURL}/login/access-token', data: loginData);
     // Handle the response
     if (response.statusCode == 200) {
       // Successful login
@@ -61,8 +60,8 @@ Future<String> loginForAccessToken(FormData loginData) async {
     }
   } catch (error) {
     if (error is DioError) {
-      final response = error.response;
-      return 'Login failed. ${response?.data['detail'] ?? 'Please try again later.'}';
+      //final response = error.response;
+      return 'Login failed. Please try again later.'; // ${response?.data['detail'] ?? 'Please try again later.'}';
     } else {
       return 'Login failed. Please try again later.';
     }
