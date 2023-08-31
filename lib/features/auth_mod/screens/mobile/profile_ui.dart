@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'login_ui.dart';
 import '../../services/login.dart';
-import '../../../goal_app/services/storage.dart';
 import '/config/config.dart';
 import '../../../../../core/core.dart';
 import '../../services/service.dart';
@@ -23,8 +22,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   void logout(BuildContext context) {
-    SecureStorage storage = SecureStorage.instance;
-    storage.clear();
+    Cache.instance.clear();
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
     userProvider.CheckLoginStatus();

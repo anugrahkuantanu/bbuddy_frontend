@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../../goal_app/services/dio_util.dart';
+import '../../../core/classes/dio_util.dart';
 import 'checkIn_utils.dart';
 import '/config/api_endpoints.dart';
 import '../models/model.dart';

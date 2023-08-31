@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import '../../auth_mod/services/login.dart';
+import '../../features/auth_mod/services/login.dart';
 import '/features/auth_mod/models/model.dart';
-import '../services/storage.dart';
 import 'dart:convert';
+import '/core/core.dart';
 
 
 class AuthInterceptor extends Interceptor {
@@ -71,13 +71,11 @@ Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
       if(response.statusCode == 200){
         Token newAccessToken =  Token.fromJson(response.data);
         
-        SecureStorage storage = SecureStorage.instance;
-        await storage.store('access_token', json.encode(newAccessToken.toJson()));
+        await Cache.instance.store('access_token', json.encode(newAccessToken.toJson()));
         
         return true;
       } else{
-        SecureStorage storage = SecureStorage.instance;
-        await storage.clear();
+        await Cache.instance.clear();
         return false;
       }
     } else{

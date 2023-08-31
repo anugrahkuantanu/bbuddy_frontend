@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '/config/config.dart';
-import '../../goal_app/services/dio_util.dart';
+import '../../../core/classes/dio_util.dart';
 import '../models/reflection.dart';
 
 Future<List> getReflectionTopics() async {

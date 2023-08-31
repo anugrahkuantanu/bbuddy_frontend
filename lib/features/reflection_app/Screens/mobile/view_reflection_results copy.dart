@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../reflection_app/services/service.dart';
+import '../../services/service.dart';
 import '../../../main_app/services/service.dart';
 import 'reflection_home_ui.dart';
 import '../../models/model.dart';

@@ -3,22 +3,24 @@ import 'package:flutter/scheduler.dart';
 
 import '../../config/config.dart';
 import '../core.dart';
+import 'package:dio/dio.dart';
 
-void doAuth(BuildContext context, String username, String password) async {
-  AppCache ac = AppCache();
-  ac.doLogin(username, password);
-  if (await ac.isLogin()) {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Nav.to(context, '/');
-      showMessage(context, 'Login Successful');
-    });
-  }
-}
 
-Future<Map<String, String>> authData() async {
-  AppCache ac = AppCache();
-  return ac.auth();
-}
+// void doAuth(BuildContext context, String username, String password) async {
+//   AppCache ac = AppCache();
+//   ac.doLogin(username, password);
+//   if (await ac.isLogin()) {
+//     SchedulerBinding.instance.addPostFrameCallback((_) {
+//       Nav.to(context, '/');
+//       showMessage(context, 'Login Successful');
+//     });
+//   }
+// }
+
+// Future<Map<String, String>> authData() async {
+//   AppCache ac = AppCache();
+//   return ac.auth();
+// }
 
 void doLogout(BuildContext context) async {
   AppCache ac = AppCache();

@@ -1,4 +1,4 @@
-import 'package:clean_architecture/features/check_in_app/controllers/controller.dart';
+import '/features/check_in_app/controllers/controller.dart';
 import 'package:flutter/material.dart';
 import '../../models/model.dart';
 import '../../services/checkIn_service.dart';

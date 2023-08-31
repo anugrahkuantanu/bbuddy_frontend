@@ -1,5 +1,5 @@
-import 'package:clean_architecture/app.dart';
-import 'package:clean_architecture/main.dart';
+import 'package:bbuddy_app/app.dart';
+import 'package:bbuddy_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

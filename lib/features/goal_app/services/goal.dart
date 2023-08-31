@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import '/config/config.dart';
-import '../services/dio_util.dart';
+import '../../../core/classes/dio_util.dart';
 import '../models/model.dart';
 
 Future<List<Goal>> getGoalHistory() async {

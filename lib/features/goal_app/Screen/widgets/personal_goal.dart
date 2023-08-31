@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/model.dart';
-import './widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../Screen/screen.dart';
+import '../../screen/screen.dart';
 
 
 class PersonalGoal extends StatefulWidget {

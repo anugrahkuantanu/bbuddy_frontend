@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/core.dart';
-import '../../Screens/mobile/reflection_home_ui.dart' as mobile;
+import '../../screens/mobile/reflection_home_ui.dart' as mobile;
 
 class ReflectionController extends StatelessController {
   final String _title = 'Reflections';

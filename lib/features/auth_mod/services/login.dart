@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import '/config/config.dart';
-import '../../goal_app/services/storage.dart';
 import 'package:dio/dio.dart';
-import '../../goal_app/services/dio_util.dart';
+import '../../../core/classes/dio_util.dart';
 import 'dart:convert';
 import '../models/model.dart';
+import '/core/core.dart';
+import 'package:flutter/scheduler.dart';
 
 Future<String> registerUser(UserCreate newUser) async {
   final dio = Dio();
   try {
     final response = await dio.post(
-      '$ApiEndpoint.baseURL/register',
+      '${ApiEndpoint.baseURL}/register',
       data: newUser.toJson(),
     );
     if (response.statusCode == 200) {
@@ -30,43 +31,61 @@ Future<String> registerUser(UserCreate newUser) async {
   }
 }
 
-Future<String> loginForAccessToken(FormData loginData) async {
+
+Future<String> loginForAccessToken(FormData loginData, BuildContext context) async {
   try {
     // Create Dio instance
     Dio dio = Dio();
 
     // Make the POST request
-    Response response =
-        await dio.post('${ApiEndpoint.baseURL}/login/access-token', data: loginData);
-    // Handle the response
+    Response response = await dio.post(
+      '${ApiEndpoint.baseURL}/login/access-token',
+      data: loginData,
+    );
+
     if (response.statusCode == 200) {
       // Successful login
 
       Token token = Token.fromJson(response.data['access_token']);
-      RefreshToken refreshToken =
-          RefreshToken.fromJson(response.data['refresh_token']);
+      RefreshToken refreshToken = RefreshToken.fromJson(response.data['refresh_token']);
 
-      SecureStorage storage = SecureStorage.instance;
 
-      await storage.store('access_token', json.encode(token.toJson()));
-      await storage.store('refresh_token', json.encode(refreshToken.toJson()));
-
-      await getCurrentUserDetails();
       // Use the access token as needed
-      return '';
+      AppCache ac = AppCache();
+      ac.doLogin(token.toJson());
+      // ac.reLogin(refreshToken.toJson());
+
+      if (await ac.isLogin()) {
+        try {
+          await getCurrentUserDetails();
+          SchedulerBinding.instance.addPostFrameCallback((_) {
+            Nav.to(context, '/');
+            showMessage(context, 'Login Successful');
+          });
+        } catch (navigateError) {
+          print('Error navigating to home: $navigateError');
+        }
+      }
+      return ''; // Return an empty string after successful login
     } else {
       // Error occurred
       return 'Login failed. Please try again later.';
     }
   } catch (error) {
     if (error is DioError) {
-      //final response = error.response;
-      return 'Login failed. Please try again later.'; // ${response?.data['detail'] ?? 'Please try again later.'}';
+      // Handle DioError
+      if (error.response != null && error.response!.data != null) {
+        return 'Login failed. ${error.response!.data['detail'] ?? 'Please try again later.'}';
+      } else {
+        return 'Login failed. Please try again later.';
+      }
     } else {
+      // Handle other errors
       return 'Login failed. Please try again later.';
     }
   }
 }
+
 
 Future<void> getCurrentUserDetails() async {
   final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
@@ -86,8 +105,8 @@ Future<void> getCurrentUserDetails() async {
         email: responseJson['email'],
         phone: responseJson['phone'],
       );
-      SecureStorage storage = SecureStorage.instance;
-      await storage.store('user_details', json.encode(userDetails.toJson()));
+
+      await Cache.instance.store('user_details', json.encode(userDetails.toJson()));
     }
   } catch (e) {
     throw Exception('Failed to fetch user details: $e');
@@ -95,15 +114,13 @@ Future<void> getCurrentUserDetails() async {
 }
 
 Future<Token?> getAccessToken() async {
-  SecureStorage storage = SecureStorage.instance;
-  String? jsonString = await storage.read('access_token');
+  String? jsonString = await Cache.instance.read('access_token');
 
   return jsonString != null ? Token.fromJson(json.decode(jsonString)) : null;
 }
 
 Future<RefreshToken?> getRefreshToken() async {
-  SecureStorage storage = SecureStorage.instance;
-  String? jsonString = await storage.read('refresh_token');
+  String? jsonString = await Cache.instance.read('refresh_token');
 
   return jsonString != null
       ? RefreshToken.fromJson(json.decode(jsonString))
@@ -140,8 +157,7 @@ class UserDetailsProvider extends ChangeNotifier {
   }
 
   Future<void> loadDetails() async {
-    SecureStorage storage = SecureStorage.instance;
-    final userDetails = await storage.read('user_details');
+    final userDetails = await Cache.instance.read('user_details');
     //print(userDetails);
     if (userDetails != null) {
       _details = UserDetails.fromJson(json.decode(userDetails));

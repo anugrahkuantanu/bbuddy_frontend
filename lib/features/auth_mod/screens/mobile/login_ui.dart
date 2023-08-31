@@ -34,7 +34,8 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
             margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: BlocProvider(
-              create: (context) => LoginFormBloc(),
+              create: (context) => LoginFormBloc(context),
+              // create: (context) => LoginFormBloc(),
               child: LoginForm(),
             ),
           ),
@@ -43,9 +44,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-
-
 
 class LoginForm extends StatefulWidget {
   @override

@@ -1,6 +1,6 @@
-import 'package:clean_architecture/config/config.dart';
-import 'package:clean_architecture/features/auth_mod/screens/widgets/widget.dart';
-import 'package:clean_architecture/features/features.dart';
+import '/config/config.dart';
+import '/features/auth_mod/screens/widgets/widget.dart';
+import '/features/features.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

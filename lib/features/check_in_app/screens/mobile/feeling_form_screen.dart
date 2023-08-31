@@ -5,17 +5,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../bloc/bloc.dart';
 import '../widget/widget.dart';
 
+
+
 class FeelingFormScreen extends StatefulWidget {
-  const FeelingFormScreen({
+  FeelingFormScreen({
     Key? key,
     this.feeling = "",
     this.backgroundColor = Colors.black,
     this.textColor = Colors.white,
   }) : super(key: key);
 
-  final String? feeling;
-  final Color? backgroundColor;
-  final Color? textColor;
+  String? feeling;
+  Color? backgroundColor;
+  Color? textColor;
 
   @override
   _FeelingFormScreenState createState() => _FeelingFormScreenState();

@@ -107,7 +107,11 @@ class CheckInHome extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => 
-          FeelingFormScreen(feeling: feelingName ?? "", textColor: textColor ?? Colors.black, backgroundColor: backgroundColor ?? Colors.black),
+          FeelingFormScreen(
+            feeling: feelingName!,
+            textColor: textColor!,
+            backgroundColor: backgroundColor!,
+            ),
         ),
       );
     // }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../main_app/Screens/widgets/widget.dart';
+import '../../../main_app/screens/widgets/widget.dart';
 
 class GoalTrackingWidget extends StatelessWidget {
   final int finishedCount;
