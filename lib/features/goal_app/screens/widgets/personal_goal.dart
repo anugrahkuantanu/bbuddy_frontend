@@ -58,7 +58,9 @@ class _PersonalGoalState extends State<PersonalGoal> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        ProgressPage(goal: newGoal, generateMilestones: true, updateCallBack: updateCallBack,)));
+                        ProgressPage(goal: newGoal, generateMilestones: true, updateCallBack: updateCallBack,)
+                        ),
+                      );
           },
         ),
       );

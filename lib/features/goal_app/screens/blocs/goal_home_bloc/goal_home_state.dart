@@ -1,5 +1,7 @@
 import '../../../models/model.dart';
 
+//state
+
 abstract class GoalState {}
 
 class GoalLoading extends GoalState {}
@@ -10,8 +12,11 @@ class GoalHasEnoughReflections extends GoalState {
 
   GoalHasEnoughReflections({required this.generatedGoals, required this.personalGoals});
 }
+class GoalHasNotEnoughReflections extends GoalState {
+  final List<Goal> personalGoals;
 
-class GoalInsufficientReflections extends GoalState {}
+  GoalHasNotEnoughReflections({required this.personalGoals});
+}
 
 class GoalError extends GoalState {
   final String errorMessage;
@@ -26,9 +31,14 @@ class GoalCreationDenied extends GoalState {
   GoalCreationDenied(this.reason);
 }
 
+class GoalInsufficientReflections extends GoalState {
+    final String reason;
+
+  GoalInsufficientReflections(this.reason);
+}
+
 class GoalCreatedSuccessfully extends GoalState {
   final Goal goal;
 
   GoalCreatedSuccessfully({required this.goal});
 }
-

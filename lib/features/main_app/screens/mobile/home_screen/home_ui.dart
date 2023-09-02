@@ -23,10 +23,7 @@ class HomePageState extends State<HomePage> {
     var tm = context.watch<ThemeProvider>();
     Color? textColor = tm.isDarkMode ? AppColors.textlight : AppColors.textdark;
     final Color backgroundColor = (tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100])!;
-
-
     
-
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(

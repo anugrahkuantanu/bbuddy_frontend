@@ -1,4 +1,3 @@
-
 abstract class GoalEvent {}
 
 class LoadGoals extends GoalEvent {}
@@ -26,4 +25,5 @@ class CreateGeneratedGoals extends GoalEvent {
 
 class CountReflections extends GoalEvent {}
 
+class ResetGoal extends GoalEvent {}
 

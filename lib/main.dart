@@ -6,27 +6,6 @@ import '/features/reflection_app/services/service.dart';
 import '/features/main_app/services/service.dart';
 import 'app.dart';
 
-// void main() async {
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider(create: (_) => ReflectionHeading()),
-//         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-//         ChangeNotifierProvider(create: (_) => UserDetailsProvider(),),
-//         ChangeNotifierProvider(create: (_) => CounterStats()),
-//         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-        
-//       ],
-//       child: ScreenUtilInit(
-//         designSize: Size(375, 667), // Adjust based on your design
-//         builder: (context, child) {
-//           return AppStarter();
-//         },
-//       ),
-//     ),
-//   );
-// }
-
 
 void main() async {
   runApp(

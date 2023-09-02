@@ -109,7 +109,16 @@ class ProgressPageState extends State<ProgressPage> {
     backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
     appBar: AppBar(
       backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
-      automaticallyImplyLeading: true,
+      automaticallyImplyLeading: false,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back), // add your custom icon here
+        onPressed: () {
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => GoalHome()),
+        );
+       },
+      ),
       title: Text("Progess Page"),
       actions: [
         IconButton(
