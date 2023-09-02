@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/model.dart';
-import '../../Screen/screen.dart';
+import '../../screens/screen.dart';
 
 class GeneratedGoalsCard extends StatelessWidget {
   final List<Goal?> generatedGoals;
