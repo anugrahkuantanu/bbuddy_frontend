@@ -84,6 +84,7 @@ class GoalCreatedSuccessfully extends GoalState {
 class GoalBloc extends Bloc<GoalEvent, GoalState> {
   final CounterStats counterStats;
   List<Goal> generatedGoals = [];
+  List<Goal> personalGoals= [];
 
   GoalBloc({required this.counterStats}) : super(GoalLoading());
 
@@ -109,7 +110,7 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
       generatedGoals = history
           .where((goal) => goal.type == GoalType.generated || goal.type == null)
           .toList();
-      final personalGoals = history.where((goal) => goal.type == GoalType.personal).toList();
+      personalGoals = history.where((goal) => goal.type == GoalType.personal).toList();
       if (generatedGoals.isEmpty) {
         yield GoalInsufficientReflections();
       } else {
@@ -135,8 +136,13 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
         DateTime.now().month,
         DateTime.now().day,
       );
+      // if (today.isBefore(nextCreateDate)) {
+      //   yield GoalCreationDenied('goalAlreadyCreated');
+      // } else {
+      //   yield* _createNewGoal(startDate, endDate);
+      // }
       if (today.isBefore(nextCreateDate)) {
-        yield GoalCreationDenied('goalAlreadyCreated');
+        yield* _createNewGoal(startDate, endDate);
       } else {
         yield* _createNewGoal(startDate, endDate);
       }
@@ -149,10 +155,10 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
       if (totalReflections < 3) {
         yield GoalInsufficientReflections();
       } else {
-        yield GoalHasEnoughReflections(generatedGoals: generatedGoals, personalGoals: []);
+        yield GoalHasEnoughReflections(generatedGoals: generatedGoals, personalGoals: personalGoals);
       }
     } else {
-      yield GoalHasEnoughReflections(generatedGoals: generatedGoals, personalGoals: []);
+      yield GoalHasEnoughReflections(generatedGoals: generatedGoals, personalGoals: personalGoals);
     }
   }
 

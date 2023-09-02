@@ -36,8 +36,9 @@ class ProgressPageState extends State<ProgressPage> {
   @override
   void initState() {
     super.initState();
+    
     _progressBloc = ProgressBloc(goal: widget.goal); // Provide necessary services
-    _progressBloc.add(InitializePersonalGoal(goal: widget.goal));
+    _progressBloc.add(InitializePersonalGoal(goal: widget.goal, generateMilestones: widget.generateMilestones));
   }
 
 
