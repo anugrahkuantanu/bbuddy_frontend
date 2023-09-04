@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './feeling_form_screen.dart';
+import 'feeling_form_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/core.dart';
 import 'package:provider/provider.dart';
@@ -107,7 +107,7 @@ class CheckInHome extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => 
-          FeelingFormScreen(
+          FeelingFormPage(
             feeling: feelingName!,
             textColor: textColor!,
             backgroundColor: backgroundColor!,

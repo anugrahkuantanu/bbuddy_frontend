@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'view_reflection_results_ui.dart';
+import 'view_reflection_results.dart';
 import '../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/config/config.dart';
 
 
-class NewReflection extends StatefulWidget {
+class NewReflectionPage extends StatefulWidget {
   final List topics;
-  final ReflectionBloc bloc;
+  final NewReflectionBloc bloc;
 
-  NewReflection({Key? key, required this.topics})
-      : bloc = ReflectionBloc(topics),
+  NewReflectionPage({Key? key, required this.topics})
+      : bloc = NewReflectionBloc(topics),
         super(key: key);
 
   @override
-  _NewReflectionState createState() => _NewReflectionState();
+  _NewReflectionPageState createState() => _NewReflectionPageState();
 }
 
-class _NewReflectionState extends State<NewReflection> {
+class _NewReflectionPageState extends State<NewReflectionPage> {
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class _NewReflectionState extends State<NewReflection> {
   Color? backgroundColor = tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100];
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return StreamBuilder<ReflectionState>(
+    return StreamBuilder<NewReflectionState>(
       stream: widget.bloc.stateStream,
       builder: (context, snapshot) {
         if (snapshot.data is ReflectionSubmittedState) {

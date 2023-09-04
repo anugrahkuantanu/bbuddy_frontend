@@ -10,7 +10,6 @@ import '/config/config.dart';
 import '../blocs/bloc.dart';
 
 
-// UI
 
 class GoalHome extends StatefulWidget {
   const GoalHome({Key? key}) : super(key: key);

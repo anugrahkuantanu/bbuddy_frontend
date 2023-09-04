@@ -1,1 +1,1 @@
-export 'mobile/home_screen/home_ui.dart';
+export 'mobile/home_page.dart';

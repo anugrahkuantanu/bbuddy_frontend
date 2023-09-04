@@ -1,18 +1,18 @@
 import 'dart:async';
 import '../bloc.dart';
 
-class ReflectionBloc {
+class NewReflectionBloc {
     final List topics;
     List<String> userReflections;
-    final StreamController<ReflectionState> _stateController = StreamController<ReflectionState>.broadcast();
+    final StreamController<NewReflectionState> _stateController = StreamController<NewReflectionState>.broadcast();
 
-    ReflectionBloc(this.topics) : userReflections = List.filled(topics.length, '') {
+    NewReflectionBloc(this.topics) : userReflections = List.filled(topics.length, '') {
         _stateController.add(ReflectionInitialState(userReflections));
     }
 
-    Stream<ReflectionState> get stateStream => _stateController.stream;
+    Stream<NewReflectionState> get stateStream => _stateController.stream;
 
-    void add_event(ReflectionEvent event) {
+    void add_event(NewReflectionEvent event) {
         if (event is UpdateReflectionEvent) {
             userReflections[event.index] = event.value;
             _stateController.add(ReflectionUpdatedState(userReflections));

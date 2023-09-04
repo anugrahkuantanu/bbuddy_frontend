@@ -37,7 +37,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           if (state is ForgotPasswordSuccess) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => ForgotPasswordVerificationPage()),
+              MaterialPageRoute(builder: (context) => VerificationPage()),
             );
           } else if (state is ForgotPasswordError) {
             ScaffoldMessenger.of(context).showSnackBar(

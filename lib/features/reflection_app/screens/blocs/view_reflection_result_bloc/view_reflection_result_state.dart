@@ -1,16 +1,16 @@
 import '../../../models/model.dart';
 
-abstract class ReflectionResultState {}
+abstract class ViewReflectionResultState {}
 
-class ReflectionResultInitial extends ReflectionResultState {}
+class ReflectionResultInitial extends ViewReflectionResultState {}
 
-class ReflectionResultLoading extends ReflectionResultState {}
+class ReflectionResultLoading extends ViewReflectionResultState {}
 
-class ReflectionResultLoaded extends ReflectionResultState {
+class ReflectionResultLoaded extends ViewReflectionResultState {
   final Reflection reflection;
 
   ReflectionResultLoaded(this.reflection);
 }
 
-class ReflectionResultError extends ReflectionResultState {}
+class ReflectionResultError extends ViewReflectionResultState {}
 

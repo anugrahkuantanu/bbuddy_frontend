@@ -11,16 +11,16 @@ import '../screen.dart';
 import '../blocs/bloc.dart';
 
 
-class ForgotPasswordVerificationPage extends StatefulWidget {
-  const ForgotPasswordVerificationPage({Key? key}) : super(key: key);
+class VerificationPage extends StatefulWidget {
+  const VerificationPage({Key? key}) : super(key: key);
 
   @override
-  _ForgotPasswordVerificationPageState createState() => _ForgotPasswordVerificationPageState();
+  _VerificationPageState createState() => _VerificationPageState();
 }
 
-class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificationPage> {
+class _VerificationPageState extends State<VerificationPage> {
   final _formKey = GlobalKey<FormState>();
-  final _bloc = ForgotPasswordVerificationBloc();
+  final _bloc = VerificationBloc();
   final _otpController = TextEditingController();
 
   @override
@@ -36,7 +36,7 @@ class _ForgotPasswordVerificationPageState extends State<ForgotPasswordVerificat
 
     return BlocProvider(
       create: (context) => _bloc,
-      child: BlocConsumer<ForgotPasswordVerificationBloc, ForgotPasswordVerificationState>(
+      child: BlocConsumer<VerificationBloc, VerificationState>(
         listener: (context, state) {
           if (state is VerificationSuccess) {
             Navigator.of(context).pushAndRemoveUntil(

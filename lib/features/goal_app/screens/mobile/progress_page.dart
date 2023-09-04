@@ -57,7 +57,7 @@ class ProgressPageState extends State<ProgressPage> {
           if (state is NavigateToChatState) {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => GoalChatScreen(goalId: state.goalId!)),
+            MaterialPageRoute(builder: (context) => GoalChatPage(goalId: state.goalId!)),
           );
           }
           else if (state is GoalDeleted) {

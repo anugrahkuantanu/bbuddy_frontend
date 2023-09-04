@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
             margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: BlocProvider(
-              create: (context) => LoginFormBloc(context),
+              create: (context) => LoginBloc(context),
               // create: (context) => LoginFormBloc(),
               child: LoginForm(),
             ),
@@ -57,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoginFormBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
           UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -119,7 +119,7 @@ class _LoginFormState extends State<LoginForm> {
                 label: 'Sign In',
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    context.read<LoginFormBloc>().add(
+                    context.read<LoginBloc>().add(
                       LoginSubmitted(usernameController.text, passwordController.text)
                     );
                   }

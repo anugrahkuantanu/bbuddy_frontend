@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './reasons_screen.dart';
+import 'reasons_page.dart';
 import '/core/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../bloc/bloc.dart';
@@ -7,8 +7,8 @@ import '../widget/widget.dart';
 
 
 
-class FeelingFormScreen extends StatefulWidget {
-  FeelingFormScreen({
+class FeelingFormPage extends StatefulWidget {
+  FeelingFormPage({
     Key? key,
     this.feeling = "",
     this.backgroundColor = Colors.black,
@@ -20,10 +20,10 @@ class FeelingFormScreen extends StatefulWidget {
   Color? textColor;
 
   @override
-  _FeelingFormScreenState createState() => _FeelingFormScreenState();
+  _FeelingFormPageState createState() => _FeelingFormPageState();
 }
 
-class _FeelingFormScreenState extends State<FeelingFormScreen>
+class _FeelingFormPageState extends State<FeelingFormPage>
     with SingleTickerProviderStateMixin {
   late FeelingFormBloc _bloc;
 
@@ -37,7 +37,7 @@ class _FeelingFormScreenState extends State<FeelingFormScreen>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ReasonScreen(
+        builder: (context) => ReasonPage(
           feeling: widget.feeling ?? "",
           feelingForm: feelingForm ?? "",
           textColor: widget.textColor ?? Colors.black,

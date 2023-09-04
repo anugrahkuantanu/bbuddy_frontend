@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../services/service.dart';
 import '../../../main_app/services/service.dart';
-import 'reflection_home_ui.dart';
+import 'reflection_home.dart';
 import '../../models/model.dart';
 import '../blocs/bloc.dart';
 import '/core/utils/utils.dart';
@@ -28,13 +28,13 @@ class ViewReflectionResults extends StatefulWidget {
 }
 
 class _ViewReflectionResultsState extends State<ViewReflectionResults> {
-  late ReflectionResultBloc reflectionResultBloc;
+  late ViewReflectionResultBloc reflectionResultBloc;
 
   @override
 void initState() {
     super.initState();
     final counterStats = Provider.of<CounterStats>(context, listen: false);
-    reflectionResultBloc = ReflectionResultBloc(counterStats: counterStats);
+    reflectionResultBloc = ViewReflectionResultBloc(counterStats: counterStats);
     reflectionResultBloc.eventSink.add(LoadMoodReflections(
       widget.topics,
       widget.userReflections,
@@ -45,7 +45,7 @@ void initState() {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ReflectionResultState>(
+    return StreamBuilder<ViewReflectionResultState>(
       stream: reflectionResultBloc.state,
       initialData: ReflectionResultInitial(),
       builder: (context, snapshot) {

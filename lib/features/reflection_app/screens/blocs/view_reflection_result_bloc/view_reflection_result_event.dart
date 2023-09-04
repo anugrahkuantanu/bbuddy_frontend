@@ -1,8 +1,8 @@
 import '../../../models/model.dart';
 
-abstract class ReflectionResultEvent {}
+abstract class ViewReflectionResultEvent {}
 
-class LoadMoodReflections extends ReflectionResultEvent {
+class LoadMoodReflections extends ViewReflectionResultEvent {
   final List topics;
   final List? userReflections;
   final String heading;

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../config/config.dart';
 import '../../../../core/core.dart';
-import '../../screens/mobile/home_screen/screen.dart' as mobile;
+import '../../screens/screen.dart' as mobile;
 
 class HomeController extends StatelessController {
   final String _title = 'Home Page';

@@ -6,22 +6,22 @@ import '../../blocs/bloc.dart';
 
 
 
-class ReflectionResultBloc {
+class ViewReflectionResultBloc {
   final CounterStats counterStats;
-  final _stateController = StreamController<ReflectionResultState>();
-  StreamSink<ReflectionResultState> get _inState => _stateController.sink;
-  Stream<ReflectionResultState> get state => _stateController.stream;
+  final _stateController = StreamController<ViewReflectionResultState>();
+  StreamSink<ViewReflectionResultState> get _inState => _stateController.sink;
+  Stream<ViewReflectionResultState> get state => _stateController.stream;
 
-  final _eventController = StreamController<ReflectionResultEvent>();
-  Sink<ReflectionResultEvent> get eventSink => _eventController.sink;
+  final _eventController = StreamController<ViewReflectionResultEvent>();
+  Sink<ViewReflectionResultEvent> get eventSink => _eventController.sink;
 
-  ReflectionResultBloc({required this.counterStats}) {
+  ViewReflectionResultBloc({required this.counterStats}) {
     _eventController.stream.listen(_mapEventToState);
   }
 
 
 
-  void _mapEventToState(ReflectionResultEvent event) async {
+  void _mapEventToState(ViewReflectionResultEvent event) async {
       if (event is LoadMoodReflections) {
           _inState.add(ReflectionResultLoading());
           if (event.reflection != null) {

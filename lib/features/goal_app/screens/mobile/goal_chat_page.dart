@@ -228,16 +228,16 @@ void _fetchOldChatHistory(int goalId, int currentPage, int pageSize) {
 
 //UI
 
-class GoalChatScreen extends StatefulWidget {
+class GoalChatPage extends StatefulWidget {
   final int goalId;
 
-  GoalChatScreen({required this.goalId, Key? key}) : super(key: key);
+  GoalChatPage({required this.goalId, Key? key}) : super(key: key);
 
   @override
-  _GoalChatScreenState createState() => _GoalChatScreenState();
+  _GoalChatPageState createState() => _GoalChatPageState();
 }
 
-class _GoalChatScreenState extends State<GoalChatScreen> {
+class _GoalChatPageState extends State<GoalChatPage> {
   late ChatBloc _chatBloc;
   List<Message> messages = [];
 

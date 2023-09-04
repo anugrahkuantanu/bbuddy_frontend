@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ReasonScreenBloc {
+class ReasonPageBloc {
   final List<String> entities = [
     'School',
     'Work',

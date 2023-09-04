@@ -71,7 +71,7 @@ class ReflectionHomeBloc extends Bloc<ReflectionHomeEvent, ReflectionHomeState> 
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => NewReflection(topics: reflectionTopics),
+                      builder: (context) => NewReflectionPage(topics: reflectionTopics),
                   ),
               );
           }

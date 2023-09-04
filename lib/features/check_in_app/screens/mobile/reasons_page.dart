@@ -5,8 +5,8 @@ import '../bloc/bloc.dart';
 import '../widget/widget.dart';
 
 
-class ReasonScreen extends StatefulWidget {
-  const ReasonScreen({Key? key, 
+class ReasonPage extends StatefulWidget {
+  const ReasonPage({Key? key, 
   this.feeling, 
   this.feelingForm,
   this.backgroundColor,
@@ -18,17 +18,17 @@ class ReasonScreen extends StatefulWidget {
   final Color? textColor;
 
   @override
-  _ReasonScreenState createState() => _ReasonScreenState();
+  _ReasonPageState createState() => _ReasonPageState();
 }
 
-class _ReasonScreenState extends State<ReasonScreen>
+class _ReasonPageState extends State<ReasonPage>
     with SingleTickerProviderStateMixin {
-  late ReasonScreenBloc _bloc;
+  late ReasonPageBloc _bloc;
 
   @override
   void initState() {
     super.initState();
-    _bloc = ReasonScreenBloc();
+    _bloc = ReasonPageBloc();
   }
 
   void _handleButtonPress(String entity) {
