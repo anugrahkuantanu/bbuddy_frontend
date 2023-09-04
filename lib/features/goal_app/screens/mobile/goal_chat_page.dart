@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import '../../services/service.dart';
 import '../../models/model.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '/config/config.dart';
 
 abstract class ChatEvent {}
 
@@ -336,10 +339,11 @@ _chatBloc.stateStream.listen((state) {
 
   @override
   Widget build(BuildContext context) {
+    var tm = context.watch<ThemeProvider>();
     return Scaffold(
-      backgroundColor: Color(0xFF2D425F),
+      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       appBar: AppBar(
-        backgroundColor: Color(0xFF2D425F),
+        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         elevation: 0,
         title: Text(
           'Coach',
