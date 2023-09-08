@@ -106,9 +106,7 @@ class ProgressPageState extends State<ProgressPage> {
   double text_xl = 20.0.w;
   var tm = context.watch<ThemeProvider>();
   return Scaffold(
-    backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
     appBar: AppBar(
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       automaticallyImplyLeading: false,
       leading: IconButton(
         icon: Icon(Icons.arrow_back), // add your custom icon here

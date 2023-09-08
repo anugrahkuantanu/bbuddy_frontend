@@ -11,12 +11,10 @@ class FeelingFormPage extends StatefulWidget {
   FeelingFormPage({
     Key? key,
     this.feeling = "",
-    this.backgroundColor = Colors.black,
     this.textColor = Colors.white,
   }) : super(key: key);
 
   String? feeling;
-  Color? backgroundColor;
   Color? textColor;
 
   @override
@@ -41,7 +39,6 @@ class _FeelingFormPageState extends State<FeelingFormPage>
           feeling: widget.feeling ?? "",
           feelingForm: feelingForm ?? "",
           textColor: widget.textColor ?? Colors.black,
-          backgroundColor: widget.backgroundColor ?? Colors.black,
         ),
       ),
     );
@@ -95,9 +92,7 @@ class _FeelingFormPageState extends State<FeelingFormPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-        backgroundColor: widget.backgroundColor,
         elevation: 0,
         title: Text(
           '',

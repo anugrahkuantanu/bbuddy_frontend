@@ -19,15 +19,12 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         title: const Text(''),
         actions: actionsMenuLogin(context),
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
@@ -59,7 +56,10 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        if (state is LoginSuccess) {
+        if(state is LoginLoading){
+          LoadingUI(title: '',);
+        }
+        else if (state is LoginSuccess) {
           UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
           userProvider.CheckLoginStatus();
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));

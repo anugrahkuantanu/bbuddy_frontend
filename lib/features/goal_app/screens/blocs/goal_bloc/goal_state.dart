@@ -33,8 +33,9 @@ class GoalCreationDenied extends GoalState {
 
 class GoalInsufficientReflections extends GoalState {
     final String reason;
+    final String errorMessage;
 
-  GoalInsufficientReflections(this.reason);
+  GoalInsufficientReflections(this.reason, this.errorMessage);
 }
 
 class GoalCreatedSuccessfully extends GoalState {

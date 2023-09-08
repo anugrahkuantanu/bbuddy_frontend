@@ -7,14 +7,12 @@ class TextBox extends StatefulWidget {
   final String? feeling;
   final String? feelingForm;
   final String? reasonEntity;
-  final Color? backgroundColor;
   final Color? textColor;
 
   const TextBox({
     this.feeling,
     this.feelingForm,
     this.reasonEntity,
-    this.backgroundColor,
     this.textColor,
     
   });
@@ -32,9 +30,7 @@ class _TextBoxState extends State<TextBox> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-              backgroundColor: widget.backgroundColor,
               elevation: 0, // Remove the line dividing the AppBar and the rest of the screen
               title: Text(
                 '',
@@ -141,7 +137,6 @@ class _TextBoxState extends State<TextBox> {
                                     reasonEntity: widget.reasonEntity ?? "",
                                     reason: inputText,
                                     isPastCheckin: false,
-                                    backgroundColor: widget.backgroundColor ?? Colors.blueGrey,
                                   ),
                                 ),
                               );
@@ -152,7 +147,6 @@ class _TextBoxState extends State<TextBox> {
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: widget.backgroundColor,
                             ),
                           ),
                           style: ThemeHelper().buttonStyle().copyWith(

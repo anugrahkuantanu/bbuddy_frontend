@@ -10,7 +10,6 @@ class EntityButton extends StatelessWidget {
   final VoidCallback? onTap;
   final double? fontSize;
   final IconData? icon;
-  final Color? backgroundColor;
   final ButtonStyle? buttonStyle;
 
   const EntityButton({
@@ -21,7 +20,6 @@ class EntityButton extends StatelessWidget {
     this.textColor = Colors.black,
     this.onTap,
     this.fontSize = 14.0,
-    this.backgroundColor,
     this.buttonStyle,
   });
 
@@ -30,7 +28,7 @@ class EntityButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: buttonStyle ?? ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor ?? Colors.transparent,   // Transparent background
+        backgroundColor: Colors.transparent,   // Transparent background
         foregroundColor: Colors.transparent, // No ripple effect
         shadowColor: Colors.transparent, // No shadow
         elevation: 0, // No elevation

@@ -47,9 +47,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         },
         builder: (context, state) {
         return Scaffold(
-            backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
             appBar: AppBar(
-            backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
             title: const Text('forgot passwort'),
             actions: actionsMenuLogin(context),
             automaticallyImplyLeading: false,

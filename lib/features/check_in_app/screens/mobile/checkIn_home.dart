@@ -23,12 +23,9 @@ class CheckInHome extends StatelessWidget {
     double textSize = bloc.computeTextSize(screenWidth);
     double buttonHeight = bloc.computeButtonHeight(screenWidth, screenHeight);
     Color textColor = bloc.getTextColor(tm);
-    Color backgroundColor= bloc.getBackgroundColor(tm);
 
     return Scaffold(
-      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: bloc.getAppBarColor(tm),
         title: const Text('Check-In'),
         centerTitle: true,
         actions: actionsMenu(context),
@@ -42,7 +39,7 @@ class CheckInHome extends StatelessWidget {
               children: [
                 Helper().ScreenHeadingContainer(context, 'How are you feeling?'),
                 Column(
-                  children: _buildFeelingButtons(context, bloc.feelings, emojiSize, textSize, textColor, backgroundColor, buttonHeight, screenWidth),
+                  children: _buildFeelingButtons(context, bloc.feelings, emojiSize, textSize, textColor, buttonHeight, screenWidth),
                 ),
               ],
             ),
@@ -53,7 +50,7 @@ class CheckInHome extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize, double textSize, Color textColor, Color backgroundColor, double buttonHeight, double screenWidth) {
+  List<Widget> _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize, double textSize, Color textColor, double buttonHeight, double screenWidth) {
     List<Widget> feelingButtons = [];
 
     for (int i = 0; i < feelings.length; i += 2) {
@@ -68,7 +65,7 @@ class CheckInHome extends StatelessWidget {
             emoji: feelings[i]['emoji']!,
             textColor: textColor,
             fontSize: textSize,
-            onTap: () => _navigateToFeelingFormScreen(context, feelings[i]['name']!, textColor, backgroundColor),
+            onTap: () => _navigateToFeelingFormScreen(context, feelings[i]['name']!, textColor),
             emojiSize: emojiSize,
           ),
         ),
@@ -84,7 +81,7 @@ class CheckInHome extends StatelessWidget {
               emoji: feelings[i + 1]['emoji']!,
               textColor: textColor,
               fontSize: textSize,
-              onTap: () => _navigateToFeelingFormScreen(context, feelings[i + 1]['name'], textColor, backgroundColor),
+              onTap: () => _navigateToFeelingFormScreen(context, feelings[i + 1]['name'], textColor),
               icon: null,
               emojiSize: emojiSize,
             ),
@@ -101,7 +98,7 @@ class CheckInHome extends StatelessWidget {
     return feelingButtons;
   }
 
-  void _navigateToFeelingFormScreen(BuildContext context, String? feelingName, Color? textColor, Color? backgroundColor) {
+  void _navigateToFeelingFormScreen(BuildContext context, String? feelingName, Color? textColor) {
     // if (feelingName != null && textColor != null && backgroundColor != null) {
       Navigator.push(
         context,
@@ -110,7 +107,6 @@ class CheckInHome extends StatelessWidget {
           FeelingFormPage(
             feeling: feelingName!,
             textColor: textColor!,
-            backgroundColor: backgroundColor!,
             ),
         ),
       );

@@ -12,7 +12,6 @@ class ChatScreen extends StatefulWidget {
   final String reason;
   final bool isPastCheckin;
   final String? aiResponse;
-  final Color backgroundColor;
   final Color? textColor;
 
 
@@ -23,7 +22,6 @@ class ChatScreen extends StatefulWidget {
     required this.reasonEntity,
     required this.reason,
     required this.isPastCheckin,
-    required this.backgroundColor,
     this.textColor,
     this.aiResponse
 
@@ -149,9 +147,7 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-        backgroundColor: widget.backgroundColor,
         elevation:
               0,
         title: Text(''),

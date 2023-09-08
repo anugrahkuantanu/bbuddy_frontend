@@ -9,12 +9,10 @@ class ReasonPage extends StatefulWidget {
   const ReasonPage({Key? key, 
   this.feeling, 
   this.feelingForm,
-  this.backgroundColor,
   this.textColor,
   }): super(key: key);
   final String? feeling;
   final String? feelingForm;
-  final Color? backgroundColor;
   final Color? textColor;
 
   @override
@@ -85,7 +83,6 @@ class _ReasonPageState extends State<ReasonPage>
                               feeling: widget.feeling,
                               feelingForm: widget.feelingForm,
                               reasonEntity: enteredReason,
-                              backgroundColor: widget.backgroundColor,
                               textColor: widget.textColor,
                             ),
                           ),
@@ -113,7 +110,6 @@ class _ReasonPageState extends State<ReasonPage>
             feeling: widget.feeling,
             feelingForm: widget.feelingForm,
             reasonEntity: entity,
-            backgroundColor: widget.backgroundColor,
             textColor: widget.textColor,
           ),
         ),
@@ -133,9 +129,7 @@ class _ReasonPageState extends State<ReasonPage>
     double entityButtonWidth = screenWidth / 4; // Adjusted for some padding and spacing
 
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-        backgroundColor: widget.backgroundColor,
         elevation: 0,
         title: Text(
           '',

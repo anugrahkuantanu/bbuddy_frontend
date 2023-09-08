@@ -13,18 +13,18 @@ class AppTheme {
   ]) {
     light = light ??
         ThemeData(
+          scaffoldBackgroundColor: AppColors.lightscreen[100],
           brightness: Brightness.light,
           primarySwatch: AppColors.lightscreen,
           bottomAppBarColor: Colors.white,
-          scaffoldBackgroundColor: const Color.fromARGB(255, 222, 255, 252),
-          appBarTheme: const AppBarTheme(
-            titleTextStyle: TextStyle(
-              color: Colors.white,
+          appBarTheme: AppBarTheme(
+            titleTextStyle: const TextStyle(
+              color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
-            backgroundColor: AppColors.lightscreen,
-            iconTheme: IconThemeData(color: Colors.white),
+            backgroundColor: AppColors.lightscreen[100],
+            iconTheme: const IconThemeData(color: Colors.white),
           ),
           navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: AppColors.lightscreen,
@@ -51,8 +51,18 @@ class AppTheme {
 
     dark = dark ??
         ThemeData(
+          scaffoldBackgroundColor: AppColors.darkscreen,
           brightness: Brightness.dark,
           primarySwatch: Colors.yellow,
+          appBarTheme: const AppBarTheme(
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+            backgroundColor: AppColors.darkscreen,
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
           buttonTheme: const ButtonThemeData(
             textTheme: ButtonTextTheme.primary,
             buttonColor: Colors.white,

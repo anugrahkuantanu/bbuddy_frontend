@@ -16,11 +16,9 @@ class ErrorUI extends StatelessWidget {
     var tm = context.watch<ThemeProvider>();
     return Scaffold(
         appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         title: Text(title ?? ""),
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
             body: Center(
         child: Padding(
           padding: EdgeInsets.only(left: 20.0, right: 20.0),
@@ -43,10 +41,8 @@ class NotEnoughtReflection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
     return Scaffold(
         appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -59,13 +55,83 @@ class NotEnoughtReflection extends StatelessWidget {
        },
       ),
       ),
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0),
-          child: Text(
-            'Reason: $response',
-            style: TextStyle(color: Colors.white, fontSize: 25.0.w),
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
+            children: [
+              TextSpan(
+                text: 'You need\n\n',
+              ),
+              TextSpan(
+                text: response,
+                style: TextStyle(
+                  fontSize: 52.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              TextSpan(
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.white,
+                ),
+                text: '\n\nReflection(s) to create the generated goals',
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomBar(),
+    );
+  }
+}
+
+class NotEnoughtCheckIn extends StatelessWidget {
+  final String response;
+  final String? title;
+
+  NotEnoughtCheckIn({required this.response, this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+        title: Text(title ?? ""),
+        automaticallyImplyLeading: false,
+      ),
+            body: Center(
+        child: RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.white,
+            ),
+            children: [
+              TextSpan(
+                text: 'You need\n\n',
+              ),
+              TextSpan(
+                text: response,
+                style: TextStyle(
+                  fontSize: 52.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              TextSpan(
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.white,
+                ),
+                text: '\n\nCheck-in(s) to generate the reflections',
+              ),
+            ],
           ),
         ),
       ),
@@ -84,11 +150,9 @@ class LoadingUI extends StatelessWidget {
     var tm = context.watch<ThemeProvider>();
     return Scaffold(
         appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
       ),
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       body: Center(
         child: CircularProgressIndicator(),
       ),

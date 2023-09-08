@@ -49,7 +49,7 @@ class _GoalHomeState extends State<GoalHome> {
                 _bloc.add(ResetGoal());
             });
           }else if (state is GoalInsufficientReflections) {
-            _showDialog(context, state.reason);
+            _showDialog(context, state.errorMessage);
           } else if (state is GoalCreationDenied) {
             _showDialog(context, state.reason);
           } else if (state is GoalError) {
@@ -64,9 +64,7 @@ class _GoalHomeState extends State<GoalHome> {
             return _buildFullGoalUI([], state.personalGoals);
           } else if (state is GoalHasEnoughReflections) {
             return _buildFullGoalUI(state.generatedGoals, state.personalGoals);
-            // return _buildFullGoalUI(state.generatedGoals, state.personalGoals, true);
           } else if (state is GoalInsufficientReflections) {
-            // return _buildInsufficientReflectionsUI();
             return NotEnoughtReflection(response: state.reason);
           }else if (state is GoalCreationDenied) {
             return NotEnoughtReflection(response: state.reason);
@@ -106,9 +104,7 @@ class _GoalHomeState extends State<GoalHome> {
     ScreenUtil.init(context, designSize: const Size(414, 896));
     var tm = context.watch<ThemeProvider>();
     return Scaffold(
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         elevation: 0,
         actions: actionsMenuLogin(context),
         title: Text('Goals', style: TextStyle(color: tm.isDarkMode ? AppColors.textlight : AppColors.textdark)),

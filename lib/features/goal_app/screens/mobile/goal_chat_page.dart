@@ -341,9 +341,7 @@ _chatBloc.stateStream.listen((state) {
   Widget build(BuildContext context) {
     var tm = context.watch<ThemeProvider>();
     return Scaffold(
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         elevation: 0,
         title: Text(
           'Coach',

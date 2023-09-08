@@ -60,9 +60,7 @@ class _VerificationPageState extends State<VerificationPage> {
         },
         builder: (context, state) {
           return Scaffold(
-            backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
             appBar: AppBar(
-              backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
               title: const Text('Verification'),
               actions: actionsMenuLogin(context),
             ),

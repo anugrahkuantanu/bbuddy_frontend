@@ -22,3 +22,23 @@ void main() async {
   );
 }
 
+
+
+
+
+
+// void main() async {
+//   runApp(
+//     MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider(create: (_) => ReflectionHeading()),
+//         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+//         ChangeNotifierProvider(create: (_) => UserDetailsProvider(),),
+//         ChangeNotifierProvider(create: (_) => CounterStats()),
+//         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
+//       ],
+//       child: AppStarter(),
+//     ),
+//   );
+// }
+

@@ -71,7 +71,6 @@ class CounterStats extends ChangeNotifier {
               reflectionCounter = UserStats.fromJson(item);
             } else {
                 checkInCounter = UserStats.fromJson(item);
-          
             }
           } 
         } else {

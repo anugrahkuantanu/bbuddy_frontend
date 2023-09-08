@@ -6,7 +6,10 @@ class ReflectionHomeInitial extends ReflectionHomeState {}
 
 class ReflectionHomeLoading extends ReflectionHomeState {}
 
-class ReflectionHomeInsufficientCheckIns extends ReflectionHomeState {}
+class ReflectionHomeInsufficientCheckIns extends ReflectionHomeState {
+  String errorMessage;
+  ReflectionHomeInsufficientCheckIns({required this.errorMessage});
+}
 
 class ReflectionHomeHasEnoughCheckIns extends ReflectionHomeState {
   final List<Reflection> history; // Assuming Reflection is a model class for your reflection data.

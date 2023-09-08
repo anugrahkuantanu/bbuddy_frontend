@@ -28,11 +28,13 @@ class ReflectionHomeBloc extends Bloc<ReflectionHomeEvent, ReflectionHomeState> 
     
     try {
       int checkInCount = await checkInService.countCheckIn();
+      int modulo = checkInCount % 3;
+      int checkInNeeded = 3 - modulo;
       if (checkInCount >= 3) {
         List<Reflection> history = await getReflectionHistory(); 
         yield ReflectionHomeHasEnoughCheckIns(history);
       } else {
-        yield ReflectionHomeInsufficientCheckIns();
+        yield ReflectionHomeInsufficientCheckIns(errorMessage: checkInNeeded.toString());
       }
     } catch (error) {
       yield ReflectionHomeError("Failed to load reflection home.");

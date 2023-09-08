@@ -22,7 +22,6 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
   @override
   Widget build(BuildContext context) {
   var tm = context.watch<ThemeProvider>();
-  Color? backgroundColor = tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100];
     double screenWidth = MediaQuery.of(context).size.width;
 
     return StreamBuilder<NewReflectionState>(
@@ -34,7 +33,6 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
               context,
               MaterialPageRoute(
                 builder: (context) => ViewReflectionResults(
-                  backgroundColor: backgroundColor,
                   topics: (snapshot.data as ReflectionSubmittedState).topics,
                   userReflections: (snapshot.data as ReflectionSubmittedState).userReflections,
                 ),
@@ -45,7 +43,6 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
         }
 
         return Scaffold(
-            backgroundColor: Color(0xFF2D425F),
             body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(

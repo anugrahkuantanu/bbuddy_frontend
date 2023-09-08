@@ -22,10 +22,8 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var tm = context.watch<ThemeProvider>();
     Color? textColor = tm.isDarkMode ? AppColors.textlight : AppColors.textdark;
-    final Color backgroundColor = (tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100])!;
     
     return Scaffold(
-      backgroundColor: backgroundColor,
       body: SafeArea(
         child: ListView(
           physics: BouncingScrollPhysics(),
@@ -48,7 +46,6 @@ class HomePageState extends State<HomePage> {
               padding: EdgeInsets.symmetric(horizontal: 0.w),
               child: CheckInHistoryCard(
                 textColor: Colors.white,
-                backgroundColor: backgroundColor,
               ),
             ),
           ],

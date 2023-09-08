@@ -13,14 +13,12 @@ class ViewReflectionResults extends StatefulWidget {
   final List topics;
   final List? userReflections;
   final Reflection? reflection;
-  final Color? backgroundColor;
 
   const ViewReflectionResults({
     Key? key,
     required this.topics,
     this.userReflections,
     this.reflection,
-    this.backgroundColor = Colors.black
   }) : super(key: key);
 
   @override
@@ -54,9 +52,7 @@ void initState() {
         } else if (snapshot.data is ReflectionResultLoaded) {
           final reflectionData = (snapshot.data as ReflectionResultLoaded).reflection;
           return Scaffold(
-            backgroundColor: widget.backgroundColor,
             appBar: AppBar(
-              backgroundColor: widget.backgroundColor,
               elevation: 0,
               title: Text(reflectionData.heading, style: TextStyle(color: Colors.white)),
               iconTheme: IconThemeData(color: Colors.white),

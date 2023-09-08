@@ -11,11 +11,9 @@ import '../../../check_in_app/screens/screen.dart';
 
 class CheckInHistoryCard extends StatefulWidget {
   final Color? textColor;
-  final Color backgroundColor;
 
   const CheckInHistoryCard({
     this.textColor = Colors.black,
-    required this.backgroundColor,
   });
 
   @override
@@ -112,7 +110,6 @@ List<String> chekinHistory(String text) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          backgroundColor: widget.backgroundColor,
                           feeling: chekinHistory(pastCheckIns![3].humanMessage.text.toLowerCase())[0],
                           feelingForm: chekinHistory(pastCheckIns![3].humanMessage.text.toLowerCase())[1],
                           reasonEntity: chekinHistory(pastCheckIns![3].humanMessage.text.toLowerCase())[2],
@@ -153,7 +150,6 @@ List<String> chekinHistory(String text) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          backgroundColor: widget.backgroundColor,
                           feeling: chekinHistory(pastCheckIns![2].humanMessage.text.toLowerCase())[0],
                           feelingForm: chekinHistory(pastCheckIns![2].humanMessage.text.toLowerCase())[1],
                           reasonEntity: chekinHistory(pastCheckIns![2].humanMessage.text.toLowerCase())[2],
@@ -194,7 +190,6 @@ List<String> chekinHistory(String text) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          backgroundColor: widget.backgroundColor,
                           feeling: chekinHistory(pastCheckIns![1].humanMessage.text.toLowerCase())[0],
                           feelingForm: chekinHistory(pastCheckIns![1].humanMessage.text.toLowerCase())[1],
                           reasonEntity: chekinHistory(pastCheckIns![1].humanMessage.text.toLowerCase())[2],
@@ -235,7 +230,6 @@ List<String> chekinHistory(String text) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          backgroundColor: widget.backgroundColor,
                           feeling: chekinHistory(pastCheckIns![0].humanMessage.text.toLowerCase())[0],
                           feelingForm: chekinHistory(pastCheckIns![0].humanMessage.text.toLowerCase())[1],
                           reasonEntity: chekinHistory(pastCheckIns![0].humanMessage.text.toLowerCase())[2],

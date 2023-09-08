@@ -40,13 +40,10 @@ class _ProfilePageState extends State<ProfilePage> {
     double _drawerFontSize = 17;
     double screenWidth = MediaQuery.of(context).size.width;
     final userDetails = Provider.of<UserDetailsProvider>(context);
-    var tm = context.watch<ThemeProvider>();
     //print(userDetails.details?.firstName);
     return Scaffold(
-      backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100],
         title: const Text('Profile'),
         centerTitle: true,
         actions: actionsMenu(context),

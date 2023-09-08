@@ -99,7 +99,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';class GoalBloc extends Bloc<Goal
       int totalReflections = await countReflections();
       int modulo = totalReflections % 3;
       int reflectionsneeded = 3 - modulo;
-      yield GoalInsufficientReflections('You need ${reflectionsneeded} Reflections to set a new AI generated Goal');
+      yield GoalInsufficientReflections('${reflectionsneeded}', 'you need ${reflectionsneeded} reflection(s)');
     } else {
       try {
         Goal goal = await setNewGoal(startDate: startDate, endDate: endDate);
