@@ -22,16 +22,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider extends BaseThemeProvider {
   int _index = 0;
-  late ThemeMode _themeMode;
+  // late ThemeMode? _themeMode;
+  ThemeMode? _themeMode = ThemeMode.system;
+
 
   ThemeProvider() {
-    _loadThemeMode().then((mode) {
+    // print("ThemeProvider constructor called");
+    loadThemeMode().then((mode) {
+      // print("Theme loaded: $mode");
       _themeMode = mode;
       notifyListeners();
     });
   }
 
-  ThemeMode get themeMode => _themeMode;
+  //   Future<void> initProvider() async {
+  //   _themeMode = await loadThemeMode();
+  //   notifyListeners();
+  // }
+
+
+  ThemeMode get themeMode => _themeMode?? ThemeMode.system;
 
   set themeMode(ThemeMode mode) {
     _themeMode = mode;
@@ -44,7 +54,7 @@ class ThemeProvider extends BaseThemeProvider {
     prefs.setInt('theme_mode', mode.index);
   }
 
-  Future<ThemeMode> _loadThemeMode() async {
+  Future<ThemeMode> loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
     return ThemeMode.values[prefs.getInt('theme_mode') ?? 0];
   }

@@ -17,15 +17,6 @@ class CheckInHomeBloc {
     return tm.isDarkMode ? AppColors.textlight : AppColors.textdark;
   }
 
-  Color getBackgroundColor(ThemeProvider tm) {
-      return (tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100])!;
-  }
-
-  Color getAppBarColor(ThemeProvider tm) {
-      return (tm.isDarkMode ? AppColors.darkscreen[800] : AppColors.lightscreen)!;
-  }
-
-
   double computeEmojiSize(double screenWidth) {
     return screenWidth * 0.12.w;
   }

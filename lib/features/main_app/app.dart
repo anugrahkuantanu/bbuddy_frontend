@@ -8,6 +8,5 @@ class App extends RouteManager {
 
   App() {
     addRoute(App.home, (context) => const HomeController());
-    // addRoute('/login', (context) => LoginController());
   }
 }

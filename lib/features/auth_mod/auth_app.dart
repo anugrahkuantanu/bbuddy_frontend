@@ -4,7 +4,6 @@ import 'screens/screen.dart';
 
 class AuthApp extends RouteManager {
   static const String name = '';
-  // static const String splash = AuthApp.name + '/';
   static const String login = AuthApp.name + '/login';
   static const String profile = AuthApp.name + '/profile';
   static const String forget = AuthApp.name + '/forget';
@@ -16,6 +15,5 @@ class AuthApp extends RouteManager {
     addRoute(AuthApp.profile, (context) => const ProfileController());
     addRoute(AuthApp.forget, (context) => const ForgetController());
     addRoute(AuthApp.register, (context) => const RegisterController());
-    // addRoute(AuthApp.splash, (context) => const SplashController());
   }
 }

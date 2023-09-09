@@ -136,6 +136,10 @@ class _ReasonPageState extends State<ReasonPage>
           style: TextStyle(color: widget.textColor),
         ),
         iconTheme: IconThemeData(color: widget.textColor),
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () => Navigator.pop(context),
+      ),
       ),
       body: SafeArea(
         child: Padding(

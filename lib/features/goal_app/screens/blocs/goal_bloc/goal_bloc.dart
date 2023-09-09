@@ -20,9 +20,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';class GoalBloc extends Bloc<Goal
     } else if (event is ShowGoalError) {
       yield GoalError(errorMessage: event.errorMessage);
     } 
-    // else if (event is CountReflections) {
-    //   yield* _countReflections();
-    // }
     else if (event is CreateNewGoal) {
       yield* _createNewGoal(event.startDate, event.endDate);
     }else if (event is ResetGoal) {
@@ -77,21 +74,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';class GoalBloc extends Bloc<Goal
     //   }
     }
   }
-
-  // Stream<GoalState> _countReflections() async* {
-  //   if (generatedGoals.isEmpty) {
-  //     int totalReflections = await countReflections();
-  //     int modulo = totalReflections % 3;
-  //     int reflectionsneeded = 3 - modulo;
-  //     if (totalReflections < 3) {
-  //       yield GoalInsufficientReflections('You need ${reflectionsneeded} Reflections to set a new Goal');
-  //     } else {
-  //       yield GoalHasEnoughReflections(generatedGoals: generatedGoals, personalGoals: personalGoals);
-  //     }
-  //   } else {
-  //     yield GoalHasEnoughReflections(generatedGoals: generatedGoals, personalGoals: personalGoals);
-  //   }
-  // }
 
   Stream<GoalState> _createNewGoal(DateTime? startDate, DateTime? endDate) async* {
     yield GoalLoading();

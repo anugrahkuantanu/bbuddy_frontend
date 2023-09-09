@@ -4,133 +4,133 @@ import '/core/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../bloc/bloc.dart';
 import '../widget/widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 
-class FeelingFormPage extends StatefulWidget {
-  FeelingFormPage({
-    Key? key,
-    this.feeling = "",
-    this.textColor = Colors.white,
-  }) : super(key: key);
 
-  String? feeling;
-  Color? textColor;
+class FeelingFormPage extends StatelessWidget {
+  final String feeling;
+  final Color textColor;
+  final FeelingBloc _bloc = FeelingBloc();
 
-  @override
-  _FeelingFormPageState createState() => _FeelingFormPageState();
-}
-
-class _FeelingFormPageState extends State<FeelingFormPage>
-    with SingleTickerProviderStateMixin {
-  late FeelingFormBloc _bloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _bloc = FeelingFormBloc();
-  }
-
-  void _handleButtonPress(String? feelingForm) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ReasonPage(
-          feeling: widget.feeling ?? "",
-          feelingForm: feelingForm ?? "",
-          textColor: widget.textColor ?? Colors.black,
-        ),
-      ),
-    );
-  }
-
-  List<Widget> _buildFeelingFormButtons() {
-    List<Widget> rows = [];
-    List<String> feelingForms = _bloc.feelingForms.containsKey(widget.feeling) 
-    ? _bloc.feelingForms[widget.feeling]! 
-    : [];
-
-
-
-    for (int i = 0; i < feelingForms.length; i += 2) {
-      var rowButtons = <Widget>[
-        Expanded(child: _buildFeelingFormButton(feelingForms[i]))
-      ];
-
-      if (i + 1 < feelingForms.length) {
-        rowButtons.add(SizedBox(width: 16.0));
-        rowButtons.add(
-            Expanded(child: _buildFeelingFormButton(feelingForms[i + 1])));
-      }
-
-      rows.add(Row(children: rowButtons));
-      rows.add(SizedBox(height: 16.0));
-    }
-
-    return rows;
-  }
-
-    Widget _buildFeelingFormButton(String feelingForm) {
-    return EntityButton(
-      entity: feelingForm,
-      textColor: widget.textColor,
-      fontSize: _bloc.computeTextSize(MediaQuery.of(context).size.width).sp,
-      onTap: () => _handleButtonPress(feelingForm),
-      emojiSize: null,
-      buttonStyle: ThemeHelper().buttonStyle().copyWith(
-        backgroundColor: MaterialStateProperty.all<Color>(
-          _bloc.buttonColors[widget.feeling] ?? Color(0xFF0077C2),
-        ),
-        padding: MaterialStateProperty.all<EdgeInsets>(
-          EdgeInsets.all(16.0),
-        ),
-      ),
-    );
-  }
-  
+  FeelingFormPage({Key? key, required this.feeling, required this.textColor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          '',
-          style: TextStyle(
-            color: widget.textColor,
-          ),
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16.0.w),
-            child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(10.0.w),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.circular(MediaQuery.of(context).size.width * 0.03),
-                  ),
-                  child: Text(
-                    "What manifestation of ${widget.feeling!.toLowerCase()} are you feeling?",
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: widget.textColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+    return BlocProvider(
+      create: (context) => _bloc,
+      child: BlocConsumer<FeelingBloc, FeelingState>(
+          listener: (context, state) {
+            if (state is NavigateToReasonPageState) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReasonPage(
+                      feeling: state.feeling,
+                      feelingForm: state.feelingForm,
+                      textColor: state.textColor),
                 ),
-                SizedBox(height: 40),
-                ..._buildFeelingFormButtons(),
-              ],
-            ),
-          ),
-        ),
+              ).then((_) {
+                // After coming back from the ReasonPage, reset the BLoC's state.
+                _bloc.add(ResetEvent());
+              });
+            }
+          },
+          builder: (context, state) {
+            if (state is InitialState) {
+              // On initial state, we will load the feelings form with their button colors.
+              return _buildPage(context, _bloc.buttonColors, _bloc.feelingForms);
+            }
+            return Container();  // Fallback, should not be reached.
+          },
       ),
     );
+  }
+
+
+Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<String, List<String>> feelingForms) {
+  double screenWidth = MediaQuery.of(context).size.width;
+  ScreenUtil.init(context, designSize: Size(414, 896));
+
+  double textSize;
+  if (screenWidth < 380) {
+    textSize = 15.sp;
+  } else if (screenWidth < 400) {
+    textSize = 16.sp;
+  } else {
+    textSize = 17.sp;
+  }
+
+  return Scaffold(
+    appBar: AppBar(
+      elevation: 0,
+      title: Text(
+        '',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      iconTheme: IconThemeData(color: Colors.white),
+    ),
+    body: SafeArea(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0.w),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10.0.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(screenWidth * 0.03),
+                ),
+                child: Text(
+                  "What manifestation of ${feeling.toLowerCase()} are you feeling?",
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 40),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Wrap(
+                    spacing: 20.0,
+                    runSpacing: 30.0,
+                    children: feelingForms[feeling]!
+                        .map(
+                          (feelingForm) => SizedBox(
+                            width: MediaQuery.of(context).size.width / 2.5,
+                            child: EntityButton(
+                              entity: feelingForm,
+                              onTap: () => _handleButtonPress(feelingForm),
+                              textColor: Colors.white,
+                              fontSize: textSize,
+                              buttonStyle: ElevatedButton.styleFrom(
+                                backgroundColor: buttonColors[feeling] ?? Color(0xFF0077C2),
+                                padding: EdgeInsets.all(16.0),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+
+  void _handleButtonPress(String feelingForm) {
+    _bloc.add(ButtonPressedEvent(feelingForm, textColor, feeling));
   }
 }

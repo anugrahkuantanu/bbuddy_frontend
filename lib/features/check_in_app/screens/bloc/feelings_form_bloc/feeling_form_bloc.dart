@@ -1,7 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc.dart';
 
-class FeelingFormBloc {
+//bloc
+
+
+class FeelingBloc extends Bloc<FeelingEvent, FeelingState> {
+
+  FeelingBloc() : super(InitialState());
+
+  @override
+  Stream<FeelingState> mapEventToState(FeelingEvent event) async* {
+    if (event is InitialState){
+      yield ProvideFeelingDataState(buttonColors, feelingForms);
+    }
+    else if (event is ButtonPressedEvent) {
+      // For the sake of completeness, let's assume that ButtonPressedEvent also has `feeling` and `textColor` properties.
+      yield NavigateToReasonPageState(event.feeling, event.feelingForm, event.textColor);
+    }
+    else if (event is ResetEvent) {
+      yield InitialState();
+    }
+  }
+
   final Map<String, Color> buttonColors = {
     'Hurt': Color(0xFF68d0ff),
     'Sad': Color(0xFFb383ff),
@@ -12,75 +34,13 @@ class FeelingFormBloc {
   };
 
   final Map<String, List<String>> feelingForms = {
-    'Hurt': [
-      'Jealous',
-      'Betrayed',
-      'Isolated',
-      'Shocked',
-      'Victimized',
-      'Tormented',
-      'Deprived',
-      'Abandoned',
-    ],
-    'Sad': [
-      'Disappointed',
-      'Regretful',
-      'Mournful',
-      'Depressed',
-      'Disillusioned',
-      'Pessimistic',
-      'Tearful',
-      'Dismayed',
-    ],
-    'Happy': [
-      'Thankful',
-      'Trusting',
-      'Content',
-      'Comfortable',
-      'Excited',
-      'Relieved',
-      'Elated',
-      'Confident',
-    ],
-    'Angry': [
-      'Frustrated',
-      'Annoyed',
-      'Grumpy',
-      'Defensive',
-      'Irritated',
-      'Disgusted',
-      'Offended',
-      'Spiteful'
-    ],
-    'Anxious': [
-      'Afraid',
-      'Confused',
-      'Stressed',
-      'Vulnerable',
-      'Skeptical',
-      'Worried',
-      'Cautious',
-      'Nervous'
-    ],
-    'Embarrassed': [
-      'Self-Conscious',
-      'Isolated',
-      'Lonely',
-      'Inferior',
-      'Guilty',
-      'Ashamed',
-      'Pathetic',
-      'Confused'
-    ]
+    'Hurt': ['Jealous', 'Betrayed', 'Isolated', 'Shocked', 'Victimized', 'Tormented', 'Deprived', 'Abandoned'],
+    'Sad': ['Disappointed', 'Regretful', 'Mournful', 'Depressed', 'Disillusioned', 'Pessimistic', 'Tearful', 'Dismayed'],
+    'Happy': ['Thankful', 'Trusting', 'Content', 'Comfortable', 'Excited', 'Relieved', 'Elated', 'Confident'],
+    'Angry': ['Frustrated', 'Annoyed', 'Grumpy', 'Defensive', 'Irritated', 'Disgusted', 'Offended', 'Spiteful'],
+    'Anxious': ['Afraid', 'Confused', 'Stressed', 'Vulnerable', 'Skeptical', 'Worried', 'Cautious', 'Nervous'],
+    'Embarrassed': ['Self-Conscious', 'Isolated', 'Lonely', 'Inferior', 'Guilty', 'Ashamed', 'Pathetic', 'Confused']
   };
 
-  double computeTextSize(double screenWidth) {
-    if (screenWidth < 380) {
-      return 15.w;
-    } else if (screenWidth < 400) {
-      return 16.w;
-    } else {
-      return 17.w;
-    }
-  }
+
 }

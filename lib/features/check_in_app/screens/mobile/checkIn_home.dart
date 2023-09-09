@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/features/check_in_app/controllers/main/feelings_form_controller.dart';
 import 'package:flutter/material.dart';
 import 'feeling_form_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,12 +8,18 @@ import '/config/config.dart';
 import '../bloc/bloc.dart';
 import '../widget/widget.dart';
 
+
+
+
+
+
+
 class CheckInHome extends StatelessWidget {
   const CheckInHome({Key? key}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
+    var tm = context.watch<ThemeProvider?>();
     var bloc = CheckInHomeBloc();  // Instantiate the BLoC
 
     ScreenUtil.init(context, designSize: Size(414, 896));
@@ -22,7 +29,7 @@ class CheckInHome extends StatelessWidget {
     double emojiSize = bloc.computeEmojiSize(screenWidth);
     double textSize = bloc.computeTextSize(screenWidth);
     double buttonHeight = bloc.computeButtonHeight(screenWidth, screenHeight);
-    Color textColor = bloc.getTextColor(tm);
+    Color textColor = bloc.getTextColor(tm!);
 
     return Scaffold(
       appBar: AppBar(
@@ -99,17 +106,17 @@ class CheckInHome extends StatelessWidget {
   }
 
   void _navigateToFeelingFormScreen(BuildContext context, String? feelingName, Color? textColor) {
-    // if (feelingName != null && textColor != null && backgroundColor != null) {
+    if (feelingName != null && textColor != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => 
-          FeelingFormPage(
-            feeling: feelingName!,
-            textColor: textColor!,
+          FeelingsFormController(
+            feeling: feelingName,
+            textColor: textColor,
             ),
         ),
       );
-    // }
+    }
   }
 }
