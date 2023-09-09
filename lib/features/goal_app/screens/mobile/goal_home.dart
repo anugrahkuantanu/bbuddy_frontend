@@ -67,7 +67,7 @@ class _GoalHomeState extends State<GoalHome> {
           } else if (state is GoalInsufficientReflections) {
             return NotEnoughtReflection(response: state.reason);
           }else if (state is GoalCreationDenied) {
-            return NotEnoughtReflection(response: state.reason);
+            return GoalCreatedThisWeek(response: state.reason);
           }
            else if (state is GoalError) {
             return ErrorUI(errorMessage: state.errorMessage);

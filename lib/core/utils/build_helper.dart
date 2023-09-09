@@ -33,6 +33,33 @@ class ErrorUI extends StatelessWidget {
   }
 }
 
+class GoalCreatedThisWeek extends StatelessWidget {
+  final String response;
+  final String? title;
+
+  GoalCreatedThisWeek ({required this.response, this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+        title: Text(title ?? ""),
+        automaticallyImplyLeading: true,
+      ),
+            body: Center(
+        child: Padding(
+          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+          child: Text(
+          'Response: $response',
+          style: TextStyle(color: Colors.white, fontSize: 18.0),
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomBar(),
+    );
+  }
+}
+
 class NotEnoughtReflection extends StatelessWidget {
   final String response;
   final String? title;
