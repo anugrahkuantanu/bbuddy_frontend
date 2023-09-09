@@ -20,8 +20,11 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
-    Color? textColor = tm.isDarkMode ? AppColors.textlight : AppColors.textdark;
+    var tm = context.watch<ThemeProvider?>();
+    Color textColor = tm?.isDarkMode ?? false ? AppColors.textlight : AppColors.textdark;
+
+    // var tm = context.watch<ThemeProvider?>();
+    // Color? textColor = tm?.isDarkMode ? AppColors.textlight : AppColors.textdark;
     
     return Scaffold(
       body: SafeArea(

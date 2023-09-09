@@ -27,18 +27,11 @@ class ThemeProvider extends BaseThemeProvider {
 
 
   ThemeProvider() {
-    // print("ThemeProvider constructor called");
     loadThemeMode().then((mode) {
-      // print("Theme loaded: $mode");
       _themeMode = mode;
       notifyListeners();
     });
   }
-
-  //   Future<void> initProvider() async {
-  //   _themeMode = await loadThemeMode();
-  //   notifyListeners();
-  // }
 
 
   ThemeMode get themeMode => _themeMode?? ThemeMode.system;
