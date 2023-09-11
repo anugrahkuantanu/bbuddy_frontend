@@ -75,8 +75,10 @@ class ProgressPageState extends State<ProgressPage> {
             return LoadingUI(title: "Progress",);
           }
           else if (state is ProgressLoaded) {
-            print('milestone: ${state.milestone}' ); 
+
+      print(state.goal.milestones);
             return _buildProgressUI(state.goal);
+            
           } 
           else {
             return ErrorUI(errorMessage: "Some error occurred"); // Fallback

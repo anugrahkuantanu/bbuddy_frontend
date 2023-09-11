@@ -11,6 +11,8 @@ import '../blocs/bloc.dart';
 
 
 class RegistrationPage extends StatefulWidget {
+
+  const RegistrationPage({Key? key}):super(key: key);
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
 }
@@ -31,7 +33,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         if (snapshot.data is SuccessRegistrationState) {
           SchedulerBinding.instance!.addPostFrameCallback((_) {
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => LoginPage()),
+              MaterialPageRoute(builder: (context) => const LoginPage()),
               (Route<dynamic> route) => false,
             );
           });
@@ -55,7 +57,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text('Registration'),
+            title: const Text('Registration'),
             actions: actionsMenuLogin(context), // Assuming you have this function from the previous code
           ),
           body: SingleChildScrollView(
@@ -76,7 +78,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Continue with other fields
                     // I'm adding just a few more for brevity
                     CustomTextField(
@@ -90,7 +92,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     CustomTextField(
                       label: 'Username*',
                       hint: 'Enter your username',
@@ -105,7 +107,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     CustomTextField(
                       label: 'Email*',
                       hint: 'Enter your email',
@@ -122,13 +124,13 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                 CustomTextField(
                   label: 'Phone',
                   hint: 'Enter your phone number',
                   controller: bloc.registrationController['phone']!,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 CustomTextField(
                   label: 'Password*',
                   hint: 'Enter your password',
@@ -173,7 +175,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 throw 'Could not launch $url';
                               }
                             },
-                            child: Text(
+                            child: const Text(
                               "I accept all terms and conditions.",
                               style: TextStyle(
                                 color: Colors.blue,
@@ -184,7 +186,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // Register Button
                     Button(
                       label: (snapshot.data is LoadingRegistrationState)

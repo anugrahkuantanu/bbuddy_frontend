@@ -1,6 +1,5 @@
 import 'package:bbuddy_app/features/check_in_app/controllers/main/feelings_form_controller.dart';
 import 'package:flutter/material.dart';
-import 'feeling_form_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/core.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +21,7 @@ class CheckInHome extends StatelessWidget {
     var tm = context.watch<ThemeProvider?>();
     var bloc = CheckInHomeBloc();  // Instantiate the BLoC
 
-    ScreenUtil.init(context, designSize: Size(414, 896));
+    ScreenUtil.init(context, designSize: const Size(414, 896));
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;

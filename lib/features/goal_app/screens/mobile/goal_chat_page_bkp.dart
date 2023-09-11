@@ -135,7 +135,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
     chat?.sendMessage(message);
 
     messageController.clear();
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       _scrollToBottom();
     });
   }
@@ -145,7 +145,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
 
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: Duration(milliseconds: 5),
+      duration: const Duration(milliseconds: 5),
       curve: Curves.easeInOut,
     );
   }
@@ -175,7 +175,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
     return Column(children: [
       Text(
         message.text,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 16,
         ),
@@ -189,7 +189,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
     });
 
     if (isKeyboardVisible) {
-      Future.delayed(Duration(milliseconds: 300), () {
+      Future.delayed(const Duration(milliseconds: 300), () {
         _scrollToBottom();
       });
     }
@@ -201,12 +201,12 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
     // final MediaQueryData _isKeyboardVisible = MediaQuery.of(context);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xFF2D425F),
+      backgroundColor: const Color(0xFF2D425F),
       appBar: AppBar(
-        backgroundColor: Color(0xFF2D425F),
+        backgroundColor: const Color(0xFF2D425F),
         elevation:
             0, // Remove the line dividing the AppBar and the rest of the screen
-        title: Text(
+        title: const Text(
           'Coach',
           style: TextStyle(
             color: Colors.white, // Set the color of the font to white
@@ -229,7 +229,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
                   children: [
                   ListView.builder(
                     shrinkWrap: true, // Add this to prevent render overflow
-                    physics: BouncingScrollPhysics(), 
+                    physics: const BouncingScrollPhysics(), 
                     controller: _scrollController,
                     reverse: false,
                     itemCount: messages.length,
@@ -242,9 +242,9 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
                             ? Alignment.centerLeft
                             : Alignment.centerRight,
                         child: Container(
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                             color:
                                 isBotMessage ? Colors.grey[300] : Colors.white,
@@ -257,7 +257,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
                               if (isLastMessage &&
                                   isBotMessage &&
                                   message.isWaiting)
-                                SizedBox(height: 3),
+                                const SizedBox(height: 3),
                               if (isLastMessage &&
                                   isBotMessage &&
                                   message.isWaiting)
@@ -282,14 +282,14 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
                     },
                   ),
                   if (isLoadingHistory) // Display waiting indicator when loading chat history above
-                    Center(child: CircularProgressIndicator()),
+                    const Center(child: CircularProgressIndicator()),
                 ],
               ),
             ),
             ),
               Container(
-                color: Color(0xFF2D425F),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                color: const Color(0xFF2D425F),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
                   children: [
                     Expanded(
@@ -304,7 +304,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   IconButton(
                     onPressed: () {
                       String message = messageController.text.trim();
@@ -314,7 +314,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
                         sendUserMessage(message);
                       }
                     },
-                    icon: Icon(Icons.send),
+                    icon: const Icon(Icons.send),
                   ),
                 ],
               ),
@@ -322,9 +322,9 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
             ),
                          // Adjust the chatbox position based on keyboard visibility
               AnimatedContainer(
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 height: isKeyboardVisible ? kToolbarHeight + 250: 0,
-                child: SizedBox(),),
+                child: const SizedBox(),),
           ],
         ),
       ),

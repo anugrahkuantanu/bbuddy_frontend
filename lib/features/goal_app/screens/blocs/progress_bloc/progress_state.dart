@@ -8,10 +8,10 @@ class ProgressLoading extends ProgressState{}
 
 class ProgressLoaded extends ProgressState{
   final Goal goal;
-  final List<Milestone> milestone;
+  // final List<Milestone> milestone;
   ProgressLoaded({
     required this.goal,
-    required this.milestone
+    // required this.milestone
   });
 }
 

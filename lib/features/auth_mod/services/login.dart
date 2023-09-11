@@ -47,7 +47,7 @@ Future<String> loginForAccessToken(FormData loginData, BuildContext context) asy
       // Successful login
 
       Token token = Token.fromJson(response.data['access_token']);
-      RefreshToken refreshToken = RefreshToken.fromJson(response.data['refresh_token']);
+      // RefreshToken refreshToken = RefreshToken.fromJson(response.data['refresh_token']);
 
 
       // Use the access token as needed
@@ -134,10 +134,10 @@ class UserProvider extends ChangeNotifier {
 
   UserProvider() {
     // Call CheckLoginStatus() when the UserProvider object is created
-    CheckLoginStatus();
+    checkLoginStatus();
   }
 
-  void CheckLoginStatus() async {
+  void checkLoginStatus() async {
     Token? accessToken = await getAccessToken();
     if (accessToken != null) {
       _isLoggedIn = true;

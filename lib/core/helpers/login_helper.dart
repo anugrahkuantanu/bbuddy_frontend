@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 
 import '../../config/config.dart';
 import '../core.dart';
-import 'package:dio/dio.dart';
 
 
 // void doAuth(BuildContext context, String username, String password) async {

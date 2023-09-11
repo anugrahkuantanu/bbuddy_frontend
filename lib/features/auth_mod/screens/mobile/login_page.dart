@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/config/config.dart';
 import '../../../../../core/core.dart';
 import '../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,12 +27,12 @@ class _LoginPageState extends State<LoginPage> {
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
-            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-            margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: BlocProvider(
               create: (context) => LoginBloc(context),
               // create: (context) => LoginFormBloc(),
-              child: LoginForm(),
+              child: const LoginForm(),
             ),
           ),
         ),
@@ -43,6 +42,8 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class LoginForm extends StatefulWidget {
+  const LoginForm ({Key? key}):super(key: key);
+
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -61,7 +62,7 @@ class _LoginFormState extends State<LoginForm> {
         }
         else if (state is LoginSuccess) {
           UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-          userProvider.CheckLoginStatus();
+          userProvider.checkLoginStatus();
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
         } else if (state is LoginFailure) {
           if (state.error.contains('The username you entered isn\'t connected to an account')) {
@@ -79,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
             children: [
               LoginLogo(),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Container(
                 child: TextFormField(
                   controller: usernameController,
@@ -96,7 +97,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 decoration: ThemeHelper().inputBoxDecorationShaddow(),
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               Container(
                 child: TextFormField(
                   controller: passwordController,
@@ -114,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
                 decoration: ThemeHelper().inputBoxDecorationShaddow(),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               Button(
                 label: 'Sign In',
                 onPressed: () {
@@ -125,11 +126,11 @@ class _LoginFormState extends State<LoginForm> {
                   }
                 },
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               Button(
                 label: 'Sign Up',
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationPage()));
                 },
               ),
             ],

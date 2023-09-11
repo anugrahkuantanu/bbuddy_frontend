@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:bbuddy_app/features/auth_mod/models/token.dart';
 
 import '../core/classes/cache_manager.dart';
 

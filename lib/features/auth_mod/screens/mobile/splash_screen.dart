@@ -5,7 +5,7 @@ import '../../../../../app.dart';
 import '../widgets/widget.dart';
 
 class SplashScreen extends StatefulWidget {
-  SplashScreen({Key? key, required this.title}) : super(key: key);
+  const SplashScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 

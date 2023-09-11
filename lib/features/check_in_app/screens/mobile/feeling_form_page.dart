@@ -51,7 +51,7 @@ class FeelingFormPage extends StatelessWidget {
 
 Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<String, List<String>> feelingForms) {
   double screenWidth = MediaQuery.of(context).size.width;
-  ScreenUtil.init(context, designSize: Size(414, 896));
+  ScreenUtil.init(context, designSize: const Size(414, 896));
 
   double textSize;
   if (screenWidth < 380) {
@@ -65,13 +65,13 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
   return Scaffold(
     appBar: AppBar(
       elevation: 0,
-      title: Text(
+      title: const Text(
         '',
         style: TextStyle(
           color: Colors.white,
         ),
       ),
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
     ),
     body: SafeArea(
       child: SingleChildScrollView(
@@ -94,7 +94,7 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               Container(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -111,8 +111,8 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
                               textColor: Colors.white,
                               fontSize: textSize,
                               buttonStyle: ElevatedButton.styleFrom(
-                                backgroundColor: buttonColors[feeling] ?? Color(0xFF0077C2),
-                                padding: EdgeInsets.all(16.0),
+                                backgroundColor: buttonColors[feeling] ?? const Color(0xFF0077C2),
+                                padding: const EdgeInsets.all(16.0),
                               ),
                             ),
                           ),

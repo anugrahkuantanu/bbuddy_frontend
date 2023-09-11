@@ -1,19 +1,16 @@
 import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/features/goal_app/screens/screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '/config/config.dart';
 
 class ErrorUI extends StatelessWidget {
   final String errorMessage;
   final String? title;
 
-  ErrorUI({required this.errorMessage, this.title});
+  const ErrorUI({Key? key, required this.errorMessage, this.title}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
     return Scaffold(
         appBar: AppBar(
         title: Text(title ?? ""),
@@ -21,10 +18,10 @@ class ErrorUI extends StatelessWidget {
       ),
             body: Center(
         child: Padding(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Text(
           'Error: $errorMessage',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
+          style: const TextStyle(color: Colors.white, fontSize: 18.0),
           ),
         ),
       ),
@@ -37,7 +34,7 @@ class GoalCreatedThisWeek extends StatelessWidget {
   final String response;
   final String? title;
 
-  GoalCreatedThisWeek ({required this.response, this.title});
+  const GoalCreatedThisWeek ({Key? key, required this.response, this.title}):super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,10 +45,10 @@ class GoalCreatedThisWeek extends StatelessWidget {
       ),
             body: Center(
         child: Padding(
-          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Text(
           'Response: $response',
-          style: TextStyle(color: Colors.white, fontSize: 18.0),
+          style: const TextStyle(color: Colors.white, fontSize: 18.0),
           ),
         ),
       ),
@@ -64,7 +61,7 @@ class NotEnoughtReflection extends StatelessWidget {
   final String response;
   final String? title;
 
-  NotEnoughtReflection({required this.response, this.title});
+  const NotEnoughtReflection({Key? key, required this.response, this.title}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +70,11 @@ class NotEnoughtReflection extends StatelessWidget {
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
         leading: IconButton(
-        icon: Icon(Icons.arrow_back), // add your custom icon here
+        icon: const Icon(Icons.arrow_back), // add your custom icon here
         onPressed: () {
           Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GoalHome()),
+          MaterialPageRoute(builder: (context) => const GoalHome()),
         );
        },
       ),
@@ -174,7 +171,6 @@ class LoadingUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
     return Scaffold(
         appBar: AppBar(
         title: Text(title ?? ""),

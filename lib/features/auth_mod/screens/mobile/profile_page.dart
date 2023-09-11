@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'login_page.dart';
 import '../../services/login.dart';
-import '/config/config.dart';
 import '../../../../../core/core.dart';
 import '../../services/service.dart';
 import '../screen.dart';
@@ -14,7 +13,7 @@ import '../widgets/widget.dart';
 class ProfilePage extends StatefulWidget {
   final int selectedIndex;
 
-  ProfilePage({Key? key, this.selectedIndex = 3}) : super(key: key);
+  const ProfilePage({Key? key, this.selectedIndex = 3}) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -25,10 +24,10 @@ class _ProfilePageState extends State<ProfilePage> {
     Cache.instance.clear();
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
-    userProvider.CheckLoginStatus();
+    userProvider.checkLoginStatus();
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) =>  LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
   
@@ -36,9 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    double _drawerIconSize = 24;
-    double _drawerFontSize = 17;
-    double screenWidth = MediaQuery.of(context).size.width;
+    // double _drawerIconSize = 24;
+    // double _drawerFontSize = 17;
+    // double screenWidth = MediaQuery.of(context).size.width;
     final userDetails = Provider.of<UserDetailsProvider>(context);
     //print(userDetails.details?.firstName);
     return Scaffold(
@@ -56,17 +55,17 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: EdgeInsets.only(top: 150.w),
               child: Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                margin: const EdgeInsets.fromLTRB(25, 10, 25, 10),
                 padding: EdgeInsets.all(20.w),
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.w),
                   boxShadow: [
-                    BoxShadow(
+                    const BoxShadow(
                       color: Colors.black12,
                       blurRadius: 10,
-                      offset: const Offset(0, 2),
+                      offset: Offset(0, 2),
                     ),
                   ],
                 ),
@@ -83,9 +82,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             style: TextStyle(
                                 fontSize: 22.sp,
                                 fontWeight: FontWeight.bold,
-                                color: Color(0xFF404659)),
+                                color: const Color(0xFF404659)),
                           )
-                        : CircularProgressIndicator(),
+                        : const CircularProgressIndicator(),
                     SizedBox(height: 100.h),
                     Container(
                       padding: EdgeInsets.all(10.w),
@@ -100,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   label: 'Email',
                                   value: userDetails.details!.email,
                                 )
-                              : CircularProgressIndicator(),
+                              : const CircularProgressIndicator(),
                           SizedBox(height: 50.h),
                           userDetails.details != null
                               ? UserInfoItem(
@@ -108,7 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   label: 'Phone',
                                   value: userDetails.details!.phone ?? '-',
                                 )
-                              : CircularProgressIndicator(),
+                              : const CircularProgressIndicator(),
                         ],
                       ),
                     ),

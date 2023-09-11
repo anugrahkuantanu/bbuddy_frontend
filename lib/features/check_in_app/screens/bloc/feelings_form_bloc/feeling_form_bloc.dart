@@ -25,12 +25,12 @@ class FeelingBloc extends Bloc<FeelingEvent, FeelingState> {
   }
 
   final Map<String, Color> buttonColors = {
-    'Hurt': Color(0xFF68d0ff),
-    'Sad': Color(0xFFb383ff),
-    'Happy': Color(0xFF65dc99),
-    'Anxious': Color(0xFFFF8C00),
-    'Embarrassed': Color(0xFFFFC300),
-    'Angry': Color(0xFFA63232)
+    'Hurt': const Color(0xFF68d0ff),
+    'Sad': const Color(0xFFb383ff),
+    'Happy': const Color(0xFF65dc99),
+    'Anxious': const Color(0xFFFF8C00),
+    'Embarrassed': const Color(0xFFFFC300),
+    'Angry': const Color(0xFFA63232)
   };
 
   final Map<String, List<String>> feelingForms = {
