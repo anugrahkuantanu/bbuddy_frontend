@@ -1,21 +1,37 @@
 import 'dart:async';
+import 'package:bbuddy_app/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import '../../services/service.dart';
 import '../../models/model.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/config/config.dart';
 
+
+
+// Events
+@immutable
 abstract class ChatEvent {}
 
-class FetchChatHistoryEvent extends ChatEvent {
+class ChatInitialEvent extends ChatEvent{
   final int goalId;
   final int currentPage;
   final int pageSize;
 
-  FetchChatHistoryEvent(this.goalId, this.currentPage, this.pageSize);
+  ChatInitialEvent({
+    required this.goalId,
+    required this.currentPage,
+    required this.pageSize,
+  });
 }
+
+class StartChatEvent extends ChatEvent {}
+class StreamChatEvent extends ChatEvent {
+  final String message;
+  StreamChatEvent(this.message);
+}
+class EndChatEvent extends ChatEvent {}
+
 
 class SendMessageEvent extends ChatEvent {
   final String message;
@@ -23,40 +39,36 @@ class SendMessageEvent extends ChatEvent {
   SendMessageEvent(this.message);
 }
 
+
 class IncomingMessageEvent extends ChatEvent {
   final dynamic messageType;
   final dynamic message;
   final dynamic sender;
 
-  IncomingMessageEvent(this.messageType, this.message, this.sender);
-}
-
-class FetchOldChatHistoryEvent extends ChatEvent {
-  final int goalId;
-  final int currentPage;
-  final int pageSize;
-
-  FetchOldChatHistoryEvent(this.goalId, this.currentPage, this.pageSize);
+  IncomingMessageEvent({
+    required this.messageType,
+    required this.message,
+    required this.sender,
+  });
 }
 
 
 
-
-
-
-//state
-
+// States
+@immutable
 abstract class ChatState {}
+
+class LoadingState extends ChatState{}
 
 class InitialChatState extends ChatState {}
 
-class ChatHistoryFetchedState extends ChatState {
+class ChatIsLoaded extends ChatState {
   final List<Message> messages;
 
-  ChatHistoryFetchedState(this.messages);
+  ChatIsLoaded(this.messages);
 }
 
-class MessageSentState extends ChatState {}
+
 
 class IncomingMessageState extends ChatState {
   final Message message;
@@ -70,39 +82,25 @@ class ErrorState extends ChatState {
   ErrorState(this.errorMessage);
 }
 
+class MessageSentState extends ChatState {} 
 
-class ConnectionSuccessState extends ChatState {}
 
-class TypingAnimationState extends ChatState {}
 
-class StopTypingAnimationState extends ChatState {}
-
-class ChatStartedState extends ChatState {}
-
-class ChatEndedState extends ChatState {}
 
 
 
 
 //bloc
 
-class ChatBloc {
-  StreamController<ChatEvent> _eventController = StreamController<ChatEvent>();
-  StreamController<ChatState> _stateController = StreamController<ChatState>.broadcast();
-
-  Sink<ChatEvent> get eventSink => _eventController.sink;
-  Stream<ChatState> get stateStream => _stateController.stream;
-
+class ChatBloc extends Bloc<ChatEvent, ChatState> {
   List<Message> messages = [];
   final int pageSize = 10;
-  int currentPage = 1;
+  int currentPage = 0;
   bool isLoadingHistory = false;
-  
+
   GoalChat? chat;
 
-  ChatBloc(int goalId) {
-    _eventController.stream.listen(_mapEventToState);
-
+  ChatBloc(int goalId) : super(InitialChatState()) {
     chat = GoalChat(
       goalId: goalId,
       onMessageReceived: _handleIncomingMessage,
@@ -110,126 +108,85 @@ class ChatBloc {
       onConnectionSuccess: _handleConnectionSuccess,
     );
 
-    // Initial fetch for chat history
-    _eventController.sink.add(FetchChatHistoryEvent(goalId, currentPage, pageSize));
+    on<ChatInitialEvent>(_chatInitialEvent);
+    on<SendMessageEvent>(_sendMessageEvent);
+    on<IncomingMessageEvent>(_incomingMessageEvent);
+    // Add other events similarly...
+
+    add(ChatInitialEvent(goalId: goalId, currentPage: currentPage, pageSize: pageSize));
   }
 
-void _mapEventToState(ChatEvent event) {
-  if (event is FetchChatHistoryEvent) {
-    if (isLoadingHistory) return;
+
+
+  Future<void> _chatInitialEvent(ChatInitialEvent event, Emitter<ChatState> emit) async {
+    emit(LoadingState());
 
     isLoadingHistory = true;
 
-    StreamSubscription<List<Message>> subscription = fetchChatHistory(event.goalId, event.currentPage, event.pageSize).listen((fetchedMessages) {
+    try {
+      final fetchedMessages = await fetchChatHistory(event.goalId, event.currentPage, event.pageSize).first;
       messages.addAll(fetchedMessages.reversed);
-      _stateController.sink.add(ChatHistoryFetchedState(messages));
       currentPage++;
-    });
+      print(messages);
+      emit(ChatIsLoaded(messages));
+    } catch (error) {
+      emit(ErrorState('Error fetching chat history: $error'));
+    }
 
-    subscription.onError((error) {
-      _stateController.sink.add(ErrorState('Error fetching chat history: $error'));
-      isLoadingHistory = false;
-    });
+    isLoadingHistory = false;
+  }
 
-    subscription.onDone(() {
-      isLoadingHistory = false;
-    });
-
-  } else if (event is SendMessageEvent) {
+  Future<void> _sendMessageEvent(SendMessageEvent event, Emitter<ChatState> emit) async {
     messages.add(Message(text: event.message, isBot: false));
     messages.add(Message(text: '', isBot: true, isWaiting: true));
-    _stateController.sink.add(MessageSentState());
     chat?.sendMessage(event.message);
-  } else if (event is IncomingMessageEvent) {
-    // This might be redundant if the chat object sends messages via the same mechanism.
-    _handleIncomingMessage(event.messageType, event.message, event.sender);
+    emit(ChatIsLoaded(messages));
   }
-}
 
+  void _incomingMessageEvent(IncomingMessageEvent event, Emitter<ChatState> emit) {
+    _handleIncomingMessage(event.messageType, event.message, event.sender);
+    emit(ChatIsLoaded(messages));
+  }
 
-void _handleIncomingMessage(dynamic messageType, dynamic message, dynamic sender) {
+  void _handleIncomingMessage(dynamic messageType, dynamic message, dynamic sender) {
     int lastIndex = messages.length - 1;
 
     if (messageType == 'start' && sender == "bot") {
-        // You can handle the start type here. For instance:
-        messages.add(Message(text: 'Chat started with bot.', isBot: true, isWaiting: false));
-        _stateController.sink.add(ChatStartedState());
-
+      add(StartChatEvent());
     } else if (messageType == 'stream' && sender == "bot") {
-        if (messages.last.isWaiting) {
-            messages.removeAt(lastIndex);
-            messages.insert(lastIndex, Message(text: message, isBot: true, isWaiting: false));
-        } else {
-            messages[lastIndex].text += message;
-        }
-        _stateController.sink.add(IncomingMessageState(messages.last));
-
+      if (messages.last.isWaiting) {
+        messages.removeAt(lastIndex);
+        messages.insert(lastIndex, Message(text: message, isBot: true, isWaiting: false));
+      } else {
+        messages[lastIndex].text += message;
+      }
+      add(StreamChatEvent(message));
     } else if (messageType == 'end' && sender == 'bot') {
-        // Handle end type. For instance:
-        messages.add(Message(text: 'Bot has finished its reply.', isBot: true, isWaiting: false));
-        _stateController.sink.add(ChatEndedState());
+      add(EndChatEvent());
     }
-}
-
+  }
 
   void _handleConnectionError(dynamic error) {
-    _stateController.sink.add(ErrorState('WebSocket connection error: $error'));
+    // Consider creating a new event for this action or handling it differently.
   }
 
   void _handleConnectionSuccess() {
-    _stateController.sink.add(ConnectionSuccessState());
+    // Consider creating a new event for this action or handling it differently.
   }
 
-  void startTypingAnimation() {
-    _stateController.sink.add(TypingAnimationState());
-  }
-
-  void stopTypingAnimation() {
-    _stateController.sink.add(StopTypingAnimationState());
-  }
-
-
-
-void _fetchOldChatHistory(int goalId, int currentPage, int pageSize) {
-  if (isLoadingHistory) return;
-
-  isLoadingHistory = true;
-  final nextPage = currentPage + 1;
-
-  StreamSubscription<List<Message>> subscription = fetchChatHistory(goalId, nextPage, pageSize).listen((fetchedMessages) {
-    if (fetchedMessages.isNotEmpty) {
-      messages.insertAll(0, fetchedMessages.reversed);
-      _stateController.sink.add(ChatHistoryFetchedState(messages));
-      this.currentPage = nextPage;
-    }
-  });
-
-  subscription.onError((error) {
-    _stateController.sink.add(ErrorState('Error fetching old chat history: $error'));
-    isLoadingHistory = false;
-  });
-
-  subscription.onDone(() {
-    isLoadingHistory = false;
-  });
-}
-
-
-
-  void dispose() {
-    _eventController.close();
-    _stateController.close();
+  @override
+  Future<void> close() {
     chat?.closeConnection();
+    return super.close();
   }
 }
 
 
 
-
-//UI
 
 class GoalChatPage extends StatefulWidget {
   final int goalId;
+  // List<Message> messages = [];
 
   GoalChatPage({required this.goalId, Key? key}) : super(key: key);
 
@@ -239,107 +196,46 @@ class GoalChatPage extends StatefulWidget {
 
 class _GoalChatPageState extends State<GoalChatPage> {
   late ChatBloc _chatBloc;
-  List<Message> messages = [];
-
   TextEditingController messageController = TextEditingController();
-  bool isTyping = false;
-  double dotsPosition = 0;
-
   final FocusNode _focusNode = FocusNode();
-  bool isKeyboardVisible = false;
-
   final ScrollController _scrollController = ScrollController();
-  bool incomingMsgInProgress = false;
+  bool isKeyboardVisible = false;
 
   @override
   void initState() {
     super.initState();
     _chatBloc = ChatBloc(widget.goalId);
-
-    _chatBloc.eventSink.add(FetchChatHistoryEvent(widget.goalId, 1, 10));
-
-_chatBloc.stateStream.listen((state) {
-  if (state is ChatHistoryFetchedState) {
-    setState(() {
-      messages.addAll(state.messages.reversed);
-      if (messages.isNotEmpty) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _scrollToBottom();
-        });
-      }
-    });
-  } else if (state is IncomingMessageState) {
-    setState(() {
-      messages.add(state.message);
-      _scrollToBottom();
-    });
-  } else if (state is MessageSentState) {
-    messageController.clear();
-    Future.delayed(Duration(seconds: 1), () {
-      _scrollToBottom();
-    });
-  } else if (state is ErrorState) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(state.errorMessage))
-    );
-  } else if (state is ConnectionSuccessState) {
-    // If you want to notify the user about a successful connection, you can do so here.
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Successfully connected!'))
-    );
-  } else if (state is TypingAnimationState) {
-    setState(() {
-      dotsPosition += 1;
-      if (dotsPosition > 2) {
-        dotsPosition = 0;
-      }
-    });
-  } else if (state is StopTypingAnimationState) {
-    // Handle stopping the typing animation here if needed
+    _chatBloc.add(ChatInitialEvent(goalId: widget.goalId, currentPage: 1, pageSize: 10));
+    // _focusNode.addListener(_onFocusChange);
+    // _scrollController.addListener(_scrollListener);
   }
-});
-
-
-    _focusNode.addListener(_onFocusChange);
-    _scrollController.addListener(_scrollListener);
-  }
-
-  void _onFocusChange() {
-    setState(() {
-      isKeyboardVisible = _focusNode.hasFocus;
-    });
-
-    if (isKeyboardVisible) {
-      Future.delayed(Duration(milliseconds: 300), () {
-        _scrollToBottom();
-      });
-    }
-  }
-
-  void _scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
-      duration: Duration(milliseconds: 5),
-      curve: Curves.easeInOut,
-    );
-  }
-
-  void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.minScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      // User has reached the top, fetch more chat history
-      // This will now be handled by sending a new FetchChatHistoryEvent to the ChatBloc
-      _chatBloc.eventSink.add(FetchChatHistoryEvent(widget.goalId, _chatBloc.currentPage + 1, 10));
-    }
-  }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
+    return BlocProvider(
+      create: (context) => _chatBloc,
+      child: BlocBuilder<ChatBloc, ChatState>(
+        bloc: _chatBloc,
+        builder: (context, state) {
+            if(state is LoadingState){
+              return LoadingUI(title: 'Chat Agent');
+            }
+            else if (state is ChatIsLoaded) {
+              return _buildUI(state.messages, context);
+            }
+            else if (state is ErrorState){
+              return ErrorUI(errorMessage: state.errorMessage);
+            }
+            else{
+              return Container();
+            }
+        },
+    ),
+    );
+  }
+
+  Widget _buildUI(List<Message> messages, BuildContext context) {
+    print("Yes!!");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -349,6 +245,12 @@ _chatBloc.stateStream.listen((state) {
             color: Colors.white,
           ),
         ),
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back), // add your custom icon here
+        onPressed: () {
+          Navigator.pop(context);
+       },
+      ),
       ),
       body: GestureDetector(
         onTap: () {
@@ -360,6 +262,7 @@ _chatBloc.stateStream.listen((state) {
             children: [
               Expanded(
                 child: ListView.builder(
+                  // reverse: true,
                   itemCount: messages.length,
                   itemBuilder: (BuildContext context, int index) {
                     Message message = messages[index];
@@ -390,7 +293,6 @@ _chatBloc.stateStream.listen((state) {
                 ),
               ),
               Container(
-                color: Color(0xFF2D425F),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
                   children: [
@@ -410,8 +312,7 @@ _chatBloc.stateStream.listen((state) {
                       onPressed: () {
                         String message = messageController.text.trim();
                         if (message.isNotEmpty) {
-                          _chatBloc.eventSink
-                              .add(SendMessageEvent(message));
+                          _chatBloc.add(SendMessageEvent(message));
                           messageController.clear();
                         }
                       },
@@ -432,7 +333,37 @@ _chatBloc.stateStream.listen((state) {
     messageController.dispose();
     _focusNode.dispose();
     _scrollController.dispose();
-    _chatBloc.dispose();
+    _chatBloc.close();
     super.dispose();
+    
   }
+
+  //   void _onFocusChange() {
+  //   setState(() {
+  //     isKeyboardVisible = _focusNode.hasFocus;
+  //   });
+
+  //   if (isKeyboardVisible) {
+  //     Future.delayed(Duration(milliseconds: 300), () {
+  //       _scrollToBottom();
+  //     });
+  //   }
+  // }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 5),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  // void _scrollListener() {
+  //   if (_scrollController.position.pixels == _scrollController.position.minScrollExtent &&
+  //       !_scrollController.position.outOfRange) {
+  //     _chatBloc.add(ChatInitialEvent(goalId: widget.goalId, currentPage: _chatBloc.currentPage + 1, pageSize: 10));
+  //   }
+  // }
 }

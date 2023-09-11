@@ -4,7 +4,9 @@ import '../../../../main_app/services/service.dart';
 import 'dart:async';
 import '../../../services/service.dart';
 import '../../../models/model.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';class GoalBloc extends Bloc<GoalEvent, GoalState> {
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+class GoalBloc extends Bloc<GoalEvent, GoalState> {
   final CounterStats counterStats;
   List<Goal> generatedGoals = [];
   List<Goal> personalGoals= [];

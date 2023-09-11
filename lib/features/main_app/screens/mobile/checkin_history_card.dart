@@ -89,8 +89,6 @@ List<String> chekinHistory(String text) {
 
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
-    //pastCheckIns == null ? Container() : 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 28.w),
       child: GridView(

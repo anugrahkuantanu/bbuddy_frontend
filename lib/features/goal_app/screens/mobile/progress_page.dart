@@ -17,6 +17,7 @@ class ProgressPage extends StatefulWidget {
   final Goal goal;
   final bool generateMilestones;
   final Function(Goal goal)? updateCallBack;
+  
 
   ProgressPage({
     Key? key,
@@ -74,6 +75,7 @@ class ProgressPageState extends State<ProgressPage> {
             return LoadingUI(title: "Progress",);
           }
           else if (state is ProgressLoaded) {
+            print('milestone: ${state.milestone}' ); 
             return _buildProgressUI(state.goal);
           } 
           else {
@@ -104,7 +106,6 @@ class ProgressPageState extends State<ProgressPage> {
   Widget _buildProgressUI(Goal goal) {
   int finishedCount = goal.finishedMilestoneCount();
   double text_xl = 20.0.w;
-  var tm = context.watch<ThemeProvider>();
   return Scaffold(
     appBar: AppBar(
       automaticallyImplyLeading: false,
@@ -241,7 +242,8 @@ class ProgressPageState extends State<ProgressPage> {
                         initialValue: '',
                         allowNullValues: false,
                         onEdit: (content) {
-                          context.read<ProgressBloc>().add(AddMilestone(goal: goal, milestone: Milestone(content: content)));
+                          _progressBloc.add(AddMilestone(goal: goal, milestone: Milestone(content: content)));
+                          // context.read<ProgressBloc>().add(AddMilestone(goal: goal, milestone: Milestone(content: content)));
                           Navigator.of(context).pop(); 
                         }
                       ),
@@ -265,6 +267,7 @@ class ProgressPageState extends State<ProgressPage> {
               itemCount: goal.milestones.length,
               itemBuilder: (context, index) {
                 Milestone milestone = goal.milestones[index];
+                List<Milestone> milestones = goal.milestones;
                 return CheckBoxTile(
                   value: milestone.status,
                   onDelete: () {
@@ -283,7 +286,7 @@ class ProgressPageState extends State<ProgressPage> {
                     // context.read<ProgressBloc>().add(AddSubMilestone(goal: goal, milestone: newSubMilestone, index: index));
                   },
                   onUpdateGoal: () {
-                    _progressBloc.add(UpdateGoal(goal: goal));  // Example event to handle goal updates
+                    _progressBloc.add(UpdateGoal(goal: goal, milestone: milestones));  // NEED TO BE CHECK AGAIN
                   },
                   title: milestone.content,
                   backgroundColor: Color.fromRGBO(17, 32, 55, 1.0),
@@ -291,6 +294,7 @@ class ProgressPageState extends State<ProgressPage> {
                   tasks: milestone.tasks,
                 );
               },
+              
             ),
           ],
         ),

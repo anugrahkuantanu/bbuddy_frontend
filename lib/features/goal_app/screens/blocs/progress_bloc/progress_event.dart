@@ -78,7 +78,9 @@ class InitiateCall extends ProgressEvent {
 
 class UpdateGoal extends ProgressEvent {
   final Goal goal;
-  UpdateGoal({required this.goal});
+  final List<Milestone> milestone;
+
+  UpdateGoal({required this.goal, required this.milestone});
 }
 
 class AddMilestone extends ProgressEvent {

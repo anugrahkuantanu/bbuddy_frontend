@@ -12,6 +12,8 @@ import '../blocs/bloc.dart';
 
 
 class GoalHome extends StatefulWidget {
+
+  
   const GoalHome({Key? key}) : super(key: key);
 
   @override
@@ -67,7 +69,7 @@ class _GoalHomeState extends State<GoalHome> {
           } else if (state is GoalInsufficientReflections) {
             return NotEnoughtReflection(response: state.reason);
           }else if (state is GoalCreationDenied) {
-            return GoalCreatedThisWeek(response: state.reason);
+            return NotEnoughtReflection(response: state.reason);
           }
            else if (state is GoalError) {
             return ErrorUI(errorMessage: state.errorMessage);
