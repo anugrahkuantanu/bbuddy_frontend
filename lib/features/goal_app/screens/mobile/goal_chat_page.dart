@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:bbuddy_app/core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import '../../services/service.dart';
 import '../../models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/config/config.dart';
 
 
 
@@ -111,8 +109,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatInitialEvent>(_chatInitialEvent);
     on<SendMessageEvent>(_sendMessageEvent);
     on<IncomingMessageEvent>(_incomingMessageEvent);
-    // Add other events similarly...
-
     add(ChatInitialEvent(goalId: goalId, currentPage: currentPage, pageSize: pageSize));
   }
 
@@ -186,7 +182,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
 class GoalChatPage extends StatefulWidget {
   final int goalId;
-  // List<Message> messages = [];
 
   GoalChatPage({required this.goalId, Key? key}) : super(key: key);
 
@@ -218,7 +213,7 @@ class _GoalChatPageState extends State<GoalChatPage> {
         bloc: _chatBloc,
         builder: (context, state) {
             if(state is LoadingState){
-              return LoadingUI(title: 'Chat Agent');
+              return LoadingUI();
             }
             else if (state is ChatIsLoaded) {
               return _buildUI(state.messages, context);
@@ -350,15 +345,15 @@ class _GoalChatPageState extends State<GoalChatPage> {
   //   }
   // }
 
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 5),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
+  // void _scrollToBottom() {
+  //   if (_scrollController.hasClients) {
+  //     _scrollController.animateTo(
+  //       _scrollController.position.maxScrollExtent,
+  //       duration: Duration(milliseconds: 5),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
 
   // void _scrollListener() {
   //   if (_scrollController.position.pixels == _scrollController.position.minScrollExtent &&

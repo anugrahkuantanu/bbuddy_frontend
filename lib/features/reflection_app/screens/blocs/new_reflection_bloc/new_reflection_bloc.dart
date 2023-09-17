@@ -1,27 +1,26 @@
 import 'dart:async';
 import '../bloc.dart';
 
-class NewReflectionBloc {
-    final List topics;
-    List<String> userReflections;
-    final StreamController<NewReflectionState> _stateController = StreamController<NewReflectionState>.broadcast();
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-    NewReflectionBloc(this.topics) : userReflections = List.filled(topics.length, '') {
-        _stateController.add(ReflectionInitialState(userReflections));
-    }
+class NewReflectionBloc extends Bloc<NewReflectionEvent, NewReflectionState> {
+  final List topics;
+  List<String> userReflections;
 
-    Stream<NewReflectionState> get stateStream => _stateController.stream;
+  NewReflectionBloc(this.topics)
+      : userReflections = List.filled(topics.length, ''),
+        super(ReflectionInitialState(userReflections: List.filled(topics.length, ''))) {
+    on<UpdateReflectionEvent>(_updateReflection);
+    on<SubmitReflectionEvent>(_submitReflection);
+  }
 
-    void add_event(NewReflectionEvent event) {
-        if (event is UpdateReflectionEvent) {
-            userReflections[event.index] = event.value;
-            _stateController.add(ReflectionUpdatedState(userReflections));
-        } else if (event is SubmitReflectionEvent) {
-            _stateController.add(ReflectionSubmittedState(topics, userReflections));
-        }
-    }
+  void _updateReflection(UpdateReflectionEvent event, Emitter<NewReflectionState> emit) {
+    userReflections[event.index] = event.value;
+    emit(ReflectionUpdatedState(userReflections: userReflections));
+  }
 
-    void dispose() {
-        _stateController.close();
-    }
+  void _submitReflection(SubmitReflectionEvent event, Emitter<NewReflectionState> emit) {
+    emit(ReflectionSubmittedState(topics: topics, userReflections: userReflections));
+  }
 }
+

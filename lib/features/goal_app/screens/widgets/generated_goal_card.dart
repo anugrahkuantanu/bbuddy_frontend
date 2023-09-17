@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/model.dart';
 import '../../screens/screen.dart';
+import '../../controllers/controller.dart';
 
 class GeneratedGoalsCard extends StatelessWidget {
   final List<Goal?> generatedGoals;
@@ -49,7 +50,7 @@ class GeneratedGoalsCard extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProgressPage(goal: goal,),
+                        builder: (context) => ProgressController(goal: goal,),
                       ),
                     );
                   },

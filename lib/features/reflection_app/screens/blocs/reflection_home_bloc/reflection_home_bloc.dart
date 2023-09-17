@@ -1,84 +1,62 @@
-import 'package:flutter/material.dart';
+import 'package:bbuddy_app/core/core.dart';
 import '../../../services/service.dart';
 import '../../../../main_app/services/service.dart';
 import '../../../models/model.dart';
 import 'package:provider/provider.dart';
 import '../../blocs/bloc.dart';
-import '../../screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../check_in_app/services/service.dart';
 
 
 class ReflectionHomeBloc extends Bloc<ReflectionHomeEvent, ReflectionHomeState> {
-  final CheckInService checkInService;
+  final CheckInService? checkInService;
 
-  ReflectionHomeBloc({required this.checkInService}) : super(ReflectionHomeInitial());
+  ReflectionHomeBloc({required this.checkInService}) : super(ReflectionHomeInitial()) {
+  on<LoadReflectionHome>(_loadReflectionHome);
+  on<CreateNewReflectionEvent>(_createNewReflection);
+}
 
-  @override
-  Stream<ReflectionHomeState> mapEventToState(ReflectionHomeEvent event) async* {
-      if (event is LoadReflectionHome) {
-          yield* _loadReflectionHome();
-      } else if (event is CreateNewReflectionEvent) {
-          yield* _createNewReflection(event.context);
-      }
-  }
-
- Stream<ReflectionHomeState> _loadReflectionHome() async* {
-    yield ReflectionHomeLoading();
+  Future<void> _loadReflectionHome(LoadReflectionHome event, Emitter<ReflectionHomeState> emit) async {
+    emit(ReflectionHomeLoading());
     
     try {
-      int checkInCount = await checkInService.countCheckIn();
+      int? checkInCount = await checkInService!.countCheckIn();
       int modulo = checkInCount % 3;
       int checkInNeeded = 3 - modulo;
       if (checkInCount >= 3) {
-        List<Reflection> history = await getReflectionHistory(); 
-        yield ReflectionHomeHasEnoughCheckIns(history);
+        List<Reflection> history = await getReflectionHistory() ?? [];
+        emit(ReflectionHomeHasEnoughCheckIns(history));
       } else {
-        yield ReflectionHomeInsufficientCheckIns(errorMessage: checkInNeeded.toString());
+        emit(ReflectionHomeInsufficientCheckIns(errorMessage: checkInNeeded.toString()));
       }
     } catch (error) {
-      yield ReflectionHomeError("Failed to load reflection home.");
+      emit(ReflectionHomeError(AppStrings.errorLoadReflection));
     }
   }
 
-  Stream<ReflectionHomeState> _createNewReflection(BuildContext context) async* {
-      try {
-          final counterStats = Provider.of<CounterStats>(context, listen: false);
-          int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
-        
-          if (checkInCount < 3) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                      return AlertDialog(
-                          content: Text(
-                              "You need at least 3 check-ins to create a new reflection.",
-                              maxLines: 5,
-                          ),
-                          actions: [
-                              TextButton(
-                                  onPressed: () {
-                                      Navigator.of(context).pop();
-                                  },
-                                  child: Text('Close'),
-                              ),
-                          ],
-                      );
-                  },
-              );
-          } else {
-              List<Reflection> history = await getReflectionHistory();
-              yield ReflectionHomeHasEnoughCheckIns(history);
-              List reflectionTopics = await getReflectionTopics();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NewReflectionPage(topics: reflectionTopics),
-                  ),
-              );
-          }
-      } catch (error) {
-          yield ReflectionHomeError("An error occurred while trying to create a new reflection.");
+  Future<void> _createNewReflection(CreateNewReflectionEvent event, Emitter<ReflectionHomeState> emit) async {
+    try {
+      final counterStats = Provider.of<CounterStats>(event.context, listen: false);
+      int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
+      
+      if (checkInCount < 3) {
+        emit(NeedsMoreCheckIns()); // This state indicates the need for more check-ins.
+      } else {
+        List<Reflection> history = await getReflectionHistory() ?? [];
+        emit(ReflectionHomeHasEnoughCheckIns(history));
+
+        List reflectionTopics = await getReflectionTopics() ?? [];
+        emit(NavigateToNewReflectionPage(reflectionTopics));
+
+
+        // List<Reflection> history = await getReflectionHistory();
+        // emit(ReflectionHomeHasEnoughCheckIns(history));
+
+        // List reflectionTopics = await getReflectionTopics();
+        // emit(NavigateToNewReflectionPage(reflectionTopics)); // This state indicates the need to navigate.
       }
+    } catch (error) {
+      emit(ReflectionHomeError(AppStrings.errorCreateNewReflection));
+    }
   }
 }

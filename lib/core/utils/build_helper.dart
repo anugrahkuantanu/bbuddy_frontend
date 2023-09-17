@@ -1,6 +1,7 @@
 import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/features/goal_app/screens/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorUI extends StatelessWidget {
   final String errorMessage;
@@ -14,7 +15,7 @@ class ErrorUI extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
         title: Text(title ?? ""),
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
       ),
             body: Center(
         child: Padding(
@@ -41,7 +42,7 @@ class GoalCreatedThisWeek extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
         title: Text(title ?? ""),
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
       ),
             body: Center(
         child: Padding(
@@ -84,24 +85,24 @@ class NotEnoughtReflection extends StatelessWidget {
           textAlign: TextAlign.center,
           text: TextSpan(
             style: TextStyle(
-              fontSize: 18.0,
+              fontSize: 18.0.w,
               color: Colors.white,
             ),
             children: [
-              TextSpan(
+              const TextSpan(
                 text: 'You need\n\n',
               ),
               TextSpan(
                 text: response,
                 style: TextStyle(
-                  fontSize: 52.0,
+                  fontSize: 52.0.w,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
               TextSpan(
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 18.0.w,
                   color: Colors.white,
                 ),
                 text: '\n\nReflection(s) to create the generated goals',
@@ -133,24 +134,24 @@ class NotEnoughtCheckIn extends StatelessWidget {
           textAlign: TextAlign.center,
           text: TextSpan(
             style: TextStyle(
-              fontSize: 18.0,
+              fontSize: 18.0.w,
               color: Colors.white,
             ),
             children: [
-              TextSpan(
+              const TextSpan(
                 text: 'You need\n\n',
               ),
               TextSpan(
                 text: response,
                 style: TextStyle(
-                  fontSize: 52.0,
+                  fontSize: 52.0.w,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
               TextSpan(
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 18.0.w,
                   color: Colors.white,
                 ),
                 text: '\n\nCheck-in(s) to generate the reflections',
@@ -165,20 +166,37 @@ class NotEnoughtCheckIn extends StatelessWidget {
 }
 
 class LoadingUI extends StatelessWidget {
-  final String? title;
-
-  LoadingUI({required this.title});
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-        title: Text(title ?? ""),
-        automaticallyImplyLeading: false,
-      ),
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),
+    );
+  }
+}
+
+class DialogHelper {
+  static void showDialogMessage(BuildContext context, {required String message, String title = ''}) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: title.isNotEmpty ? Text(title) : null,
+          content: Text(
+            message,
+            maxLines: 5,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

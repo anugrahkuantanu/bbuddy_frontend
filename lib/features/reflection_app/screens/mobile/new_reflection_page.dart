@@ -1,48 +1,54 @@
 import 'package:flutter/material.dart';
 import 'view_reflection_results.dart';
 import '../blocs/bloc.dart';
+import '../../../../core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/config/config.dart';
+import '../../controllers/controller.dart';
 
+class NewReflectionPage extends StatelessWidget {
+  final List<dynamic> topics;
 
-class NewReflectionPage extends StatefulWidget {
-  final List topics;
-  final NewReflectionBloc bloc;
-
-  NewReflectionPage({Key? key, required this.topics})
-      : bloc = NewReflectionBloc(topics),
-        super(key: key);
-
-  @override
-  _NewReflectionPageState createState() => _NewReflectionPageState();
-}
-
-class _NewReflectionPageState extends State<NewReflectionPage> {
+  NewReflectionPage({Key? key, required this.topics}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-  var tm = context.watch<ThemeProvider>();
+    return BlocProvider(
+      create: (context) => NewReflectionBloc(topics),
+      child: Builder(builder: (context) {
+        final bloc = BlocProvider.of<NewReflectionBloc>(context);
+        return BlocConsumer<NewReflectionBloc, NewReflectionState>(
+          listener: (context, state) {
+            if (state is ReflectionSubmittedState) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ViewReflectionController(
+                    topics: state.topics,
+                    userReflections: state.userReflections,
+                  ),
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state is ReflectionInitialState) {
+              return _buildMainUI(context, bloc, topics, state.userReflections);
+            }
+            else if (state is ReflectionUpdatedState) {
+              return _buildMainUI(context, bloc, topics, state.userReflections);
+            }
+            // Handle other states...
+            return Container(); // Fallback UI
+          },
+        );
+      }),
+    );
+  }
+
+  Widget _buildMainUI(BuildContext context, NewReflectionBloc bloc, List<dynamic> topics, List<String> userReflections) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return StreamBuilder<NewReflectionState>(
-      stream: widget.bloc.stateStream,
-      builder: (context, snapshot) {
-        if (snapshot.data is ReflectionSubmittedState) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ViewReflectionResults(
-                  topics: (snapshot.data as ReflectionSubmittedState).topics,
-                  userReflections: (snapshot.data as ReflectionSubmittedState).userReflections,
-                ),
-              ),
-            );
-          });
-          return Container(); // Temporary widget after navigating
-        }
-
-        return Scaffold(
+            return Scaffold(
             body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -51,7 +57,7 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
                         SizedBox(height: 16.0),
                         Expanded(
                             child: ListView.builder(
-                                itemCount: widget.topics.length,
+                                itemCount: topics.length,
                                 itemBuilder: (context, index) {
                                     return Column(
                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,7 +70,7 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
                                                     borderRadius: BorderRadius.circular(screenWidth * 0.03),
                                                 ),
                                                 child: Text(
-                                                    widget.topics[index],
+                                                    topics[index],
                                                     style: TextStyle(
                                                         fontSize: 18.0,
                                                         color: Colors.white,
@@ -75,7 +81,7 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
                                             SizedBox(height: 20),
                                             TextFormField(
                                                 decoration: InputDecoration(
-                                                    hintText: 'Enter your thoughts here',
+                                                    hintText: AppStrings.enterYourThought,
                                                     border: OutlineInputBorder(
                                                         borderRadius: BorderRadius.circular(10.0),
                                                     ),
@@ -93,7 +99,7 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
                                                 maxLines: 10,
                                                 keyboardType: TextInputType.multiline,
                                                 onChanged: (value) {
-                                                    widget.bloc.add_event(UpdateReflectionEvent(index, value));
+                                                    bloc.add(UpdateReflectionEvent(index: index, value: value));
                                                 },
                                             ),
                                             SizedBox(height: 25),
@@ -107,47 +113,31 @@ class _NewReflectionPageState extends State<NewReflectionPage> {
             ),
             floatingActionButton: FloatingActionButton(
                 onPressed: () {
-                    widget.bloc.add_event(SubmitReflectionEvent());
+                    bloc.add(SubmitReflectionEvent());
                 },
                 backgroundColor: Color.fromRGBO(17, 32, 55, 1.0),
                 child: Icon(Icons.arrow_forward, color: Colors.white),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endDocked.withOffset(Offset(0, -50.0)),
-            floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+            // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked.withOffset(Offset(0, -50.0)),
+            // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         );
-      }
-    );
-  }
-
-
-
-  @override
-  void dispose() {
-    widget.bloc.dispose();
-    super.dispose();
   }
 }
 
-  extension CustomFloatingActionButtonLocation on FloatingActionButtonLocation {
-  FloatingActionButtonLocation withOffset(Offset offset) {
-    return FloatingActionButtonLocationWithOffset(this, offset);
-  }
-}
 
-class FloatingActionButtonLocationWithOffset extends FloatingActionButtonLocation {
-  final FloatingActionButtonLocation delegate;
-  final Offset offset;
+// class FloatingActionButtonLocationWithOffset extends FloatingActionButtonLocation {
+//   final FloatingActionButtonLocation delegate;
+//   final Offset offset;
 
-  FloatingActionButtonLocationWithOffset(this.delegate, this.offset);
+//   FloatingActionButtonLocationWithOffset(this.delegate, this.offset);
 
-  @override
-  Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
-    final Offset standardOffset = delegate.getOffset(scaffoldGeometry);
-    return Offset(standardOffset.dx + offset.dx, standardOffset.dy + offset.dy);
-  }
+//   @override
+//   Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
+//     final Offset standardOffset = delegate.getOffset(scaffoldGeometry);
+//     return Offset(standardOffset.dx + offset.dx, standardOffset.dy + offset.dy);
+//   }
 
-  @override
-  String toString() => '$delegate with offset $offset';
-}
+//   @override
+//   String toString() => '$delegate with offset $offset';
+// }
 
-// Assuming FloatingActionButton extension remains the same

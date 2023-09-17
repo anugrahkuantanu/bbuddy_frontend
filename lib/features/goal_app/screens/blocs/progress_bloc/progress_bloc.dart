@@ -2,181 +2,26 @@ import '../../../services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import '../bloc.dart';
-
 import '../../../models/model.dart';
 
 
-// class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
-//   final Goal goal;
-
-
-//   ProgressBloc({required this.goal}) : super(ProgressLoading());
-
-//   @override
-//   Stream<ProgressState> mapEventToState(ProgressEvent event) async* {
-//     if (event is InitializePersonalGoal) {
-//       yield* _initializePersonalGoal(event);
-//     } else if (event is DeleteGoal) {
-//       yield* _deleteGoal(event);
-//     } else if (event is DeleteMilestone) {
-//       yield* _deleteMilestone(event);
-//     } else if (event is ChangeMilestoneStatus) {
-//       yield* _changeMilestoneStatus(event);
-//     } else if (event is EditMilestone) {
-//       yield* _editMilestone(event);
-//     } else if (event is AddSubMilestone) {
-//       yield* _addSubMilestone(event);
-//     } else if (event is NavigateToChat) {
-//       yield* _navigateToChat(event);
-//     } else if (event is InitiateCall) {
-//       yield* _initiateCall(event);
-//     } else if (event is UpdateGoal) {
-//       yield* _updateGoal(event);
-//     } else if (event is AddMilestone) {
-//       yield* _addMilestone(event);
-//     }
-//   }
-
-//   Stream<ProgressState> _initializePersonalGoal(InitializePersonalGoal event) async* {
-//     yield ProgressLoading();
-//     try {
-//       Goal newGoal;
-//       if (event.generateMilestones) {
-//         newGoal = await setPersonalGoal(event.goal);
-//         event.generateMilestones = false;
-//       } else {
-//         newGoal = event.goal;
-//       }
-//       yield ProgressLoaded(goal: event.goal, milestone: newGoal.milestones);
-//       //MUSST BE PROVED
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _deleteGoal(DeleteGoal event) async* {
-//     try {
-//       bool isDeleted = await deleteGoal(event.goal.id!);
-//       if (isDeleted) {
-//         yield GoalDeleted(goal: event.goal);
-//       } else {
-//         yield ProgressError(errorMessage: "Failed to delete goal");
-//       }
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _deleteMilestone(DeleteMilestone event) async* {
-//     try {
-//       event.goal.milestones.removeAt(event.index);
-
-//       yield ProgressLoaded(goal: event.goal, milestone: event.goal.milestones);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _changeMilestoneStatus(ChangeMilestoneStatus event) async* {
-//     try {
-//       event.goal.milestones[event.index].status = event.status;
-//       yield ProgressLoaded(goal: event.goal, milestone: event.goal.milestones);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _editMilestone(EditMilestone event) async* {
-//     try {
-//       event.goal.milestones[event.index].content = event.content;
-//       yield ProgressLoaded(goal: event.goal, milestone: event.goal.milestones);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _addSubMilestone(AddSubMilestone event) async* {
-//     try {
-//       event.goal.milestones[event.index].tasks.add(event.milestone);
-//       yield ProgressLoaded(goal: event.goal, milestone: event.goal.milestones);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _navigateToChat(NavigateToChat event) async* {
-//     try {
-//       // Here, we'll directly navigate to the chat page, but it's not the best practice.
-//       // Instead, you could use a separate navigation manager or handle this in the UI listener.
-//       yield NavigateToChatState(goalId: event.goalId);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _initiateCall(InitiateCall event) async* {
-//     try {
-//       // Similar to the navigateToChat function, this can be handled in the UI listener.
-//       yield InitiateCallState(goalId: event.goalId);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _updateGoal(UpdateGoal event) async* {
-//     try {
-//       yield ProgressLoaded(goal: event.goal, milestone: event.milestone);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-
-//   Stream<ProgressState> _addMilestone(AddMilestone event) async* {
-//     try {
-//       event.goal.milestones.add(event.milestone);
-//       yield ProgressLoaded(goal: event.goal, milestone: event.goal.milestones);
-//     } catch (error) {
-//       yield ProgressError(errorMessage: error.toString());
-//     }
-//   }
-// }
-
-
-
-
-
 class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
-  final Goal goal;
+  Goal goal;
 
-  ProgressBloc({required this.goal}) : super(ProgressLoading());
-
-  @override
-  Stream<ProgressState> mapEventToState(ProgressEvent event) async* {
-    if (event is InitializePersonalGoal) {
-      yield* _initializePersonalGoal(event);
-    } else if (event is DeleteGoal) {
-      yield* _deleteGoal(event);
-    } else if (event is DeleteMilestone) {
-      yield* _deleteMilestone(event);
-    } else if (event is ChangeMilestoneStatus) {
-      yield* _changeMilestoneStatus(event);
-    } else if (event is EditMilestone) {
-      yield* _editMilestone(event);
-    } else if (event is AddSubMilestone) {
-      yield* _addSubMilestone(event);
-    } else if (event is NavigateToChat) {
-      yield* _navigateToChat(event);
-    } else if (event is InitiateCall) {
-      yield* _initiateCall(event);
-    } else if (event is UpdateGoal) {
-      yield* _updateGoal(event);
-    } else if (event is AddMilestone) {
-      yield* _addMilestone(event);
-    }
+  ProgressBloc({required this.goal}) : super(ProgressLoading()) {
+    on<InitializePersonalGoal>(_initializePersonalGoal);
+    on<DeleteGoal>(_deleteGoal);
+    on<DeleteMilestone>(_deleteMilestone);
+    on<ChangeMilestoneStatus>(_changeMilestoneStatus);
+    on<EditMilestone>(_editMilestone);
+    on<AddSubMilestone>(_addSubMilestone);
+    on<NavigateToChat>(_navigateToChat);
+    on<UpdateGoal>(_updateGoal);
+    on<AddMilestone>(_addMilestone);
   }
 
-  Stream<ProgressState> _initializePersonalGoal(InitializePersonalGoal event) async* {
-    yield ProgressLoading();
+  Future<void> _initializePersonalGoal(InitializePersonalGoal event, Emitter<ProgressState> emit) async {
+    emit(ProgressLoading());
     try {
       Goal newGoal;
       if (event.generateMilestones) {
@@ -185,94 +30,89 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
       } else {
         newGoal = event.goal;
       }
-      yield ProgressLoaded(goal: newGoal);
+      emit(ProgressLoaded(goal: newGoal));
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _deleteGoal(DeleteGoal event) async* {
+  Future<void> _deleteGoal(DeleteGoal event, Emitter<ProgressState> emit) async {
     try {
       bool isDeleted = await deleteGoal(event.goal.id!);
       if (isDeleted) {
-        yield GoalDeleted(goal: event.goal);
+        emit(GoalDeleted(goal: event.goal));  // Assuming you have a GoalDeleted state
       } else {
-        yield ProgressError(errorMessage: "Failed to delete goal");
+        emit(ProgressError(errorMessage: "Failed to delete goal"));
       }
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _deleteMilestone(DeleteMilestone event) async* {
+  Future<void> _deleteMilestone(DeleteMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones.removeAt(event.index);
-      yield ProgressLoaded(goal: event.goal);
+      updateGoal(event.goal);  // Assuming updateGoal is a function you have defined elsewhere
+      emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _changeMilestoneStatus(ChangeMilestoneStatus event) async* {
+  Future<void> _changeMilestoneStatus(ChangeMilestoneStatus event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones[event.index].status = event.status;
-      yield ProgressLoaded(goal: event.goal);
+      updateGoal(event.goal);
+      emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _editMilestone(EditMilestone event) async* {
+  Future<void> _editMilestone(EditMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones[event.index].content = event.content;
-      yield ProgressLoaded(goal: event.goal);
+      updateGoal(event.goal);
+      emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _addSubMilestone(AddSubMilestone event) async* {
+  Future<void> _addSubMilestone(AddSubMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones[event.index].tasks.add(event.milestone);
-      yield ProgressLoaded(goal: event.goal);
+      updateGoal(event.goal);
+      emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _navigateToChat(NavigateToChat event) async* {
+  Future<void> _navigateToChat(NavigateToChat event, Emitter<ProgressState> emit) async {
     try {
-      // Here, we'll directly navigate to the chat page, but it's not the best practice.
-      // Instead, you could use a separate navigation manager or handle this in the UI listener.
-      yield NavigateToChatState(goalId: event.goalId);
+      emit(NavigateToChatState(goalId: event.goalId));  // Assuming you have a NavigateToChatState
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _initiateCall(InitiateCall event) async* {
+  Future<void> _updateGoal(UpdateGoal event, Emitter<ProgressState> emit) async {
     try {
-      // Similar to the navigateToChat function, this can be handled in the UI listener.
-      yield InitiateCallState(goalId: event.goalId);
+      updateGoal(event.goal);
+      emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Stream<ProgressState> _updateGoal(UpdateGoal event) async* {
-    try {
-      yield ProgressLoaded(goal: event.goal);
-    } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
-    }
-  }
-
-  Stream<ProgressState> _addMilestone(AddMilestone event) async* {
+  Future<void> _addMilestone(AddMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones.add(event.milestone);
-      yield ProgressLoaded(goal: event.goal);
+      updateGoal(event.goal);
+      emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
-      yield ProgressError(errorMessage: error.toString());
+      emit(ProgressError(errorMessage: error.toString()));
     }
   }
 }

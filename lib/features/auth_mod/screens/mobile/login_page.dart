@@ -58,7 +58,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
         if(state is LoginLoading){
-          LoadingUI(title: '',);
+          LoadingUI();
         }
         else if (state is LoginSuccess) {
           UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);

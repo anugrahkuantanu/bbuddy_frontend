@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/screen.dart';
-
+import '../../controllers/controller.dart';
 
 class PersonalGoal extends StatefulWidget {
   List<Goal>? goals;
@@ -38,7 +38,7 @@ class _PersonalGoalState extends State<PersonalGoal> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProgressPage(goal: goal),
+            builder: (context) => ProgressController(goal: goal),
           ));
     } else {
       showDialog(

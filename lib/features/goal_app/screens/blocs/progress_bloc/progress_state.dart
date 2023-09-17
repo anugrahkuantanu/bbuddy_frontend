@@ -8,10 +8,8 @@ class ProgressLoading extends ProgressState{}
 
 class ProgressLoaded extends ProgressState{
   final Goal goal;
-  // final List<Milestone> milestone;
   ProgressLoaded({
     required this.goal,
-    // required this.milestone
   });
 }
 
@@ -29,10 +27,4 @@ class NavigateToChatState extends ProgressState {
   final int goalId;
 
   NavigateToChatState({required this.goalId});
-}
-
-class InitiateCallState extends ProgressState {
-  final int goalId;
-
-  InitiateCallState({required this.goalId});
 }

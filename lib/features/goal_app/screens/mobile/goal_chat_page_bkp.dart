@@ -38,8 +38,6 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
     fetchChatHistory(widget.goalId, currentPage, pageSize).listen((fetchedMessages) {
       setState(() {
         messages.addAll(fetchedMessages.reversed);
-        //messages.add(Message(text: '', isBot: true, isWaiting: true));
-        //isLoading = false;
       });
 
       if (messages.isNotEmpty) {

@@ -9,18 +9,17 @@ class CreateNewGoal extends GoalEvent {
   CreateNewGoal({this.startDate, this.endDate});
 }
 
-class ShowGoalError extends GoalEvent {
-  final String errorMessage;
-
-  ShowGoalError({required this.errorMessage});
-}
-
-
 class CreateGeneratedGoals extends GoalEvent {
   final DateTime? startDate;
   final DateTime? endDate;
 
   CreateGeneratedGoals({this.startDate, this.endDate});
+}
+
+class ShowGoalError extends GoalEvent {
+  final String errorMessage;
+
+  ShowGoalError({required this.errorMessage});
 }
 
 class CountReflections extends GoalEvent {}

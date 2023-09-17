@@ -3,14 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../screen.dart';
 import '../../models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '/config/config.dart';
 import '/core/utils/utils.dart';
 import '../blocs/bloc.dart';
-
-
-
-
-
 
 
 class ProgressPage extends StatefulWidget {
@@ -22,7 +16,8 @@ class ProgressPage extends StatefulWidget {
   ProgressPage({
     Key? key,
     required this.goal,
-    this.generateMilestones = false,
+    // this.generateMilestones = false,
+    required this.generateMilestones,
     this.updateCallBack,
   }) : super(key: key);
 
@@ -72,11 +67,9 @@ class ProgressPageState extends State<ProgressPage> {
         },
         builder: (context, state) {
           if (state is ProgressLoading){
-            return LoadingUI(title: "Progress",);
+            return LoadingUI();
           }
           else if (state is ProgressLoaded) {
-
-      print(state.goal.milestones);
             return _buildProgressUI(state.goal);
             
           } 
@@ -110,16 +103,17 @@ class ProgressPageState extends State<ProgressPage> {
   double text_xl = 20.0.w;
   return Scaffold(
     appBar: AppBar(
-      automaticallyImplyLeading: false,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back), // add your custom icon here
-        onPressed: () {
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GoalHome()),
-        );
-       },
-      ),
+      elevation: 0,
+      // automaticallyImplyLeading: false,
+      // leading: IconButton(
+      //   icon: Icon(Icons.arrow_back), // add your custom icon here
+      //   onPressed: () {
+      //     Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => GoalHome()),
+      //   );
+      //  },
+      // ),
       title: Text("Progess Page"),
       actions: [
         IconButton(

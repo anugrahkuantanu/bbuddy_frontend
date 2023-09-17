@@ -23,6 +23,33 @@ Future<List> getReflectionTopics() async {
   }
 }
 
+// Future<List<Reflection>> getReflectionHistory(
+//     {DateTime? startDate, DateTime? endDate}) async {
+//   final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
+//   // code here
+//   dio.interceptors.add(AuthInterceptor(dio));
+//   try {
+//     final response = await dio.get(
+//       '/reflection_history',
+//       queryParameters: {
+//         'start_date': startDate?.toIso8601String(),
+//         'end_date': endDate?.toIso8601String(),
+//       },
+//     );
+//     if (response.statusCode == 200) {
+//       final List<dynamic> reflectionsJson = response.data;
+//       final List<Reflection> reflections = reflectionsJson
+//           .map((reflectionJson) => Reflection.fromJson(reflectionJson))
+//           .toList();
+//       return reflections;
+//     } else {
+//       throw Exception('Failed to load reflections');
+//     }
+//   } catch (e) {
+//     throw Exception('Failed to load reflections: $e');
+//   }
+// }
+
 Future<List<Reflection>> getReflectionHistory(
     {DateTime? startDate, DateTime? endDate}) async {
   final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
@@ -37,7 +64,10 @@ Future<List<Reflection>> getReflectionHistory(
       },
     );
     if (response.statusCode == 200) {
-      final List<dynamic> reflectionsJson = response.data;
+      if (response.data is! List) {
+        throw Exception('Unexpected data format received');
+      }
+      final List<dynamic> reflectionsJson = response.data as List<dynamic>;
       final List<Reflection> reflections = reflectionsJson
           .map((reflectionJson) => Reflection.fromJson(reflectionJson))
           .toList();
@@ -49,6 +79,7 @@ Future<List<Reflection>> getReflectionHistory(
     throw Exception('Failed to load reflections: $e');
   }
 }
+
 
 Future<Reflection> getMoodReflections(
     List topics, List? userReflections, String heading) async {

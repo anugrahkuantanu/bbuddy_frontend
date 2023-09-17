@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/core.dart';
 import '../../screens/mobile/feeling_form_page.dart' as mobile;
 
+// ignore: must_be_immutable
 class FeelingsFormController extends StatefulController {
   final String _title = 'Check-In';
   String feeling;

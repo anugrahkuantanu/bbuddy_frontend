@@ -8,6 +8,7 @@ import '../screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/config/config.dart';
 import '../blocs/bloc.dart';
+import '../../controllers/controller.dart';
 
 
 
@@ -23,6 +24,7 @@ class GoalHome extends StatefulWidget {
 class _GoalHomeState extends State<GoalHome> {
   
   late final GoalBloc _bloc;
+  Widget? _currentView; 
 
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _GoalHomeState extends State<GoalHome> {
     _bloc = GoalBloc(counterStats: counterStats);
     _bloc.add(LoadGoals());
     _bloc.add(CountReflections());
+    // _currentView = LoadingUI(); 
   }
 
   @override
@@ -38,69 +41,42 @@ class _GoalHomeState extends State<GoalHome> {
     _bloc.close();
     super.dispose();
   }
-  Widget build(BuildContext context) {
+
+Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: _bloc,  // Use the already-initialized _bloc
-      child: BlocConsumer<GoalBloc, GoalState>(
+      value: _bloc,
+      child: BlocListener<GoalBloc, GoalState>(
         listener: (context, state) {
-            if (state is GoalCreatedSuccessfully) {
+          if (state is GoalCreatedSuccessfully) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProgressPage(goal: state.goal)),
-            ).then((result) {
-                _bloc.add(ResetGoal());
-            });
-          }else if (state is GoalInsufficientReflections) {
-            _showDialog(context, state.errorMessage);
-          } else if (state is GoalCreationDenied) {
-            _showDialog(context, state.reason);
-          } else if (state is GoalError) {
-            _showDialog(context, state.errorMessage);
-          }
-        },
-        builder: (context, state) {
-          if (state is GoalLoading) {
-            return LoadingUI(title:"Goals");
-          }else if (state is GoalHasNotEnoughReflections){
-            // return _buildJustPersonalGoalUI(state.personalGoals);
-            return _buildFullGoalUI([], state.personalGoals);
-          } else if (state is GoalHasEnoughReflections) {
-            return _buildFullGoalUI(state.generatedGoals, state.personalGoals);
+              MaterialPageRoute(builder: (context) => ProgressController(goal: state.goal)),
+            );
           } else if (state is GoalInsufficientReflections) {
-            return NotEnoughtReflection(response: state.reason);
-          }else if (state is GoalCreationDenied) {
-            return NotEnoughtReflection(response: state.reason);
-          }
-           else if (state is GoalError) {
-            return ErrorUI(errorMessage: state.errorMessage);
-          } else {
-            return Container(); // Fallback
+            DialogHelper.showDialogMessage(context, message: state.errorMessage, title: AppStrings.goalAlreadyCreated);
+          } else if (state is GoalCreationDenied) {
+            DialogHelper.showDialogMessage(context, message : state.reason, title: AppStrings.goalCreatedTitel);
+          } else if (state is GoalError) {
+            DialogHelper.showDialogMessage(context, message: state.errorMessage);
           }
         },
+        child: BlocBuilder<GoalBloc, GoalState>(
+          builder: (context, state) {
+            if (state is GoalLoading) {
+              return LoadingUI();
+            } else if (state is GoalHasNotEnoughReflections) {
+              _currentView = _buildFullGoalUI([], state.personalGoals);
+            } else if (state is GoalHasEnoughReflections) {
+              _currentView = _buildFullGoalUI(state.generatedGoals, state.personalGoals);
+            } 
+            return _currentView ?? Container();  // Always return the current view
+          },
+        ),
       ),
     );
-  }
-  void _showDialog(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Text(
-            message,
-            maxLines: 5,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+}
+
+
 
   Widget _buildFullGoalUI(List<Goal> generatedGoals, List<Goal> personalGoals) {
     ScreenUtil.init(context, designSize: const Size(414, 896));
@@ -172,10 +148,10 @@ class _GoalHomeState extends State<GoalHome> {
                                           _bloc.add(CreateGeneratedGoals());
                                         },
                                         child: Text(
-                                          'Hey there, \nyou dont have any generated Goal.',
+                                          AppStrings.dontHaveAnyGeneratedGoal,
                                           style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 14,  // adjust the font size as needed
+                                            fontSize: 14.w,  // adjust the font size as needed
                                           ),
                                         ),
                                       ),
@@ -216,3 +192,4 @@ class _GoalHomeState extends State<GoalHome> {
     );
   }
 }
+
