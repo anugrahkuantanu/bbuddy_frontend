@@ -48,6 +48,11 @@ dependencies:
   equatable: ^2.0.3
   firebase_core: ^2.15.1
   firebase_storage: ^11.2.6
+  firebase_auth: ^4.9.0
+  uuid: ^3.0.6
+  flutter_hooks: ^0.18.2+1
+  image_picker: ^0.8.4+11
+  cloud_firestore: ^4.9.1
 
 
 dev_dependencies:

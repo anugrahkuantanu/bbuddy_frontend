@@ -2,61 +2,68 @@ import 'package:bbuddy_app/features/check_in_app/controllers/main/feelings_form_
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/core.dart';
-import 'package:provider/provider.dart';
 import '/config/config.dart';
 import '../bloc/bloc.dart';
 import '../widget/widget.dart';
-
-
-
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 
 class CheckInHome extends StatelessWidget {
   const CheckInHome({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => CheckInHomeBloc()..add(UpdateUIEvent()),
+      child: BlocConsumer<CheckInHomeBloc, CheckInHomeState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is UpdateUIState) {
+            return _buildUI(context, state);
+          }
+          return const CircularProgressIndicator(); // Default state for loading or initial
+        },
+      ),
+    );
+  }
+
+  Widget _buildUI(BuildContext context, UpdateUIState state) {
+
     var tm = context.watch<ThemeProvider?>();
-    var bloc = CheckInHomeBloc();  // Instantiate the BLoC
+    var bloc = BlocProvider.of<CheckInHomeBloc>(context);
 
-    ScreenUtil.init(context, designSize: const Size(414, 896));
-
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double emojiSize = bloc.computeEmojiSize(screenWidth);
-    double textSize = bloc.computeTextSize(screenWidth);
-    double buttonHeight = bloc.computeButtonHeight(screenWidth, screenHeight);
-    Color textColor = bloc.getTextColor(tm!);
+    double emojiSize = 50.w;
+    double textSize = 16.sp;  // Calculate this
+    Color textColor = tm!.isDarkMode ? AppColors.textlight : AppColors.textdark;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Check-In'),
         centerTitle: true,
-        actions: actionsMenu(context),
+        actions: actionsMenu(context), // Assuming you have this function defined somewhere
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(screenWidth * 0.04.w),
+            padding: EdgeInsets.all(20.w),
             child: Column(
               children: [
                 Helper().ScreenHeadingContainer(context, 'How are you feeling?'),
                 Column(
-                  children: _buildFeelingButtons(context, bloc.feelings, emojiSize, textSize, textColor, buttonHeight, screenWidth),
+                  children: _buildFeelingButtons(context, bloc.feelings, emojiSize, textSize, textColor),
                 ),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomBar(),
+      bottomNavigationBar: BottomBar(), // Assuming you have this widget defined somewhere
     );
   }
 
-  List<Widget> _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize, double textSize, Color textColor, double buttonHeight, double screenWidth) {
+_buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize, double textSize, Color textColor) {
     List<Widget> feelingButtons = [];
 
     for (int i = 0; i < feelings.length; i += 2) {
@@ -77,11 +84,10 @@ class CheckInHome extends StatelessWidget {
         ),
       );
       if (i + 1 < feelings.length) {
-        rowChildren.add(SizedBox(width: screenWidth * 0.05.w));
+        rowChildren.add(SizedBox(width: 60.w));
         rowChildren.add(
           Expanded(
             child: 
-
               EntityButton(
               entity: feelings[i + 1]['name']!,
               emoji: feelings[i + 1]['emoji']!,

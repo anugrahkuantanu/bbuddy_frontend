@@ -72,6 +72,12 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
         ),
       ),
       iconTheme: const IconThemeData(color: Colors.white),
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pop(context, 'refresh');
+        },
+      ),
     ),
     body: SafeArea(
       child: SingleChildScrollView(
