@@ -67,7 +67,6 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ReflectionHeading()),
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => UserDetailsProvider(),),
         ChangeNotifierProvider(create: (_) => CounterStats()),

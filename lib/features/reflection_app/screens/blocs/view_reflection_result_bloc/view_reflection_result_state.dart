@@ -1,16 +1,31 @@
 import '../../../models/model.dart';
 
+
+
+
+// States (merged)
 abstract class ViewReflectionResultState {}
 
-class ReflectionResultInitial extends ViewReflectionResultState {}
+class ReflectionResultInitialState extends ViewReflectionResultState {}
 
-class ReflectionResultLoading extends ViewReflectionResultState {}
+class ReflectionResultLoadingState extends ViewReflectionResultState {}
 
-class ReflectionResultLoaded extends ViewReflectionResultState {
+class ReflectionResultLoadedState extends ViewReflectionResultState {
   final Reflection reflection;
 
-  ReflectionResultLoaded(this.reflection);
+  ReflectionResultLoadedState(this.reflection);
 }
 
-class ReflectionResultError extends ViewReflectionResultState {}
+class ReflectionHeadingLoadedState extends ViewReflectionResultState {
+  final String heading;
 
+  ReflectionHeadingLoadedState(this.heading);
+}
+
+class ReflectionResultErrorState extends ViewReflectionResultState {}
+
+class ReflectionHeadingErrorState extends ViewReflectionResultState {
+  final String error;
+
+  ReflectionHeadingErrorState(this.error);
+}

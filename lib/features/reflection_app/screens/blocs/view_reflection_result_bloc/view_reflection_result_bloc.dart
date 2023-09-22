@@ -5,78 +5,51 @@ import 'dart:async';
 import '../../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+
+
+
 class ViewReflectionResultBloc extends Bloc<ViewReflectionResultEvent, ViewReflectionResultState> {
   final CounterStats counterStats;
+  final Future<String> Function(List topics) fetchHeading;
 
-  ViewReflectionResultBloc({required this.counterStats}) : super(ReflectionResultInitial()) {
-    on<LoadMoodReflections>(_loadMoodReflectionsEvent);
+  ViewReflectionResultBloc({
+    required this.counterStats, required this.fetchHeading
+  }) : super(ReflectionResultInitialState()) {
+    on<FetchReflectionHeadingEvent>(_fetchReflectionHeadingEvent);
+    on<LoadMoodReflectionsEvent>(_loadMoodReflectionsEvent);
   }
 
-  Future<void> _loadMoodReflectionsEvent(LoadMoodReflections event, Emitter<ViewReflectionResultState> emit) async {
-    emit(ReflectionResultLoading());
+  Future<void> _loadMoodReflectionsEvent(LoadMoodReflectionsEvent event, Emitter<ViewReflectionResultState> emit) async {
+    emit(ReflectionResultLoadingState());
 
     if (event.reflection != null) {
-      emit(ReflectionResultLoaded(event.reflection!));
+      emit(ReflectionResultLoadedState(event.reflection!));
     } else {
       try {
         final response = await getMoodReflections(event.topics, event.userReflections, event.heading);
         if (response is Reflection) {
-          emit(ReflectionResultLoaded(response));
+          emit(ReflectionResultLoadedState(response));
           counterStats.resetCheckInCounter();
           counterStats.updateReflectionCounter();
         } else {
-          emit(ReflectionResultError());
+          emit(ReflectionResultErrorState());
         }
       } catch (e) {
-        emit(ReflectionResultError());
+        emit(ReflectionResultErrorState());
       }
+    }
+  }
+
+  Future<void> _fetchReflectionHeadingEvent(
+  FetchReflectionHeadingEvent event,
+    Emitter<ViewReflectionResultState> emit) async {
+    try {
+      final heading = await fetchHeading(event.topics); // Use the refactored service method
+      emit(ReflectionHeadingLoadedState(heading));
+    } catch (e) {
+      emit(ReflectionHeadingErrorState(e.toString()));
     }
   }
 }
 
 
-
-
-// class ViewReflectionResultBloc {
-//   final CounterStats counterStats;
-//   final _stateController = StreamController<ViewReflectionResultState>();
-//   StreamSink<ViewReflectionResultState> get _inState => _stateController.sink;
-//   Stream<ViewReflectionResultState> get state => _stateController.stream;
-
-//   final _eventController = StreamController<ViewReflectionResultEvent>();
-//   Sink<ViewReflectionResultEvent> get eventSink => _eventController.sink;
-
-//   ViewReflectionResultBloc({required this.counterStats}) {
-//     _eventController.stream.listen(_mapEventToState);
-//   }
-
-
-
-//   void _mapEventToState(ViewReflectionResultEvent event) async {
-//       if (event is LoadMoodReflections) {
-//           _inState.add(ReflectionResultLoading());
-//           if (event.reflection != null) {
-//               _inState.add(ReflectionResultLoaded(event.reflection!));
-//           } else {
-//               try {
-//                   final response = await getMoodReflections(event.topics, event.userReflections, event.heading);
-//                   if (response is Reflection) {
-//                       _inState.add(ReflectionResultLoaded(response));
-//                       counterStats.resetCheckInCounter();
-//                       counterStats.updateReflectionCounter();
-
-//                   } else {
-//                       _inState.add(ReflectionResultError());
-//                   }
-//               } catch (e) {
-//                   _inState.add(ReflectionResultError());
-//               }
-//           }
-//       }
-//   }
-  
-//   void dispose() {
-//     _stateController.close();
-//     _eventController.close();
-//   }
-// }
