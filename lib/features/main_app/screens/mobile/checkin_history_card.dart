@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/widget.dart';
-import '/config/config.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import '../../../check_in_app/services/service.dart';
 import '../../../check_in_app/models/check_in.dart';
 import '../../../check_in_app/screens/screen.dart';
-
 
 class CheckInHistoryCard extends StatefulWidget {
   final Color? textColor;
@@ -19,7 +15,6 @@ class CheckInHistoryCard extends StatefulWidget {
   @override
   State<CheckInHistoryCard> createState() => CheckInHistoryCardState();
 }
-
 
 class CheckInHistoryCardState extends State<CheckInHistoryCard> {
   List<CheckIn>? pastCheckIns;
@@ -58,11 +53,10 @@ class CheckInHistoryCardState extends State<CheckInHistoryCard> {
   }
 
   List<String> parseHumanMessage(String text) {
-
     List<String> sentences = text.split(".");
 
     List<String> words = sentences[0].split(" ");
-    
+
     String FeelingForm = words[5];
 
     return [
@@ -71,21 +65,19 @@ class CheckInHistoryCardState extends State<CheckInHistoryCard> {
     ];
   }
 
+  List<String> chekinHistory(String text) {
+    List<String> sentences = text.split(".");
 
-List<String> chekinHistory(String text) {
-  List<String> sentences = text.split(".");
+    List<String> words = sentences[0].split(" ");
 
-  List<String> words = sentences[0].split(" ");
+    List<String> chekinHistoryList = [words[3], words[5], words[8]];
 
-  List<String> chekinHistoryList = [words[3], words[5], words[8]];
-
-  // Add sentences from index 1 to length-1 to the chekinHistoryList
-  for (int i = 1; i < sentences.length; i++) {
-    chekinHistoryList.add(sentences[i]);
+    // Add sentences from index 1 to length-1 to the chekinHistoryList
+    for (int i = 1; i < sentences.length; i++) {
+      chekinHistoryList.add(sentences[i]);
+    }
+    return chekinHistoryList;
   }
-  return chekinHistoryList;
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +100,23 @@ List<String> chekinHistory(String text) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![3].humanMessage.text.toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![3].humanMessage.text.toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![3].humanMessage.text.toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![3].humanMessage.text.toLowerCase()).last,
+                          feeling: chekinHistory(pastCheckIns![3]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[0],
+                          feelingForm: chekinHistory(pastCheckIns![3]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[1],
+                          reasonEntity: chekinHistory(pastCheckIns![3]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[2],
+                          reason: chekinHistory(pastCheckIns![3]
+                                  .humanMessage
+                                  .text
+                                  .toLowerCase())
+                              .last,
                           isPastCheckin: true,
                           aiResponse: pastCheckIns![3].aiMessage.text,
                         ),
@@ -119,12 +124,10 @@ List<String> chekinHistory(String text) {
                     );
                   }
                 : () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckInHome()
-                  ),
-                );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CheckInHome()),
+                    );
                   },
             title: isLoading
                 ? null
@@ -148,10 +151,23 @@ List<String> chekinHistory(String text) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![2].humanMessage.text.toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![2].humanMessage.text.toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![2].humanMessage.text.toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![2].humanMessage.text.toLowerCase()).last,
+                          feeling: chekinHistory(pastCheckIns![2]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[0],
+                          feelingForm: chekinHistory(pastCheckIns![2]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[1],
+                          reasonEntity: chekinHistory(pastCheckIns![2]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[2],
+                          reason: chekinHistory(pastCheckIns![2]
+                                  .humanMessage
+                                  .text
+                                  .toLowerCase())
+                              .last,
                           isPastCheckin: true,
                           aiResponse: pastCheckIns![2].aiMessage.text,
                         ),
@@ -159,12 +175,10 @@ List<String> chekinHistory(String text) {
                     );
                   }
                 : () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckInHome()
-                  ),
-                );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CheckInHome()),
+                    );
                   },
             title: isLoading
                 ? null
@@ -182,16 +196,29 @@ List<String> chekinHistory(String text) {
             // borderColor: Color.fromRGBO(17, 32, 55, 1.0),
           ),
           CheckInCard(
-                        onTap: pastCheckIns != null && pastCheckIns!.isNotEmpty
+            onTap: pastCheckIns != null && pastCheckIns!.isNotEmpty
                 ? () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![1].humanMessage.text.toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![1].humanMessage.text.toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![1].humanMessage.text.toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![1].humanMessage.text.toLowerCase()).last,
+                          feeling: chekinHistory(pastCheckIns![1]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[0],
+                          feelingForm: chekinHistory(pastCheckIns![1]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[1],
+                          reasonEntity: chekinHistory(pastCheckIns![1]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[2],
+                          reason: chekinHistory(pastCheckIns![1]
+                                  .humanMessage
+                                  .text
+                                  .toLowerCase())
+                              .last,
                           isPastCheckin: true,
                           aiResponse: pastCheckIns![1].aiMessage.text,
                         ),
@@ -199,12 +226,10 @@ List<String> chekinHistory(String text) {
                     );
                   }
                 : () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckInHome()
-                  ),
-                );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CheckInHome()),
+                    );
                   },
             title: isLoading
                 ? null
@@ -217,7 +242,7 @@ List<String> chekinHistory(String text) {
                     ? parseHumanMessage(pastCheckIns![1].humanMessage.text)[1]
                     : 'No check-ins available',
             text_color: widget.textColor ?? Colors.white,
-            gradientStartColor:Color(0xFFb383ff),
+            gradientStartColor: Color(0xFFb383ff),
             gradientEndColor: Color(0xFFb383ff),
             // borderColor: Color.fromRGBO(17, 32, 55, 1.0), // Set the border color here
           ),
@@ -228,10 +253,23 @@ List<String> chekinHistory(String text) {
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![0].humanMessage.text.toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![0].humanMessage.text.toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![0].humanMessage.text.toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![0].humanMessage.text.toLowerCase()).last,
+                          feeling: chekinHistory(pastCheckIns![0]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[0],
+                          feelingForm: chekinHistory(pastCheckIns![0]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[1],
+                          reasonEntity: chekinHistory(pastCheckIns![0]
+                              .humanMessage
+                              .text
+                              .toLowerCase())[2],
+                          reason: chekinHistory(pastCheckIns![0]
+                                  .humanMessage
+                                  .text
+                                  .toLowerCase())
+                              .last,
                           isPastCheckin: true,
                           aiResponse: pastCheckIns![0].aiMessage.text,
                         ),
@@ -239,12 +277,10 @@ List<String> chekinHistory(String text) {
                     );
                   }
                 : () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckInHome()
-                  ),
-                );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CheckInHome()),
+                    );
                   },
             title: isLoading
                 ? null
@@ -257,10 +293,9 @@ List<String> chekinHistory(String text) {
                 : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 0)
                     ? parseHumanMessage(pastCheckIns![0].humanMessage.text)[1]
                     : 'No check-ins available',
-                    gradientStartColor: Color(0xFF65dc99),
-                    gradientEndColor: Color(0xFF65dc99),
-                    // borderColor:Color.fromRGBO(17, 32, 55, 1.0),
-                
+            gradientStartColor: Color(0xFF65dc99),
+            gradientEndColor: Color(0xFF65dc99),
+            // borderColor:Color.fromRGBO(17, 32, 55, 1.0),
           ),
         ],
       ),

@@ -6,6 +6,7 @@ class ReflectionApp extends RouteManager {
   static const String reflection = ReflectionApp.name + '/reflections';
 
   ReflectionApp() {
-    addRoute(ReflectionApp.reflection, (context) => const ReflectionController());
+    addRoute(
+        ReflectionApp.reflection, (context) => const ReflectionController());
   }
 }

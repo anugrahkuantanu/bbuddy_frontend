@@ -8,7 +8,7 @@ import '../../../../core/core.dart';
 import '../screens/screen.dart' as mobile;
 
 class ProfileController extends StatelessController {
-    final String _title = 'Home Page';
+  final String _title = 'Home Page';
   const ProfileController({Key? key}) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class ProfileController extends StatelessController {
   Display view(BuildContext context) {
     // Navigation Bug Fixes
     var tm = context.read<ThemeProvider>();
-    tm.setNavIndex(0);
+    //tm.setNavIndex(0);
 
     return Display(
       title: _title,

@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'checkin_history_card.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
@@ -21,12 +20,13 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     var tm = context.watch<ThemeProvider?>();
-    Color textColor = tm?.isDarkMode ?? false ? AppColors.textlight : AppColors.textdark;
-    
+    Color textColor =
+        tm?.isDarkMode ?? false ? AppColors.textlight : AppColors.textdark;
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
@@ -44,7 +44,7 @@ class HomePageState extends State<HomePage> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.w),
-              child: CheckInHistoryCard(
+              child: const CheckInHistoryCard(
                 textColor: Colors.white,
               ),
             ),
@@ -55,15 +55,9 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  void onSeeAllTapped() {}
 
-  void onSeeAllTapped() {
-  }
+  void onDepressionHealingTapped() {}
 
-
-  void onDepressionHealingTapped() {
-  }
-
-  void onSearchIconTapped() {
-  }
+  void onSearchIconTapped() {}
 }
-

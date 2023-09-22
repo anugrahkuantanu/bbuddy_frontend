@@ -16,10 +16,16 @@ class BottomBar extends StatelessWidget {
     buttonDatas = buttonDatas ??
         [
           ButtonData(icon: Icons.home, label: 'Home', link: '/'),
-          ButtonData(icon: Icons.check_circle, label: 'Check-In', link: '/checkIn'),
           ButtonData(
-              icon: Icons.lightbulb, label: 'Reflections', link: '/reflections'),
-          ButtonData(icon: Icons.check_box_outline_blank, label: 'Goals', link: '/goals'),
+              icon: Icons.check_circle, label: 'Check-In', link: '/checkIn'),
+          ButtonData(
+              icon: Icons.lightbulb,
+              label: 'Reflections',
+              link: '/reflections'),
+          ButtonData(
+              icon: Icons.check_box_outline_blank,
+              label: 'Goals',
+              link: '/goals'),
         ];
   }
 
