@@ -84,7 +84,9 @@ class _LoginFormState extends State<LoginForm> {
               Container(
                 child: TextFormField(
                   controller: usernameController,
-                  decoration: ThemeHelper().textInputDecoration('User Name', 'Enter your user name'),
+                  decoration: ThemeHelper().textInputDecoration(
+                    labelText: 'User Name',
+                    hintText: 'Enter your user name'),
                   validator: (val) {
                     if (val!.isEmpty) {
                       return "Please enter your username";
@@ -102,7 +104,9 @@ class _LoginFormState extends State<LoginForm> {
                 child: TextFormField(
                   controller: passwordController,
                   obscureText: true,
-                  decoration: ThemeHelper().textInputDecoration('Password', 'Enter your password'),
+                  decoration: ThemeHelper().textInputDecoration(
+                    labelText: 'Password',
+                    hintText: 'Enter your password'),
                   validator: (val) {
                     if (val!.isEmpty) {
                       return "Please enter your password";

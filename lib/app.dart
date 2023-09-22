@@ -26,9 +26,12 @@ class MyApp extends StatelessWidget {
             ),
           child: MaterialApp(
             title: 'Photo Library',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
+            // theme: ThemeData(
+            //   primarySwatch: Colors.blue,
+            // ),
+            theme: MyTheme().lightTheme,
+            darkTheme: MyTheme().darkTheme,
+            themeMode: tm?.themeMode ?? ThemeMode.system,
             debugShowCheckedModeBanner: false,
             //initialRoute: '/',
             //routes: Routes().routes,
@@ -64,6 +67,7 @@ class MyApp extends StatelessWidget {
                   return Container();
                 }
               },
+
             ),
           ),
         );

@@ -1,29 +1,30 @@
 import '/features/check_in_app/controllers/controller.dart';
 import 'package:flutter/material.dart';
-import '../../models/model.dart';
 import '../../services/checkIn_service.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/core/core.dart';
 
 class ChatScreen extends StatefulWidget {
   final String feeling;
-  final String feelingForm;
+  final String feelingForm;  
   final String reasonEntity;
   final String reason;
   final bool isPastCheckin;
   final String? aiResponse;
   final Color? textColor;
 
-  const ChatScreen(
-      {Key? key,
-      required this.feeling,
-      required this.feelingForm,
-      required this.reasonEntity,
-      required this.reason,
-      required this.isPastCheckin,
-      this.textColor,
-      this.aiResponse})
-      : super(key: key);
+
+  const ChatScreen({
+    Key? key,
+    required this.feeling,
+    required this.feelingForm,
+    required this.reasonEntity,
+    required this.reason,
+    required this.isPastCheckin,
+    this.textColor,
+    this.aiResponse
+
+  }) : super(key: key);
 
   @override
   ChatScreenState createState() => ChatScreenState();
@@ -40,36 +41,38 @@ class ChatScreenState extends State<ChatScreen> {
   bool showExitButton = false;
   final checkInService = CheckInService();
 
+
   @override
-  void initState() {
-    super.initState();
-    messages = [
-      Message(
-        text: "How are you feeling?",
-        isBot: true,
-      ),
-      Message(
-        text:
-            "I am feeling ${widget.feeling.toLowerCase()} and ${widget.feelingForm.toLowerCase()} about my ${widget.reasonEntity.toLowerCase()}",
-        isBot: false,
-      ),
-      Message(
-        text: widget.reason,
-        isBot: false,
-      ),
-    ];
-    if (widget.isPastCheckin) {
-      showProgressIndicator = false;
+void initState() {
+  super.initState();
+  messages = [
+    Message(
+      text: "How are you feeling?",
+      isBot: true,
+    ),
+    Message(
+      text:
+          "I am feeling ${widget.feeling.toLowerCase()} and ${widget.feelingForm.toLowerCase()} about my ${widget.reasonEntity.toLowerCase()}",
+      isBot: false,
+    ),
+    Message(
+      text: widget.reason,
+      isBot: false,
+    ),
+  ];
+  if (widget.isPastCheckin) {
+    showProgressIndicator = false;
       messages.add(
         Message(
-          text: widget.aiResponse ?? '',
+          text: widget.aiResponse?? '',
           isBot: true,
         ),
       );
-    } else {
-      getResponseAndStore();
-    }
+  } else {
+    getResponseAndStore();
   }
+}
+
 
   Future<void> getResponseAndStore() async {
     setState(() {
@@ -102,8 +105,8 @@ class ChatScreenState extends State<ChatScreen> {
       });
     });
 
-    checkInService.storeCheckIn(widget.feeling, widget.feelingForm,
-        widget.reasonEntity, widget.reason, response);
+    checkInService.storeCheckIn(widget.feeling, widget.feelingForm, widget.reasonEntity,
+        widget.reason, response);
 
     final counterStats = Provider.of<CounterStats>(context, listen: false);
     counterStats.updateCheckInCounter();
@@ -125,30 +128,32 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void navigateBackToHomePage() {
-    if (widget.isPastCheckin) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const CheckInHomeController()),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const CheckInHomeController()),
-      );
+    if (widget.isPastCheckin){
+          Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CheckInHomeController()),
+    );
+    }
+    else{
+          Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CheckInHomeController()),
+    );
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
+        elevation:
+              0,
         title: Text(''),
         iconTheme: IconThemeData(color: Colors.white),
         automaticallyImplyLeading: false,
         actions: [
-          if (showExitButton ||
-              widget.isPastCheckin) // Show the exit button once it appears
+          if (showExitButton || widget.isPastCheckin) // Show the exit button once it appears
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
@@ -160,8 +165,7 @@ class ChatScreenState extends State<ChatScreen> {
       body: SafeArea(
         child: NotificationListener<ScrollNotification>(
           onNotification: (ScrollNotification scrollInfo) {
-            if (scrollInfo.metrics.pixels ==
-                scrollInfo.metrics.maxScrollExtent) {
+            if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
               setState(() {
                 screenAtBottom = true;
                 isScrolledUp = false;

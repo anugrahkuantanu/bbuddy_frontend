@@ -7,19 +7,48 @@ import 'package:provider/provider.dart';
 
 
 class ThemeHelper{
-  InputDecoration textInputDecoration([String lableText="", String hintText = ""]){
-    return InputDecoration(
-      labelText: lableText,
-      hintText: hintText,
-      fillColor: Colors.white,
-      filled: true,
-      contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey.shade400)),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.red, width: 2.0)),
-      focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.red, width: 2.0)),
-    );
-  }
+  // InputDecoration textInputDecoration([String lableText="", String hintText = ""]){
+  //   return InputDecoration(
+  //     labelText: lableText,
+  //     hintText: hintText,
+  //     fillColor: Colors.white,
+  //     filled: true,
+  //     contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+  //     focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey)),
+  //     enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.grey.shade400)),
+  //     errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.red, width: 2.0)),
+  //     focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0), borderSide: BorderSide(color: Colors.red, width: 2.0)),
+  //   );
+  // }
+  InputDecoration textInputDecoration({
+  String labelText = "",
+  String hintText = "",
+  Color labelColor = Colors.black,  // Default to black
+  Color hintColor = Colors.grey,    // Default to grey
+}) {
+  return InputDecoration(
+    labelText: labelText,
+    hintText: hintText,
+    fillColor: Colors.white,
+    filled: true,
+    contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+    focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(100.0),
+        borderSide: BorderSide(color: Colors.grey)),
+    enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(100.0),
+        borderSide: BorderSide(color: Colors.grey.shade400)),
+    errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(100.0),
+        borderSide: BorderSide(color: Colors.red, width: 2.0)),
+    focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(100.0),
+        borderSide: BorderSide(color: Colors.red, width: 2.0)),
+    labelStyle: TextStyle(color: labelColor),   // Set the color for the label text
+    hintStyle: TextStyle(color: hintColor),     // Set the color for the hint text
+  );
+}
+
 
   BoxDecoration inputBoxDecorationShaddow() {
     return BoxDecoration(boxShadow: [
