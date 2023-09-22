@@ -1,4 +1,5 @@
-import '/features/check_in_app/models/message.dart';
+import 'package:bbuddy_app/core/models/message.dart';
+
 
 
 class CheckIn{

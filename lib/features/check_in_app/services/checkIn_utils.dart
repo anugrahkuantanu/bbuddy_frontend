@@ -1,4 +1,5 @@
 import '../models/model.dart';
+import 'package:bbuddy_app/core/models/message.dart';
 
 const String GENERAL_ERROR_MESSAGE = 'Something went wrong, please try again later.';
 

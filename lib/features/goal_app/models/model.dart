@@ -3,4 +3,4 @@ export './goal_chat.dart';
 export '../../reflection_app/models/reflection.dart';
 export './news_model.dart';
 export './goal.dart';
-export './message.dart';
+export '../../../core/models/message.dart';
