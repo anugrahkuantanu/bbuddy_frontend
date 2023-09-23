@@ -9,8 +9,7 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
   Stream<ForgotPasswordState> mapEventToState(ForgotPasswordEvent event) async* {
     if (event is SendForgotPasswordEmail) {
       yield ForgotPasswordLoading();
-      // You can add your logic here to handle the email sending.
-      yield ForgotPasswordSuccess(); // Or yield ForgotPasswordError(error);
+      yield ForgotPasswordSuccess(); 
     }
   }
 }

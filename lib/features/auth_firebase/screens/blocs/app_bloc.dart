@@ -20,6 +20,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     emit(const AppStateIsInRegistrationView(isLoading: false,));
   }
 
+
+  Future<void> _initialize(AppEventInitialize event, Emitter<AppState> emit) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      emit(const AppStateLoggedOut(isLoading: false,));
+    } else {
+      emit(AppStateLoggedIn(isLoading: false, user: user,));
+    }
+  }
+
   Future<void> _logIn(AppEventLogIn event, Emitter<AppState> emit) async {
     emit(const AppStateLoggedOut(isLoading: true,));
 
@@ -70,14 +80,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
 
 
-  Future<void> _initialize(AppEventInitialize event, Emitter<AppState> emit) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      emit(const AppStateLoggedOut(isLoading: false,));
-    } else {
-      emit(AppStateLoggedIn(isLoading: false, user: user,));
-    }
-  }
 
   Future<void> _logOut(AppEventLogOut event, Emitter<AppState> emit) async {
     emit(const AppStateLoggedOut(isLoading: true,));

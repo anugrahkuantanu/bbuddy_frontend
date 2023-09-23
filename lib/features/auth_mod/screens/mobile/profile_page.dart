@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/features/auth_firebase/screens/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -35,18 +36,14 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    // double _drawerIconSize = 24;
-    // double _drawerFontSize = 17;
-    // double screenWidth = MediaQuery.of(context).size.width;
     final userDetails = Provider.of<UserDetailsProvider>(context);
-    //print(userDetails.details?.firstName);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
-        actions: actionsMenu(context),
-        // automaticallyImplyLeading: false,
+        actions: [const MainPopupMenuButton()],
+        
       ),
       body: SafeArea(
         child: Column(

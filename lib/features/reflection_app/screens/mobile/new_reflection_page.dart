@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'view_reflection_results.dart';
 import '../blocs/bloc.dart';
 import '../../../../core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +43,6 @@ class NewReflectionPage extends StatelessWidget {
       }),
     );
   }
-
   Widget _buildMainUI(BuildContext context, NewReflectionBloc bloc, List<dynamic> topics, List<String> userReflections) {
     double screenWidth = MediaQuery.of(context).size.width;
 
