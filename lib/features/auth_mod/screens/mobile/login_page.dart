@@ -3,7 +3,7 @@ import '../../../../../core/core.dart';
 import '../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import '../../../../app.dart.bkp2';
+import '../../../../app.dart';
 import '../widgets/widget.dart';
 import '../../services/service.dart';
 import '../screen.dart';
@@ -94,8 +94,6 @@ class _LoginFormState extends State<LoginForm> {
                   decoration: ThemeHelper().textInputDecoration(
                     labelText: 'User Name',
                     hintText: 'Enter your user name'),
-                  decoration: ThemeHelper()
-                      .textInputDecoration('User Name', 'Enter your user name'),
                   validator: (val) {
                     if (val!.isEmpty) {
                       return "Please enter your username";
@@ -116,8 +114,6 @@ class _LoginFormState extends State<LoginForm> {
                   decoration: ThemeHelper().textInputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter your password'),
-                  decoration: ThemeHelper()
-                      .textInputDecoration('Password', 'Enter your password'),
                   validator: (val) {
                     if (val!.isEmpty) {
                       return "Please enter your password";
