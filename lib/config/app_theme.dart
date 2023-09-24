@@ -17,40 +17,35 @@ import 'package:shared_preferences/shared_preferences.dart';
 //   }
 // }
 
-
-
-
 class ThemeProvider extends BaseThemeProvider {
   int _index = 0;
   // late ThemeMode? _themeMode;
   ThemeMode? _themeMode = ThemeMode.system;
 
-
   ThemeProvider() {
-    loadThemeMode().then((mode) {
-      _themeMode = mode;
-      notifyListeners();
-    });
+    // loadThemeMode().then((mode) {
+    //   _themeMode = mode;
+    //   notifyListeners();
+    // });
   }
 
-
-  ThemeMode get themeMode => _themeMode?? ThemeMode.system;
+  ThemeMode get themeMode => _themeMode ?? ThemeMode.system;
 
   set themeMode(ThemeMode mode) {
     _themeMode = mode;
-    _saveThemeMode(mode);
+    //_saveThemeMode(mode);
     notifyListeners();
   }
 
-  Future<void> _saveThemeMode(ThemeMode mode) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setInt('theme_mode', mode.index);
-  }
+  // Future<void> _saveThemeMode(ThemeMode mode) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   prefs.setInt('theme_mode', mode.index);
+  // }
 
-  Future<ThemeMode> loadThemeMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    return ThemeMode.values[prefs.getInt('theme_mode') ?? 0];
-  }
+  // Future<ThemeMode> loadThemeMode() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   return ThemeMode.values[prefs.getInt('theme_mode') ?? 0];
+  // }
 
   get index => _index;
 

@@ -11,28 +11,25 @@ const Map<String, AuthError> authErrorMapping = {
   'requires-recent-login': AuthErrorRequiresRecentLogin(),
   'no-current-user': AuthErrorNoCurrentUser(),
   'password-not-match': AuthErrorPasswordNotMatch(),
+  'wrong-password': AuthInvalidPassword()
 };
 
-@immutable 
+@immutable
 abstract class AuthError {
   final String dialogTitle;
   final String dialogText;
 
-  const AuthError({
-    required this.dialogText,
-    required this.dialogTitle
-  });
+  const AuthError({required this.dialogText, required this.dialogTitle});
 
-  factory AuthError.from(FirebaseAuthException exception) => 
-    authErrorMapping[exception.code.toLowerCase().trim()] ??
-    const AuthErrorUnknown();
-
+  factory AuthError.from(FirebaseAuthException exception) =>
+      authErrorMapping[exception.code.toLowerCase().trim()] ??
+      const AuthErrorUnknown();
 }
 
-@immutable 
-class AuthErrorUnknown extends AuthError{
+@immutable
+class AuthErrorUnknown extends AuthError {
   const AuthErrorUnknown()
-        :super(
+      : super(
           dialogTitle: 'Authentication Error',
           dialogText: 'Unknown authentication error',
         );
@@ -47,40 +44,49 @@ class AuthErrorNoCurrentUser extends AuthError {
         );
 }
 
+@immutable
+class AuthInvalidPassword extends AuthError {
+  const AuthInvalidPassword()
+      : super(
+          dialogTitle: 'Invalid Password',
+          dialogText: 'Please double check your password and try again!',
+        );
+}
 
-@immutable 
-class AuthErrorRequiresRecentLogin extends AuthError{
+@immutable
+class AuthErrorRequiresRecentLogin extends AuthError {
   const AuthErrorRequiresRecentLogin()
-        :super(
+      : super(
           dialogTitle: 'Requires recent login',
           dialogText: 'You need to log out and log back in again',
         );
 }
 
-@immutable 
-class AuthErrorOperationNotAllowed extends AuthError{
+@immutable
+class AuthErrorOperationNotAllowed extends AuthError {
   const AuthErrorOperationNotAllowed()
-        :super(
+      : super(
           dialogTitle: 'Operation not allowed',
           dialogText: 'You cannot register using this method at this moment!',
         );
 }
 
-@immutable 
-class AuthErrorUserNotFound extends AuthError{
+@immutable
+class AuthErrorUserNotFound extends AuthError {
   const AuthErrorUserNotFound()
-        :super(
+      : super(
           dialogTitle: 'User not found',
           dialogText: 'The given user was not found on the server!',
         );
 }
 
-@immutable 
-class AuthErrorWeakPassword extends AuthError{
+@immutable
+class AuthErrorWeakPassword extends AuthError {
   const AuthErrorWeakPassword()
-        :super(
+      : super(
           dialogTitle: 'Weak Password',
-          dialogText: 'Please chose a strongger password consisting of more characters!',
+          dialogText:
+              'Please chose a strongger password consisting of more characters!',
         );
 }
 

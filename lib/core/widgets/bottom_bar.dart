@@ -61,6 +61,8 @@ class BottomBar extends StatelessWidget {
   }
 
   void navigator(BuildContext context) {
-    Nav.to(context, buttonData[indexColor].link!);
+    print("I am the killer");
+    Navigator.pushNamed(context, buttonData[indexColor].link!);
+    //Nav.to(context, buttonData[indexColor].link!);
   }
 }

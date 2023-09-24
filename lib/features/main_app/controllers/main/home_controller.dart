@@ -10,17 +10,17 @@ class HomeController extends StatelessController {
   const HomeController({Key? key}) : super(key: key);
 
   @override
-  bool get auth => false;
+  bool get auth => true;
 
   @override
   Display view(BuildContext context) {
     // Navigation Bug Fixes
-    var tm = context.read<ThemeProvider?>();
-    tm?.setNavIndex(0);
-
+    //var tm = context.read<ThemeProvider?>();
+    //tm?.setNavIndex(0);
+    print('inside display');
     return Display(
       title: _title,
-      mobile: mobile.HomePage(),
+      mobile: const mobile.HomePage(),
     );
   }
 }

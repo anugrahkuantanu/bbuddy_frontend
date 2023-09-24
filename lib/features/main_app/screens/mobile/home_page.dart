@@ -6,6 +6,7 @@ import '/config/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'checkin_history_card.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -19,9 +20,10 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider?>();
-    Color textColor =
-        tm?.isDarkMode ?? false ? AppColors.textlight : AppColors.textdark;
+    print("inside homepage build");
+
+    var tm = context.watch<ThemeProvider>();
+    Color textColor = tm.isDarkMode ? AppColors.textlight : AppColors.textdark;
 
     return Scaffold(
       body: SafeArea(
