@@ -2,14 +2,13 @@ import 'package:bbuddy_app/features/auth_firebase/screens/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../../auth_firebase/screens/screen.dart';
 import 'login_page.dart';
 import '../../services/login.dart';
 import '../../../../../core/core.dart';
 import '../../services/service.dart';
 import '../screen.dart';
 import '../widgets/widget.dart';
-
-
 
 class ProfilePage extends StatefulWidget {
   final int selectedIndex;
@@ -21,17 +20,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  void logout(BuildContext context) {
-    Cache.instance.clear();
-    UserProvider userProvider =
-        Provider.of<UserProvider>(context, listen: false);
-    userProvider.checkLoginStatus();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
-  }
-  
+  // void logout(BuildContext context) {
+  //   Cache.instance.clear();
+  //   UserProvider userProvider =
+  //       Provider.of<UserProvider>(context, listen: false);
+  //   userProvider.checkLoginStatus();
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => const LoginPage()),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +40,11 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text('Profile'),
         centerTitle: true,
-        actions: [const MainPopupMenuButton()],
-        
+        //actions: actionsMenu(context),
+        actions: const [
+          MainPopupMenuButton(),
+        ],
+        // automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Column(
@@ -119,5 +120,3 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-

@@ -24,10 +24,11 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserDetailsProvider()),
         ChangeNotifierProvider(create: (_) => CounterStats()),
         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-        // BlocProvider for AppBloc
         BlocProvider<AppBloc>(
-          create: (_) => AppBloc()..add(const AppEventInitialize()),
-        ),
+            create: (_) => AppBloc()
+              ..add(
+                const AppEventInitialize(),
+              )),
       ],
       child: const MyApp(),
     ),

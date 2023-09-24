@@ -3,7 +3,7 @@ import '../../../../../core/core.dart';
 import '../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import '../../../../app.dart';
+import '../../../../app.dart.bkp2';
 import '../widgets/widget.dart';
 import '../../services/service.dart';
 import '../screen.dart';
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm ({Key? key}):super(key: key);
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -57,20 +57,27 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginBloc, LoginState>(
       listener: (context, state) {
-        if(state is LoginLoading){
+        if (state is LoginLoading) {
           LoadingUI();
-        }
-        else if (state is LoginSuccess) {
-          UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+        } else if (state is LoginSuccess) {
+          UserProvider userProvider =
+              Provider.of<UserProvider>(context, listen: false);
           userProvider.checkLoginStatus();
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MyApp()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => MyApp()));
         } else if (state is LoginFailure) {
-          if (state.error.contains('The username you entered isn\'t connected to an account')) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+          if (state.error.contains(
+              'The username you entered isn\'t connected to an account')) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
           } else if (state.error.contains('Incorrect password')) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error)));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.error)));
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.error), backgroundColor: Colors.red,));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.error),
+              backgroundColor: Colors.red,
+            ));
           }
         }
       },
@@ -87,6 +94,8 @@ class _LoginFormState extends State<LoginForm> {
                   decoration: ThemeHelper().textInputDecoration(
                     labelText: 'User Name',
                     hintText: 'Enter your user name'),
+                  decoration: ThemeHelper()
+                      .textInputDecoration('User Name', 'Enter your user name'),
                   validator: (val) {
                     if (val!.isEmpty) {
                       return "Please enter your username";
@@ -107,6 +116,8 @@ class _LoginFormState extends State<LoginForm> {
                   decoration: ThemeHelper().textInputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter your password'),
+                  decoration: ThemeHelper()
+                      .textInputDecoration('Password', 'Enter your password'),
                   validator: (val) {
                     if (val!.isEmpty) {
                       return "Please enter your password";
@@ -124,9 +135,8 @@ class _LoginFormState extends State<LoginForm> {
                 label: 'Sign In',
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    context.read<LoginBloc>().add(
-                      LoginSubmitted(usernameController.text, passwordController.text)
-                    );
+                    context.read<LoginBloc>().add(LoginSubmitted(
+                        usernameController.text, passwordController.text));
                   }
                 },
               ),
@@ -134,7 +144,10 @@ class _LoginFormState extends State<LoginForm> {
               Button(
                 label: 'Sign Up',
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistrationPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegistrationPage()));
                 },
               ),
             ],
