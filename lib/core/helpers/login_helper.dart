@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/loading/loading_screen.dart';
+import 'package:bbuddy_app/features/auth_firebase/dialogs/dialog.dart';
+import 'package:provider/provider.dart';
 
-import '../../config/config.dart';
-import '../core.dart';
-
+import '../../config/app_cache.dart';
+import '../widgets/toast_message.dart';
 
 // void doAuth(BuildContext context, String username, String password) async {
 //   AppCache ac = AppCache();
@@ -21,24 +23,97 @@ import '../core.dart';
 //   return ac.auth();
 // }
 
+// class LoginHelper {
+//   static void checkLogin(BuildContext context,
+//       {bool? auth = false, String? loginUrl = ApiEndpoint.appLoginUrl}) {
+//     final appBloc = BlocProvider.of<AppBloc>(context);
+//     appBloc.stream.listen((state) {
+//       if (state is AppStateLoggedOut && auth! == true) {
+//         Nav.to(context, loginUrl!);
+//       } else if (state is AppStateLoggedIn) {
+//         //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+//         Nav.to(context, '/');
+//       }
+//     });
+//   }
+// }
+
 void doLogout(BuildContext context) async {
-  AppCache ac = AppCache();
-  ac.doLogout();
-  checkLogin(context, auth: true);
-  showMessage(context, 'Logout Successfull');
+  //AppCache ac = AppCache();
+  //ac.doLogout();
+  //LoginHelper.checkLogin(context, auth: true);
+  ///showMessage(context, 'Logout Successfull');
+  context.read<AppBloc>().add(const AppEventLogOut());
 }
 
-void checkLogin(
-  BuildContext context, {
-  bool? auth = false,
-  String? loginUrl = ApiEndpoint.appLoginUrl,
-}) {
-  AppCache ac = AppCache();
-  ac.isLogin().then((value) {
-    if (value == false && auth! == true) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Nav.to(context, loginUrl!);
-      });
-    }
-  });
+// void checkLogin(
+//   BuildContext context, {
+//   bool? auth = false,
+//   String? loginUrl = ApiEndpoint.appLoginUrl,
+// }) {
+//   AppCache ac = AppCache();
+//   ac.isLogin().then((value) {
+//     if (value == false && auth! == true) {
+//       SchedulerBinding.instance.addPostFrameCallback((_) {
+//         Nav.to(context, loginUrl!);
+//       });
+//     }
+//   });
+// }
+
+// final appBloc = BlocProvider.of<AppBloc>(context);
+// return BlocConsumer<AppBloc, AppState>(
+//   listener: (context, appState) {
+//     print("Yes");
+//     print(appState);
+//     if (appState.isLoading) {
+//       LoadingScreen.instance().show(
+//         context: context,
+//         text: 'Loading...',
+//       );
+//     } else {
+//       LoadingScreen.instance().hide();
+//     }
+
+//     final authError = appState.authError;
+//     if (authError != null) {
+//       showAuthError(
+//         authError: authError,
+//         context: context,
+//       );
+//     }
+//   },
+//   builder: (context, appState) {
+//     if (appState is AppStateLoggedOut && auth == true) {
+//       //Nav.to(conext, )
+//     } else if (appState is AppStateLoggedIn) {
+//       //return const PhotoGalleryView();
+//       Nav.to(context, '/');
+//     } else if (appState is AppStateIsInRegistrationView) {
+//       //return const RegisterView();
+//     } else {
+//       // this should never happen
+//       //return Container();
+//     }
+//     return Container();
+//   },
+// );
+
+void loadingAndDisplayAuthError(BuildContext context, AppState appState) {
+  if (appState.isLoading) {
+    LoadingScreen.instance().show(
+      context: context,
+      text: 'Loading...',
+    );
+  } else {
+    LoadingScreen.instance().hide();
+  }
+
+  final authError = appState.authError;
+  if (authError != null) {
+    showAuthError(
+      authError: authError,
+      context: context,
+    );
+  }
 }

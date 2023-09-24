@@ -1,4 +1,4 @@
-import '../features/features.dart';
+import 'package:bbuddy_app/features/auth_firebase/auth_firebase_app.dart';
 
 /// In this file we will be writing all API Endpoints using this application
 
@@ -8,10 +8,9 @@ class ApiEndpoint {
   // static const String baseWSURL = 'ws://localhost:8000/ws';
   static const String baseWSURL = 'wss://api.bbuddy.ai/ws';
 
-
   // Apps Internals Links
-  static const appLoginUrl = AuthApp.login;
-  static const appRegiaterUrl = AuthApp.register;
-  static const appForgetUrl = AuthApp.forget;
-  static const appProfileUrl = AuthApp.profile;
+  static const appLoginUrl = AuthFirebaseApp.login;
+  //static const appRegiaterUrl = AuthApp.register;
+  //static const appForgetUrl = AuthApp.forget;
+  //static const appProfileUrl = AuthApp.profile;
 }

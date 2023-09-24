@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/features/features.dart';
 import 'package:flutter/material.dart';
 import '../../../auth_mod/screens/screen.dart';
 import '../widgets/widget.dart';
@@ -5,8 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../services/service.dart';
 import '../../../auth_mod/services/service.dart';
-
-
 
 class HeadHomePageWidget extends StatelessWidget {
   final BuildContext context;
@@ -21,7 +20,7 @@ class HeadHomePageWidget extends StatelessWidget {
     final counter_stats = Provider.of<CounterStats>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
-    
+
     double text_size_s = 16.0.w;
     double text_size_xl = 20.0.w;
 
@@ -50,7 +49,8 @@ class HeadHomePageWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ProfilePage()),
+                                builder: (context) =>
+                                    const ProfileController()),
                           );
                         },
                       ),
@@ -101,8 +101,11 @@ class HeadHomePageWidget extends StatelessWidget {
                 1.3 * screenWidth, // Increase the width value to make it wider
             child: NeededCheckinReflectionWidget(
               text_color: text_color ?? Colors.white,
-              checkInCount: int.tryParse(counter_stats.checkInCounter?.value ?? ''), // Number of check-ins completed
-              reflectionCount: int.tryParse(counter_stats.reflectionCounter?.value ?? ''), // Number of reflections completed
+              checkInCount: int.tryParse(counter_stats.checkInCounter?.value ??
+                  ''), // Number of check-ins completed
+              reflectionCount: int.tryParse(
+                  counter_stats.reflectionCounter?.value ??
+                      ''), // Number of reflections completed
             ),
           ),
         )

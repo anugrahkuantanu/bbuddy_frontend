@@ -1,4 +1,7 @@
+import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/controllers/controllers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../config/config.dart';
 import '../core.dart';
@@ -15,9 +18,35 @@ abstract class StatelessController extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //checkLogin(context, auth: auth, loginUrl: loginUrl);
-    return view(context);
+    //LoginHelper.checkLogin(context, auth: auth, loginUrl: loginUrl);
+    print("inside build");
+    return BlocConsumer<AppBloc, AppState>(builder: (context, appState) {
+      print('$appState');
+      if (appState is AppStateLoggedIn) {
+        return view(context);
+      } else if (appState is AppStateLoggedOut && auth) {
+        return const LoginController(); // Replace with your login view widget
+      } else if (appState is AppStateIsInRegistrationView) {
+        return const RegisterController();
+      }
+      return Container();
+    }, listener: (context, appState) {
+      loadingAndDisplayAuthError(context, appState);
+    });
   }
+  //return view(context);
+  //   return BlocConsumer<AppBloc, AppState>(
+  //     listener: (context, appState) {
+  //       // Handle any necessary side effects based on appState changes
+  //     },
+  //     builder: (context, appState) {
+  //       if (appState is AppStateLoggedIn) {
+  //         return view(context);
+  //       } else {
+  //         return const LoginView(); // Replace with your login view widget
+  //       }
+  //     },
+  //   );
 }
 
 // ignore: must_be_immutable
@@ -34,7 +63,31 @@ abstract class ControllerState<T extends StatefulController> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    //checkLogin(context, auth: auth, loginUrl: loginUrl);
-    return view(context);
+    return BlocConsumer<AppBloc, AppState>(builder: (context, appState) {
+      if (appState is AppStateLoggedIn) {
+        return view(context);
+      } else if (appState is AppStateLoggedOut && auth) {
+        return const LoginController(); // Replace with your login view widget
+      } else if (appState is AppStateIsInRegistrationView) {
+        return const RegisterController();
+      }
+      return Container();
+    }, listener: (context, appState) {
+      loadingAndDisplayAuthError(context, appState);
+    });
   }
+  //LoginHelper.checkLogin(context, auth: auth, loginUrl: loginUrl);
+  //return view(context);
+  // return BlocConsumer<AppBloc, AppState>(
+  //   listener: (context, appState) {
+  //     // Handle any necessary side effects based on appState changes
+  //   },
+  //   builder: (context, appState) {
+  //     if (appState is AppStateLoggedIn) {
+  //       return view(context);
+  //     } else {
+  //       return const LoginView(); // Replace with your login view widget
+  //     }
+  //   },
+  // );
 }
