@@ -18,7 +18,7 @@ class ProfileController extends StatelessController {
   Display view(BuildContext context) {
     // Navigation Bug Fixes
     var tm = context.read<ThemeProvider>();
-    //tm.setNavIndex(0);
+    tm.setNavIndex(0);
 
     return Display(
       title: _title,

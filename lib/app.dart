@@ -22,7 +22,14 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: '/',
           routes: Routes().routes,
-          // home: BlocConsumer<AppBloc, AppState>(
+        );
+      },
+    );
+  }
+}
+
+
+// home: BlocConsumer<AppBloc, AppState>(
           //   listener: (context, appState) {
           //     if (appState.isLoading) {
           //       LoadingScreen.instance().show(
@@ -55,8 +62,3 @@ class MyApp extends StatelessWidget {
           //     }
           //   },
           // ),
-        );
-      },
-    );
-  }
-}

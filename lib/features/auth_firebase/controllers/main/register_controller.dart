@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:bbuddy_app/core/core.dart';
 import '../../screens/screen.dart';
 
-class RegisterController extends StatelessWidget {
+class RegisterController extends StatelessController {
   const RegisterController({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Title(
-      title: 'Login Section',
-      color: Colors.blue,
-      child: const RegisterView(),
+  bool get auth => false;
+
+  @override
+  Display view(BuildContext context) {
+    return Display(
+      title: 'Register',
+      mobile: const RegisterView(),
     );
   }
 }

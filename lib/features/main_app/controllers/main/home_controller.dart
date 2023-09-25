@@ -15,9 +15,8 @@ class HomeController extends StatelessController {
   @override
   Display view(BuildContext context) {
     // Navigation Bug Fixes
-    //var tm = context.read<ThemeProvider?>();
-    //tm?.setNavIndex(0);
-    print('inside display');
+    var tm = context.read<ThemeProvider?>();
+    tm?.setNavIndex(0);
     return Display(
       title: _title,
       mobile: const mobile.HomePage(),
