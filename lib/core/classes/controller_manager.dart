@@ -34,19 +34,6 @@ abstract class StatelessController extends StatelessWidget {
       loadingAndDisplayAuthError(context, appState);
     });
   }
-  //return view(context);
-  //   return BlocConsumer<AppBloc, AppState>(
-  //     listener: (context, appState) {
-  //       // Handle any necessary side effects based on appState changes
-  //     },
-  //     builder: (context, appState) {
-  //       if (appState is AppStateLoggedIn) {
-  //         return view(context);
-  //       } else {
-  //         return const LoginView(); // Replace with your login view widget
-  //       }
-  //     },
-  //   );
 }
 
 // ignore: must_be_immutable
@@ -76,18 +63,4 @@ abstract class ControllerState<T extends StatefulController> extends State<T> {
       loadingAndDisplayAuthError(context, appState);
     });
   }
-  //LoginHelper.checkLogin(context, auth: auth, loginUrl: loginUrl);
-  //return view(context);
-  // return BlocConsumer<AppBloc, AppState>(
-  //   listener: (context, appState) {
-  //     // Handle any necessary side effects based on appState changes
-  //   },
-  //   builder: (context, appState) {
-  //     if (appState is AppStateLoggedIn) {
-  //       return view(context);
-  //     } else {
-  //       return const LoginView(); // Replace with your login view widget
-  //     }
-  //   },
-  // );
 }
