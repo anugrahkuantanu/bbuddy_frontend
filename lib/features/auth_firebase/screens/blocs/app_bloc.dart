@@ -74,13 +74,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         password: event.password,
       );
 
-      //       // final userRef = FirebaseFirestore.instance.collection('users').doc(credentials.user!.uid);
-      //       // await userRef.set({
-      //       //   'userName': event.userName,
-      //       //   'lastName': event.lastName,
-      //       //   'firstName': event.firstName,
-      //       //   'email': event.email
-      //       // });
+      final userRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(credentials.user!.uid);
+      await userRef.set({
+        'userName': event.userName,
+        'lastName': event.lastName,
+        'firstName': event.firstName,
+        'email': event.email
+      });
 
       emit(AppStateLoggedIn(
         isLoading: false,

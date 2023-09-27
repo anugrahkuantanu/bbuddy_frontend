@@ -1,4 +1,5 @@
 import 'package:bbuddy_app/features/features.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../../../auth_mod/screens/screen.dart';
 import '../widgets/widget.dart';
@@ -13,10 +14,23 @@ class HeadHomePageWidget extends StatelessWidget {
 
   const HeadHomePageWidget(this.context, {this.text_color});
 
+  static String? get userId => null;
+
+  Future<String?> getFirstName() async {
+    final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+    String? name; // Declare and initialize the 'name' variable
+    try {
+      final userData = await userRef.get();
+      name = userData.data()?['firstName'];
+    } catch (e) {
+      print('Error retrieving user data: $e');
+    }
+    return name;
+  }
+
   @override
   Widget build(BuildContext context) {
     final userDetails = Provider.of<UserDetailsProvider>(context);
-    // final counter_stats = CounterStats();
     final counter_stats = Provider.of<CounterStats>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -70,17 +84,27 @@ class HeadHomePageWidget extends StatelessWidget {
                             color: text_color ?? Colors.white,
                           ),
                         ),
-                        userDetails.details != null &&
-                                userDetails.details?.firstName != null
-                            ? Text(
-                                userDetails.details!.firstName,
+                        FutureBuilder<String?>(
+                          future: getFirstName(),
+                          builder: (context, snapshot) {
+                            // print("first name: ${snapshot.data}");
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              return Text(
+                                snapshot.data ?? 'anonym',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: text_size_xl,
                                   color: text_color ?? Colors.white,
                                 ),
-                              )
-                            : CircularProgressIndicator(),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),

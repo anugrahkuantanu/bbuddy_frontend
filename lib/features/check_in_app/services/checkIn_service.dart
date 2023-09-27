@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bbuddy_app/core/core.dart';
 import 'package:dio/dio.dart';
 import '../../../core/classes/dio_util.dart';
@@ -16,15 +18,17 @@ class CheckInService {
   Future<String> getCheckInResponse(String feeling, String feelingForm,
       String reasonEntity, String reason) async {
     try {
-      final response = await _dio.post(
-        '/mood_check_in',
-        data: {
-          'feeling': feeling,
-          'feeling_form': feelingForm,
-          'reason_entity': reasonEntity,
-          'reason': reason
-        },
-      );
+      String? token = await getIdToken();
+      Http _http = Http(baseUrl: ApiEndpoint.baseURL, headers: {
+        'token': token!,
+      });
+      final response = await _http.post('/mood_check_in',
+          data: jsonEncode({
+            'feeling': feeling,
+            'feeling_form': feelingForm,
+            'reason_entity': reasonEntity,
+            'reason': reason
+          }));
       if (response.statusCode == 200) {
         return response.data['message'];
       } else {
@@ -40,14 +44,15 @@ class CheckInService {
     final String feeling_message =
         "I am feeling $feeling and $feelingForm about my $reasonEntity.";
     try {
-      await _dio.post(
-        '/store_mood_check_in',
-        data: {
-          'feeling_message': feeling_message,
-          'reason': reason,
-          'ai_response': ai_response
-        },
-      );
+      String? token = await getIdToken();
+      Http _http =
+          Http(baseUrl: ApiEndpoint.baseURL, headers: {'token': token!});
+      await _http.post('/store_mood_check_in',
+          data: jsonEncode({
+            'feeling_message': feeling_message,
+            'reason': reason,
+            'ai_response': ai_response
+          }));
     } catch (e) {
       throw Exception('Failed to store check-ins: $e');
     }
@@ -62,19 +67,11 @@ class CheckInService {
       final response = await _http.get('/mood_check_in_history', params: {
         'last_k': lastK,
       });
-      print(response.statusCode);
-      return [];
-      // final response = await _dio.get(
-      //   '/mood_check_in_history',
-      //   queryParameters: {
-      //     'last_k': lastK,
-      //   },
-      // );
-      // if (response.statusCode == 200) {
-      //   return parseCheckInList(response.data);
-      // } else {
-      //   throw Exception('Failed to load check-ins');
-      // }
+      if (response.statusCode == 200) {
+        return parseCheckInList(response.data);
+      } else {
+        throw Exception('Failed to load check-ins');
+      }
     } catch (e) {
       throw Exception('Failed to load check-ins: $e');
     }

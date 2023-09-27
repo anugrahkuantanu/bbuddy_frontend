@@ -20,8 +20,6 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    print("inside homepage build");
-
     var tm = context.watch<ThemeProvider>();
     Color textColor = tm.isDarkMode ? AppColors.textlight : AppColors.textdark;
 

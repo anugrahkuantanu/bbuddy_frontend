@@ -15,6 +15,7 @@ class HomeController extends StatelessController {
   @override
   Display view(BuildContext context) {
     // Navigation Bug Fixes
+    // TODO: Check this nav index why we need to do this
     var tm = context.read<ThemeProvider?>();
     tm?.setNavIndex(0);
     return Display(

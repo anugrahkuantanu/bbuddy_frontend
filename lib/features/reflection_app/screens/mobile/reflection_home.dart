@@ -7,7 +7,6 @@ import '../blocs/bloc.dart';
 import '../widgets/widget.dart';
 import '../../controllers/controller.dart';
 
-
 class ReflectionHome extends StatefulWidget {
   final int selectedIndex;
 
@@ -44,12 +43,15 @@ class _ReflectionHomeState extends State<ReflectionHome> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NewReflectionController(topics: state.reflectionTopics),
+                builder: (context) =>
+                    NewReflectionController(topics: state.reflectionTopics),
               ),
             );
           }
           if (state is NeedsMoreCheckIns) {
-            DialogHelper.showDialogMessage(context, message: AppStrings.reflectionCheckInMessage, title: AppStrings.notEnoughtCheckInTitel);
+            DialogHelper.showDialogMessage(context,
+                message: AppStrings.reflectionCheckInMessage,
+                title: AppStrings.notEnoughtCheckInTitel);
           }
         },
         builder: (context, state) {
@@ -58,16 +60,16 @@ class _ReflectionHomeState extends State<ReflectionHome> {
           } else if (state is ReflectionHomeHasEnoughCheckIns) {
             _currentView = _buildHasEnoughCheckInsUI(state.history);
           } else if (state is ReflectionHomeInsufficientCheckIns) {
-            _currentView = NotEnoughtCheckIn(title: 'Reflection', response: state.errorMessage);
+            _currentView = NotEnoughtCheckIn(
+                title: 'Reflection', response: state.errorMessage);
           } else if (state is ReflectionHomeError) {
             _currentView = ErrorUI(errorMessage: state.errorMessage);
           }
-          return _currentView?? Container(); // Fallback
+          return _currentView ?? Container(); // Fallback
         },
       ),
     );
   }
-
 
   Widget _buildHasEnoughCheckInsUI(List history) {
     return Scaffold(
@@ -87,9 +89,8 @@ class _ReflectionHomeState extends State<ReflectionHome> {
           ),
           itemCount: history.length,
           itemBuilder: (context, index) {
-          final reflection = history[index]!;
-          return 
-           ReflectionCard(
+            final reflection = history[index]!;
+            return ReflectionCard(
               heading: history[index].heading!,
               // topicReflections: history[index].topicReflections ?? [],
               topicReflections: history[index].topicReflections!,
@@ -99,9 +100,10 @@ class _ReflectionHomeState extends State<ReflectionHome> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ViewReflectionController(
-                      topics: topics.map((reflectionPerTopic) => reflectionPerTopic.topic).toList(),
+                      topics: topics
+                          .map((reflectionPerTopic) => reflectionPerTopic.topic)
+                          .toList(),
                       reflection: reflection,
-
                     ),
                   ),
                 );
@@ -114,13 +116,10 @@ class _ReflectionHomeState extends State<ReflectionHome> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _bloc.add(CreateNewReflectionEvent(context));
-
         },
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomBar(),
     );
   }
-
-
 }

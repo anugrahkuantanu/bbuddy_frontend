@@ -1,4 +1,5 @@
-
+import 'package:bbuddy_app/core/classes/http_manager.dart';
+import 'package:bbuddy_app/core/helpers/login_helper.dart';
 import 'package:dio/dio.dart';
 import '/config/config.dart';
 import '../../../core/classes/dio_util.dart';
@@ -8,22 +9,27 @@ Future<List> getReflectionTopics() async {
   final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
 
+  String? token = await getIdToken();
+  Http _http = Http(baseUrl: ApiEndpoint.baseURL, headers: {
+    "token": token!,
+  });
+
   try {
-    final response = await dio.get(
+    final response = await _http.get(
       '/reflection_topics',
       //queryParameters: {'session_id': session_id},
     );
-    if (response.statusCode == 200) {
-      return response.data["questions"];
-    } else {
-      throw Exception('Failed to load check-ins');
-    }
+    print(response.statusCode);
+    return [];
+    // if (response.statusCode == 200) {
+    //   return response.data["questions"];
+    // } else {
+    //   throw Exception('Failed to load check-ins');
+    // }
   } catch (e) {
     throw Exception('Failed to load check-ins: $e');
   }
 }
-
-
 
 Future<List<Reflection>> getReflectionHistory(
     {DateTime? startDate, DateTime? endDate}) async {
@@ -55,7 +61,6 @@ Future<List<Reflection>> getReflectionHistory(
   }
 }
 
-
 Future<Reflection> getMoodReflections(
     List topics, List? userReflections, String heading) async {
   final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
@@ -77,19 +82,17 @@ Future<Reflection> getMoodReflections(
 Future<String> fetchHeading(List topics) async {
   final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
   dio.interceptors.add(AuthInterceptor(dio));
-    final response = await dio.post(
-      '$ApiEndpoint.baseURL/reflection_heading',
-      data: {'topics': topics},
-    );
-    if (response.statusCode == 200) {
-      String heading = response.data["heading"];
-      return heading;
-      } else {
-      throw Exception('Failed to load data');
-    }
+  final response = await dio.post(
+    '$ApiEndpoint.baseURL/reflection_heading',
+    data: {'topics': topics},
+  );
+  if (response.statusCode == 200) {
+    String heading = response.data["heading"];
+    return heading;
+  } else {
+    throw Exception('Failed to load data');
   }
-
-
+}
 
 // class ReflectionHeading extends ChangeNotifier {
 //   String heading = '';
@@ -126,5 +129,3 @@ Future<int> countReflections() async {
     throw Exception('Failed to load check-ins: $e');
   }
 }
-
-

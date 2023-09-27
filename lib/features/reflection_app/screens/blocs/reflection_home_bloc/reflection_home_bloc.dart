@@ -20,7 +20,7 @@ class ReflectionHomeBloc
   Future<void> _loadReflectionHome(
       LoadReflectionHome event, Emitter<ReflectionHomeState> emit) async {
     emit(ReflectionHomeLoading());
-
+    List<Reflection> history = await getReflectionHistory();
     try {
       int? checkInCount = await checkInService!.countCheckIn();
       int modulo = checkInCount % 3;

@@ -15,12 +15,12 @@ class Message {
   set isBot(bool isBot) {
     _isBot = isBot;
   }
-  
-  set isWaiting(bool isWaiting){
+
+  set isWaiting(bool isWaiting) {
     isWaiting = isWaiting;
   }
 
-  set id(String? id){
+  set id(String? id) {
     _id = id;
   }
 
@@ -32,6 +32,11 @@ class Message {
   }) {
     _text = text;
     _isBot = isBot;
-    _id = id; 
+    _id = id;
+  }
+
+  factory Message.fromJson(Map<String, dynamic> json) {
+    //String text =
+    return Message(text: json["data"]["content"], isBot: json["type"] == "ai");
   }
 }
