@@ -73,7 +73,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     );
 
     try {
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       final user = userCredential.user!;
       emit(AppStateLoggedIn(
         isLoading: false,
