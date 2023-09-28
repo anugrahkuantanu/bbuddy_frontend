@@ -15,10 +15,13 @@ class HeadHomePageWidget extends StatelessWidget {
 
   const HeadHomePageWidget(this.context, {this.text_color});
 
-  static String? get userId => null;
 
   Future<String?> getFirstName() async {
     String? getUserId = await FirebaseAuth.instance.currentUser?.uid;
+    List<String>? getName = await FirebaseAuth.instance.currentUser!.displayName!.split(" ");
+    print("my name: ${getName[0].toString()}");
+
+    // String? getUserId = await FirebaseAuth.instance.currentUser?.uid;
     final userRef = FirebaseFirestore.instance.collection('users').doc(getUserId);
     String? name; // Declare and initialize the 'name' variable
     try {

@@ -52,12 +52,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
-
-
-
-
-
-
     Future<void> _googleLogin(AppEventGoogleLogin event, Emitter<AppState> emit) async {
     emit(const AppStateLoggedOut(
       isLoading: true,
