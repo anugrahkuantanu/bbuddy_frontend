@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../errors/auth_error.dart';
 import './bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
@@ -15,6 +16,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppEventGoToRegistration>(_goToRegistration);
     on<AppEventLogIn>(_logIn);
     on<AppEventGoogleLogin>(_googleLogin);
+    on<AppEventAppleLogin>(_appleLogin);
     on<AppEventGoToLogin>(_goToLogin);
     on<AppEventRegister>(_register);
     on<AppEventLogOut>(_logOut);
@@ -80,6 +82,47 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       ));
     }
   }
+
+Future<void> _appleLogin(AppEventAppleLogin event, Emitter<AppState> emit) async {
+  emit(const AppStateLoggedOut(
+    isLoading: true,
+  ));
+
+  try {
+    // Trigger the Apple Sign-In process
+    final appleResult = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+
+    // Convert Apple Sign-In credentials to Firebase credentials
+    final credential = OAuthProvider('apple.com').credential(
+      idToken: appleResult.identityToken,
+      accessToken: appleResult.authorizationCode,
+    );
+
+    // Sign in to Firebase with the Apple Sign-In credentials
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    final user = userCredential.user!;
+    emit(AppStateLoggedIn(
+      isLoading: false,
+      user: user,
+    ));
+  } on FirebaseAuthException catch (e) {
+    emit(AppStateLoggedOut(
+      isLoading: false,
+      authError: AuthError.from(e),
+    ));
+  } catch (error) {
+    emit(AppStateLoggedOut(
+      isLoading: false,
+      // Handle other potential errors here, possibly create a custom error class for it
+    ));
+  }
+}
+
 
   void _goToLogin(AppEventGoToLogin event, Emitter<AppState> emit) {
     emit(const AppStateLoggedOut(

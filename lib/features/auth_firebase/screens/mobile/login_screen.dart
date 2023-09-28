@@ -30,9 +30,9 @@ class LoginScreen extends HookWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            SizedBox(height: 80.0.h),
+            SizedBox(height: 20.0.h),
             LoginLogo(),
-            SizedBox(height: 40.0.h),
+            SizedBox(height: 10.0.h),
             Container(
               child: TextField(
                 controller: emailController,
@@ -81,15 +81,45 @@ class LoginScreen extends HookWidget {
                       const AppEventGoToRegistration(),
                     );
               },
+            ),SizedBox(height: 5.0.h),
+            Divider(
+              thickness: 0.5,
+              color: Colors.grey[400],
             ),
-            SizedBox(height: 10.0.h),
-            Button(
-              label: 'Google',
-              onPressed: () {
+          
+          Text(
+              'Or continue with',
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+          
+          Divider(
+              thickness: 0.5,
+              color: Colors.grey[400],
+            ),
+            SizedBox(height: 5.0.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // google button
+                SquareTile(
+                  onTap: () {
                 context.read<AppBloc>().add(
                       AppEventGoogleLogin(),
                     );
-              },
+                  },
+                  imagePath: 'assets/images/google.png'),
+
+                SizedBox(width: 25),
+
+                // apple button
+                SquareTile(
+                  onTap: () {
+                context.read<AppBloc>().add(
+                      AppEventAppleLogin(),
+                    );
+                  },
+                  imagePath: 'assets/images/apple.png')
+              ],
             ),
           ],
         ),
