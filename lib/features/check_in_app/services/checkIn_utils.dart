@@ -24,6 +24,7 @@ const String GENERAL_ERROR_MESSAGE =
 // }
 
 List<CheckIn> parseCheckInList(List jsonList) {
+  print("object");
   return List.generate(jsonList.length, (index) {
     String id = jsonList[index]["id"];
     String userId = jsonList[index]["user_id"];

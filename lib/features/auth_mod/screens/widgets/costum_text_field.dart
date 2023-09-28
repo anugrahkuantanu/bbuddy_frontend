@@ -24,7 +24,7 @@ class CustomTextField extends StatelessWidget {
       decoration: ThemeHelper().inputBoxDecorationShaddow(),
       child: TextFormField(
         controller: controller,
-        decoration: ThemeHelper().textInputDecoration(label, hint),
+        decoration: ThemeHelper().textInputDecoration(labelText: label, hintText: hint),
         obscureText: isPassword,
         validator: validator,
         onChanged: onChanged,

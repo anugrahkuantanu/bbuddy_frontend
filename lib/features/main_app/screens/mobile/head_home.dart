@@ -1,5 +1,6 @@
 import 'package:bbuddy_app/features/features.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../auth_mod/screens/screen.dart';
 import '../widgets/widget.dart';
@@ -17,7 +18,8 @@ class HeadHomePageWidget extends StatelessWidget {
   static String? get userId => null;
 
   Future<String?> getFirstName() async {
-    final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+    String? getUserId = await FirebaseAuth.instance.currentUser?.uid;
+    final userRef = FirebaseFirestore.instance.collection('users').doc(getUserId);
     String? name; // Declare and initialize the 'name' variable
     try {
       final userData = await userRef.get();
@@ -30,7 +32,6 @@ class HeadHomePageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userDetails = Provider.of<UserDetailsProvider>(context);
     final counter_stats = Provider.of<CounterStats>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;

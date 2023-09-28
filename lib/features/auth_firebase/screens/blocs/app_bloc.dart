@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../../errors/auth_error.dart';
 import './bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
@@ -13,6 +14,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppEventInitialize>(_initialize);
     on<AppEventGoToRegistration>(_goToRegistration);
     on<AppEventLogIn>(_logIn);
+    on<AppEventGoogleLogin>(_googleLogin);
     on<AppEventGoToLogin>(_goToLogin);
     on<AppEventRegister>(_register);
     on<AppEventLogOut>(_logOut);
@@ -37,6 +39,41 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         email: event.email,
         password: event.password,
       );
+      final user = userCredential.user!;
+      emit(AppStateLoggedIn(
+        isLoading: false,
+        user: user,
+      ));
+    } on FirebaseAuthException catch (e) {
+      emit(AppStateLoggedOut(
+        isLoading: false,
+        authError: AuthError.from(e),
+      ));
+    }
+  }
+
+
+
+
+
+
+
+    Future<void> _googleLogin(AppEventGoogleLogin event, Emitter<AppState> emit) async {
+    emit(const AppStateLoggedOut(
+      isLoading: true,
+    ));
+
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
+
+    try {
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       final user = userCredential.user!;
       emit(AppStateLoggedIn(
         isLoading: false,

@@ -23,7 +23,6 @@ abstract class StatelessController extends StatelessWidget {
     return BlocConsumer<AppBloc, AppState>(listener: (context, appState) {
       if (appState.authError == null && !appState.isLoading) {
         if (appState is AppStateLoggedIn) {
-          print("In here");
           Nav.toNamed(context, '/');
         } else if (appState is AppStateLoggedOut) {
           Nav.toNamed(context, '/login');

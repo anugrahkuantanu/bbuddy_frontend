@@ -13,7 +13,7 @@ class LoginController extends StatelessController {
   Display view(BuildContext context) {
     return Display(
       title: 'Login Section',
-      mobile: const LoginView(),
+      mobile: const LoginScreen(),
     );
   }
 }

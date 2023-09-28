@@ -12,7 +12,7 @@ class RegisterController extends StatelessController {
   Display view(BuildContext context) {
     return Display(
       title: 'Register',
-      mobile: const RegisterView(),
+      mobile: const RegisterScreen(),
     );
   }
 }
