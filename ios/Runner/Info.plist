@@ -9,9 +9,8 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<!-- TODO Replace this value: -->
-				<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-				<string>com.googleusercontent.apps.528052100662-ga9t8c0qqgc6o2096mbpguj3bfq5nl87</string>
+				<!-- YOUR_REVERSED_BUNDLE_IDENTIFIER should be your bundle identifier, but reversed. For example, if your bundle identifier is com.example.myapp, then the value should be myapp.example.com -->
+				<string>com.bbuddy.bbuddyfrontend</string>
 			</array>
 		</dict>
 	</array>
@@ -42,7 +41,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.528052100662-ga9t8c0qqgc6o2096mbpguj3bfq5nl87</string>
+				<string>com.googleusercontent.apps.528052100662-se7j75cvjscvlmguscj8i2ni9ag698a4</string>
 			</array>
 		</dict>
 	</array>

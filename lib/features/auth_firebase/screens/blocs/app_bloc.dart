@@ -1,11 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../errors/auth_error.dart';
 import './bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc()
@@ -83,29 +85,29 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
+
+
 Future<void> _appleLogin(AppEventAppleLogin event, Emitter<AppState> emit) async {
   emit(const AppStateLoggedOut(
     isLoading: true,
   ));
 
+  // Get the Apple ID credential using Apple Sign In
+  final appleCredential = await SignInWithApple.getAppleIDCredential(
+    scopes: [AppleIDAuthorizationScopes.email, AppleIDAuthorizationScopes.fullName],
+  );
+
+  // Create an OAuthCredential using the Apple ID credential
+  final oauthCredential = OAuthProvider("apple.com").credential(
+    accessToken: appleCredential.authorizationCode,
+    idToken: appleCredential.identityToken,
+  );
+
   try {
-    // Trigger the Apple Sign-In process
-    final appleResult = await SignInWithApple.getAppleIDCredential(
-      scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName,
-      ],
-    );
-
-    // Convert Apple Sign-In credentials to Firebase credentials
-    final credential = OAuthProvider('apple.com').credential(
-      idToken: appleResult.identityToken,
-      accessToken: appleResult.authorizationCode,
-    );
-
-    // Sign in to Firebase with the Apple Sign-In credentials
-    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    print('Yess');
     final user = userCredential.user!;
+    print('user: ${user.displayName}');
     emit(AppStateLoggedIn(
       isLoading: false,
       user: user,
@@ -118,7 +120,6 @@ Future<void> _appleLogin(AppEventAppleLogin event, Emitter<AppState> emit) async
   } catch (error) {
     emit(AppStateLoggedOut(
       isLoading: false,
-      // Handle other potential errors here, possibly create a custom error class for it
     ));
   }
 }

@@ -126,14 +126,6 @@ class _HeadHomePageWidgetState extends State<HeadHomePageWidget> {
           if (state is NavigatedToProfilePageState) {
               Nav.toNamed(context, '/profile');
           }
-          // if (state is NavigatedToProfilePageState) {
-          //   WidgetsBinding.instance?.addPostFrameCallback((_) {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const ProfileController()),
-          //     );
-          //   });
-          // }
         },
         builder: (context, state) {
           Widget nameWidget;
