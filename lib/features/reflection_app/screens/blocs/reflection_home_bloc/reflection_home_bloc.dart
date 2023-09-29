@@ -10,6 +10,7 @@ import '../../../../check_in_app/services/service.dart';
 class ReflectionHomeBloc
     extends Bloc<ReflectionHomeEvent, ReflectionHomeState> {
   final CheckInService? checkInService;
+  List<Reflection>? cachedHistory; // Store cached history
 
   ReflectionHomeBloc({required this.checkInService})
       : super(ReflectionHomeInitial()) {
@@ -20,14 +21,19 @@ class ReflectionHomeBloc
   Future<void> _loadReflectionHome(
       LoadReflectionHome event, Emitter<ReflectionHomeState> emit) async {
     emit(ReflectionHomeLoading());
-    List<Reflection> history = await getReflectionHistory();
+
     try {
+      if (cachedHistory == null) {
+        // If data is not cached, fetch it from the database
+        cachedHistory = await getReflectionHistory();
+      }
+
       int? checkInCount = await checkInService!.countCheckIn();
       int modulo = checkInCount % 3;
       int checkInNeeded = 3 - modulo;
+      
       if (checkInCount >= 3) {
-        List<Reflection> history = await getReflectionHistory() ?? [];
-        emit(ReflectionHomeHasEnoughCheckIns(history));
+        emit(ReflectionHomeHasEnoughCheckIns(cachedHistory!));
       } else {
         emit(ReflectionHomeInsufficientCheckIns(
             errorMessage: checkInNeeded.toString()));
@@ -48,20 +54,19 @@ class ReflectionHomeBloc
         emit(
             NeedsMoreCheckIns()); // This state indicates the need for more check-ins.
       } else {
-        List<Reflection> history = await getReflectionHistory() ?? [];
-        emit(ReflectionHomeHasEnoughCheckIns(history));
+        if (cachedHistory == null) {
+          // If data is not cached, fetch it from the database
+          cachedHistory = await getReflectionHistory();
+        }
+
+        emit(ReflectionHomeHasEnoughCheckIns(cachedHistory!));
 
         List reflectionTopics = await getReflectionTopics() ?? [];
         emit(NavigateToNewReflectionPage(reflectionTopics));
-
-        // List<Reflection> history = await getReflectionHistory();
-        // emit(ReflectionHomeHasEnoughCheckIns(history));
-
-        // List reflectionTopics = await getReflectionTopics();
-        // emit(NavigateToNewReflectionPage(reflectionTopics)); // This state indicates the need to navigate.
       }
     } catch (error) {
       emit(ReflectionHomeError(AppStrings.errorCreateNewReflection));
     }
   }
 }
+

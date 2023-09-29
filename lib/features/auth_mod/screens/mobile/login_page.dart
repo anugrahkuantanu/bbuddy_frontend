@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/core.dart';
+import '../../../../app.dart';
 import '../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import '../../../../app.dart.bkp2';
+// import '../../../../app.dart.bkp2';
 import '../widgets/widget.dart';
 import '../../services/service.dart';
 import '../screen.dart';
@@ -64,7 +65,7 @@ class _LoginFormState extends State<LoginForm> {
               Provider.of<UserProvider>(context, listen: false);
           userProvider.checkLoginStatus();
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => MyApp()));
+              context, MaterialPageRoute(builder: (context) => const MyApp()));
         } else if (state is LoginFailure) {
           if (state.error.contains(
               'The username you entered isn\'t connected to an account')) {

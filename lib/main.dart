@@ -1,4 +1,6 @@
 //TEST FIREBASE
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,6 +11,15 @@ import 'features/auth_mod/services/service.dart';
 import '/features/main_app/services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/auth_firebase/screens/blocs/bloc.dart';
+import 'features/check_in_app/screens/bloc/checkIn_home_bloc/checkIn_home_bloc.dart';
+import 'features/check_in_app/screens/bloc/feelings_form_bloc/feeling_form_bloc.dart';
+import 'features/check_in_app/services/checkIn_service.dart';
+import 'features/goal_app/models/goal.dart';
+import 'features/goal_app/screens/blocs/goal_bloc/goal_bloc.dart';
+import 'features/goal_app/screens/blocs/progress_bloc/progress_bloc.dart';
+import 'features/goal_app/screens/blocs/progress_bloc/progress_state.dart';
+import 'features/reflection_app/screens/blocs/reflection_home_bloc/reflection_home_bloc.dart';
+import 'features/reflection_app/screens/blocs/reflection_home_bloc/reflection_home_state.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,23 +37,31 @@ Future main() async {
   await Firebase.initializeApp();
   Provider.debugCheckInvalidValueType = null;
   runApp(
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
         //ChangeNotifierProvider(create: (_) => ReflectionHeading()),
-        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-        ChangeNotifierProvider(
-          create: (_) => UserDetailsProvider(),
-        ),
-        ChangeNotifierProvider(create: (_) => CounterStats()),
-        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
+        BlocProvider<FeelingBloc>(create: (context) => FeelingBloc()),
+        BlocProvider<GoalBloc>(create: (context) => GoalBloc(counterStats: CounterStats())),
+        BlocProvider<ReflectionHomeBloc>(create: (context) => ReflectionHomeBloc(checkInService: CheckInService())),
         BlocProvider<AppBloc>(
             create: (_) => AppBloc()
               ..add(
                 const AppEventInitialize(),
               )),
+        ],
+      child:  MultiProvider(
+      providers: [
+         ChangeNotifierProvider(create: (_) => CounterStats()),
+        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
+         ChangeNotifierProvider(
+          create: (_) => UserDetailsProvider(),
+         ),
       ],
+        
+      
       child: const MyApp(),
     ),
+  )
   );
   // runApp(
   //   const MyApp(),
@@ -51,43 +70,6 @@ Future main() async {
 
 
 
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//     await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//   Provider.debugCheckInvalidValueType = null;
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider(create: (_) => ReflectionHeading()),
-//         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-//         ChangeNotifierProvider(create: (_) => UserDetailsProvider(),),
-//         ChangeNotifierProvider(create: (_) => CounterStats()),
-//         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-//       ],
-//       child: AppStarter(),
-//     ),
-//   );
-// }
-
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   Provider.debugCheckInvalidValueType = null;
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-//         ChangeNotifierProvider(create: (_) => UserDetailsProvider(),),
-//         ChangeNotifierProvider(create: (_) => CounterStats()),
-//         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-//       ],
-//       child: AppStarter(),
-//     ),
-//   );
-// }
 
 
 
