@@ -1,6 +1,9 @@
+import 'package:bbuddy_app/di/di.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:bbuddy_app/core/core.dart';
+import 'package:get_it/get_it.dart';
 import '../../errors/auth_error.dart';
 import './bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
@@ -42,6 +45,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         isLoading: false,
         user: user,
       ));
+      final http = locator.get<Http>();
+
+      String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
+      http.addHeaders({'token': token!});
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
         isLoading: false,
@@ -131,7 +138,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       ));
       return;
     }
-
     emit(AppStateLoggedIn(
       isLoading: true,
       user: user,

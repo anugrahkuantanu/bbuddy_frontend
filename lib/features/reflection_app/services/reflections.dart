@@ -1,63 +1,57 @@
 import 'package:bbuddy_app/core/classes/http_manager.dart';
 import 'package:bbuddy_app/core/helpers/login_helper.dart';
+import 'package:bbuddy_app/di/di.dart';
 import 'package:dio/dio.dart';
 import '/config/config.dart';
 import '../../../core/classes/dio_util.dart';
 import '../models/reflection.dart';
 
-Future<List> getReflectionTopics() async {
-  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-  dio.interceptors.add(AuthInterceptor(dio));
+class ReflectionService {
+  final http = locator.get<Http>();
 
-  String? token = await getIdToken();
-  Http _http = Http(baseUrl: ApiEndpoint.baseURL, headers: {
-    "token": token!,
-  });
-
-  try {
-    final response = await _http.get(
-      '/reflection_topics',
-      //queryParameters: {'session_id': session_id},
-    );
-    print(response.statusCode);
-    return [];
-    // if (response.statusCode == 200) {
-    //   return response.data["questions"];
-    // } else {
-    //   throw Exception('Failed to load check-ins');
-    // }
-  } catch (e) {
-    throw Exception('Failed to load check-ins: $e');
-  }
-}
-
-Future<List<Reflection>> getReflectionHistory(
-    {DateTime? startDate, DateTime? endDate}) async {
-  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-  // code here
-  dio.interceptors.add(AuthInterceptor(dio));
-  try {
-    final response = await dio.get(
-      '/reflection_history',
-      queryParameters: {
-        'start_date': startDate?.toIso8601String(),
-        'end_date': endDate?.toIso8601String(),
-      },
-    );
-    if (response.statusCode == 200) {
-      if (response.data is! List) {
-        throw Exception('Unexpected data format received');
-      }
-      final List<dynamic> reflectionsJson = response.data as List<dynamic>;
-      final List<Reflection> reflections = reflectionsJson
-          .map((reflectionJson) => Reflection.fromJson(reflectionJson))
-          .toList();
-      return reflections;
-    } else {
-      throw Exception('Failed to load reflections');
+  Future<List> getReflectionTopics() async {
+    try {
+      final response = await http.get(
+        '/reflection_topics',
+        //queryParameters: {'session_id': session_id},
+      );
+      print(response.statusCode);
+      return [];
+      // if (response.statusCode == 200) {
+      //   return response.data["questions"];
+      // } else {
+      //   throw Exception('Failed to load check-ins');
+      // }
+    } catch (e) {
+      throw Exception('Failed to load check-ins: $e');
     }
-  } catch (e) {
-    throw Exception('Failed to load reflections: $e');
+  }
+
+  Future<List<Reflection>> getReflectionHistory(
+      {DateTime? startDate, DateTime? endDate}) async {
+    try {
+      final response = await http.get(
+        '/reflection_history',
+        params: {
+          'start_date': startDate?.toIso8601String(),
+          'end_date': endDate?.toIso8601String(),
+        },
+      );
+      if (response.statusCode == 200) {
+        if (response.data is! List) {
+          throw Exception('Unexpected data format received');
+        }
+        final List<dynamic> reflectionsJson = response.data as List<dynamic>;
+        final List<Reflection> reflections = reflectionsJson
+            .map((reflectionJson) => Reflection.fromJson(reflectionJson))
+            .toList();
+        return reflections;
+      } else {
+        throw Exception('Failed to load reflections');
+      }
+    } catch (e) {
+      throw Exception('Failed to load reflections: $e');
+    }
   }
 }
 

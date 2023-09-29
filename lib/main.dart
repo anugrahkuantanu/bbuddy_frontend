@@ -1,7 +1,8 @@
 //TEST FIREBASE
+import 'package:bbuddy_app/di/di.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'app.dart';
 import 'package:provider/provider.dart';
 import 'config/config.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/auth_firebase/screens/blocs/bloc.dart';
 
 Future main() async {
+  // ignore: unused_local_variable
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     await Firebase.initializeApp(
@@ -24,11 +26,10 @@ Future main() async {
     ));
   }
   await Firebase.initializeApp();
-  Provider.debugCheckInvalidValueType = null;
+  setupDependencies();
   runApp(
     MultiProvider(
       providers: [
-        //ChangeNotifierProvider(create: (_) => ReflectionHeading()),
         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
         ChangeNotifierProvider(
           create: (_) => UserDetailsProvider(),
@@ -44,13 +45,13 @@ Future main() async {
       child: const MyApp(),
     ),
   );
-  // runApp(
-  //   const MyApp(),
-  // );
 }
 
 
 
+// runApp(
+  //   const MyApp(),
+  // );
 
 // void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();

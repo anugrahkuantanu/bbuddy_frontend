@@ -1,13 +1,16 @@
 import 'dart:convert';
 
 import 'package:bbuddy_app/core/core.dart';
+import 'package:bbuddy_app/di/di.dart';
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import '../../../core/classes/dio_util.dart';
 import 'checkIn_utils.dart';
 import '/config/api_endpoints.dart';
 import '../models/model.dart';
 
 class CheckInService {
+  final http = locator.get<Http>();
   final Dio _dio = _initializeDio();
   static Dio _initializeDio() {
     final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
@@ -18,11 +21,7 @@ class CheckInService {
   Future<String> getCheckInResponse(String feeling, String feelingForm,
       String reasonEntity, String reason) async {
     try {
-      String? token = await getIdToken();
-      Http _http = Http(baseUrl: ApiEndpoint.baseURL, headers: {
-        'token': token!,
-      });
-      final response = await _http.post('/mood_check_in',
+      final response = await http.post('/mood_check_in',
           data: jsonEncode({
             'feeling': feeling,
             'feeling_form': feelingForm,
@@ -44,10 +43,7 @@ class CheckInService {
     final String feeling_message =
         "I am feeling $feeling and $feelingForm about my $reasonEntity.";
     try {
-      String? token = await getIdToken();
-      Http _http =
-          Http(baseUrl: ApiEndpoint.baseURL, headers: {'token': token!});
-      await _http.post('/store_mood_check_in',
+      await http.post('/store_mood_check_in',
           data: jsonEncode({
             'feeling_message': feeling_message,
             'reason': reason,
@@ -59,12 +55,9 @@ class CheckInService {
   }
 
   Future<List<CheckIn>> getCheckInHistory({int lastK = 4}) async {
-    String? token = await getIdToken();
-    Http _http = Http(baseUrl: ApiEndpoint.baseURL, headers: {
-      'token': token!,
-    });
     try {
-      final response = await _http.get('/mood_check_in_history', params: {
+      //print(http.)
+      final response = await http.get('/mood_check_in_history', params: {
         'last_k': lastK,
       });
       if (response.statusCode == 200) {
@@ -79,7 +72,7 @@ class CheckInService {
 
   Future<int> countCheckIn() async {
     try {
-      final response = await _dio.get('/count_mood_check_in');
+      final response = await http.get('/count_mood_check_in', params: {});
       if (response.statusCode == 200) {
         return response.data as int;
       } else {

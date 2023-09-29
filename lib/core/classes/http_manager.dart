@@ -8,6 +8,9 @@ import 'package:flutter/foundation.dart';
 class Http extends HttpManager {
   Http({String? baseUrl, Map<String, dynamic>? headers})
       : super(baseUrl!, headers!);
+  void addHeaders(Map<String, dynamic>? headers) {
+    _dio.options.headers.addAll(headers ?? {});
+  }
 }
 
 class HttpManager {
@@ -23,7 +26,6 @@ class HttpManager {
       _dio.options.headers['Access-Control-Allow-Origin'] = '*';
       _dio.options.headers['Access-Control-Allow-Methods'] = '*';
     }
-
     if (!kIsWeb) {
       (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (HttpClient client) {

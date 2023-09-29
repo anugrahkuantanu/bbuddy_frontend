@@ -1,5 +1,7 @@
+import 'package:bbuddy_app/di/di.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import '../core.dart';
 import '/config/config.dart';
 import '../classes/dio_util.dart';
 import '../../features/main_app/models/stats.dart';
@@ -16,9 +18,6 @@ Future<void> updateStats(UserStats? stat) async {
     throw Exception('Failed to update stats: $e');
   }
 }
-
-
-
 
 class CounterStats extends ChangeNotifier {
   UserStats? checkInCounter;
@@ -64,18 +63,20 @@ class CounterStats extends ChangeNotifier {
   Future<void> getCounterStats() async {
     final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
     dio.interceptors.add(AuthInterceptor(dio));
+    final http = locator.get<Http>();
     try {
-      final response = await dio.get('/counter_stats');
+      print("Yes");
+      final response = await http.get('/counter_stats');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
         if (data.length == 2) {
-          for(final item in data){
-            if(item['type']== 'REFLECTION_COUNTER'){
+          for (final item in data) {
+            if (item['type'] == 'REFLECTION_COUNTER') {
               reflectionCounter = UserStats.fromJson(item);
             } else {
-                checkInCounter = UserStats.fromJson(item);
+              checkInCounter = UserStats.fromJson(item);
             }
-          } 
+          }
         } else {
           throw Exception('Failed to load check-ins');
         }

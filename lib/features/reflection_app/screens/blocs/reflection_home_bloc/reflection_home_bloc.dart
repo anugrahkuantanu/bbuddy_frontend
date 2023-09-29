@@ -9,9 +9,11 @@ import '../../../../check_in_app/services/service.dart';
 
 class ReflectionHomeBloc
     extends Bloc<ReflectionHomeEvent, ReflectionHomeState> {
-  final CheckInService? checkInService;
+  final CheckInService checkInService;
+  final ReflectionService reflectionService;
 
-  ReflectionHomeBloc({required this.checkInService})
+  ReflectionHomeBloc(
+      {required this.checkInService, required this.reflectionService})
       : super(ReflectionHomeInitial()) {
     on<LoadReflectionHome>(_loadReflectionHome);
     on<CreateNewReflectionEvent>(_createNewReflection);
@@ -20,17 +22,15 @@ class ReflectionHomeBloc
   Future<void> _loadReflectionHome(
       LoadReflectionHome event, Emitter<ReflectionHomeState> emit) async {
     emit(ReflectionHomeLoading());
-    List<Reflection> history = await getReflectionHistory();
     try {
-      int? checkInCount = await checkInService!.countCheckIn();
-      int modulo = checkInCount % 3;
-      int checkInNeeded = 3 - modulo;
+      int? checkInCount = await checkInService.countCheckIn();
       if (checkInCount >= 3) {
-        List<Reflection> history = await getReflectionHistory() ?? [];
+        List<Reflection> history =
+            await reflectionService.getReflectionHistory() ?? [];
         emit(ReflectionHomeHasEnoughCheckIns(history));
       } else {
         emit(ReflectionHomeInsufficientCheckIns(
-            errorMessage: checkInNeeded.toString()));
+            errorMessage: checkInCount > 0 ? checkInCount.toString() : '3'));
       }
     } catch (error) {
       emit(ReflectionHomeError(AppStrings.errorLoadReflection));
@@ -48,10 +48,12 @@ class ReflectionHomeBloc
         emit(
             NeedsMoreCheckIns()); // This state indicates the need for more check-ins.
       } else {
-        List<Reflection> history = await getReflectionHistory() ?? [];
+        List<Reflection> history =
+            await reflectionService.getReflectionHistory() ?? [];
         emit(ReflectionHomeHasEnoughCheckIns(history));
 
-        List reflectionTopics = await getReflectionTopics() ?? [];
+        List reflectionTopics =
+            await reflectionService.getReflectionTopics() ?? [];
         emit(NavigateToNewReflectionPage(reflectionTopics));
 
         // List<Reflection> history = await getReflectionHistory();

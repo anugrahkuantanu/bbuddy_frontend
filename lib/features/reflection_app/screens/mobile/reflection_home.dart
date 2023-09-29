@@ -1,7 +1,9 @@
+import 'package:bbuddy_app/features/reflection_app/services/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../check_in_app/services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bbuddy_app/di/di.dart';
 import '../../../../../core/core.dart';
 import '../blocs/bloc.dart';
 import '../widgets/widget.dart';
@@ -10,7 +12,7 @@ import '../../controllers/controller.dart';
 class ReflectionHome extends StatefulWidget {
   final int selectedIndex;
 
-  ReflectionHome({Key? key, this.selectedIndex = 1}) : super(key: key);
+  const ReflectionHome({Key? key, this.selectedIndex = 1}) : super(key: key);
 
   @override
   _ReflectionHomeState createState() => _ReflectionHomeState();
@@ -23,7 +25,9 @@ class _ReflectionHomeState extends State<ReflectionHome> {
   @override
   void initState() {
     super.initState();
-    _bloc = ReflectionHomeBloc(checkInService: CheckInService());
+    _bloc = ReflectionHomeBloc(
+        checkInService: locator.get<CheckInService>(),
+        reflectionService: locator.get<ReflectionService>());
     _bloc.add(LoadReflectionHome());
   }
 
