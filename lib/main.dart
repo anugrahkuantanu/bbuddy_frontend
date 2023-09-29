@@ -1,4 +1,5 @@
 //TEST FIREBASE
+import 'package:bbuddy_app/features/main_app/screens/mobile/head_home.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -45,9 +46,6 @@ Future main() async {
       child: const MyApp(),
     ),
   );
-  // runApp(
-  //   const MyApp(),
-  // );
 }
 
 

@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/features/check_in_app/services/checkIn_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/widget.dart';
@@ -30,7 +31,7 @@ class HomePageState extends State<HomePage> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: HeadHomePageWidget(context, text_color: textColor),
+              child: HeadHomePageWidget(text_color: textColor),
             ),
             Padding(
               padding: EdgeInsets.only(left: 28.w, bottom: 12.w),
@@ -42,12 +43,18 @@ class HomePageState extends State<HomePage> {
                     fontSize: 20.w),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 0.w),
-              child: const CheckInHistoryCard(
-                textColor: Colors.white,
-              ),
-            ),
+Padding(
+  padding: EdgeInsets.symmetric(horizontal: 0.w),
+  child: BlocProvider<CheckInHistoryBloc>(
+    create: (context) => CheckInHistoryBloc(CheckInService()),
+    child: Builder(
+      builder: (context) => CheckInHistoryCard(
+        bloc: context.read<CheckInHistoryBloc>(), // Here's the change
+        textColor: Colors.white,
+      ),
+    ),
+  ),
+)
           ],
         ),
       ),

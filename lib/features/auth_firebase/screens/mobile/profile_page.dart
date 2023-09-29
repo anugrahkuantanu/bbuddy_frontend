@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../../auth_firebase/screens/screen.dart';
-import 'login_page.dart';
-import '../../services/login.dart';
-import '../../../../../core/core.dart';
-import '../../services/service.dart';
 import '../screen.dart';
-import '../widgets/widget.dart';
+import '../../../auth_mod/screens/mobile/login_page.dart';
+import '../../../auth_mod/services/login.dart';
+import '../../../../../core/core.dart';
+import '../../../auth_mod/services/service.dart';
+import '../../../auth_mod/screens/screen.dart';
+import '../../../auth_mod/screens/widgets/widget.dart';
 
 class ProfilePage extends StatefulWidget {
   final int selectedIndex;
@@ -42,12 +42,15 @@ class _ProfilePageState extends State<ProfilePage> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Profile'),
+        leading: IconButton(
+    icon: Icon(Icons.arrow_back),
+    onPressed: () => Nav.toNamed(context, '/'),
+),
         centerTitle: true,
         //actions: actionsMenu(context),
         actions: const [
           MainPopupMenuButton(),
         ],
-        // automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: Column(

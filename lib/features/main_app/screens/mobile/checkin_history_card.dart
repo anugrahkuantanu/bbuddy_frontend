@@ -4,62 +4,58 @@ import '../widgets/widget.dart';
 import '../../../check_in_app/services/service.dart';
 import '../../../check_in_app/models/check_in.dart';
 import '../../../check_in_app/screens/screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CheckInHistoryCard extends StatefulWidget {
-  final Color? textColor;
 
-  const CheckInHistoryCard({
-    Key? key,
-    this.textColor = Colors.black,
-  }) : super(key: key);
+abstract class CheckInHistoryEvent {}
 
-  @override
-  State<CheckInHistoryCard> createState() => CheckInHistoryCardState();
+class FetchCheckInHistoryEvent extends CheckInHistoryEvent {}
+
+
+abstract class CheckInHistoryState {}
+
+class CheckInHistoryLoadingState extends CheckInHistoryState {}
+
+class CheckInHistoryLoadedState extends CheckInHistoryState {
+  final List<CheckIn> pastCheckIns;
+
+  CheckInHistoryLoadedState(this.pastCheckIns);
 }
 
-class CheckInHistoryCardState extends State<CheckInHistoryCard> {
-  List<CheckIn>? pastCheckIns;
-  bool isLoading = true;
-  final checkInService = CheckInService();
+class CheckInHistoryErrorState extends CheckInHistoryState {
+  final String errorMessage;
 
-  @override
-  void initState() {
-    super.initState();
-    fetchCheckInHistory();
+  CheckInHistoryErrorState(this.errorMessage);
+}
+
+
+
+
+
+class CheckInHistoryBloc extends Bloc<CheckInHistoryEvent, CheckInHistoryState> {
+  final CheckInService checkInService;
+
+  CheckInHistoryBloc(this.checkInService) : super(CheckInHistoryLoadingState()) {
+    on<FetchCheckInHistoryEvent>(_onFetchCheckInHistoryEvent);
   }
 
-  @override
-  void dispose() {
-    // Cancel any ongoing asynchronous tasks here
-    super.dispose();
-  }
+Future<void> _onFetchCheckInHistoryEvent(
+    FetchCheckInHistoryEvent event, Emitter<CheckInHistoryState> emit) async {
+    emit(CheckInHistoryLoadingState());
 
-  Future<void> fetchCheckInHistory() async {
     try {
-      List<CheckIn> checkIns = await checkInService.getCheckInHistory();
-
-      if (mounted) {
-        setState(() {
-          pastCheckIns = checkIns;
-          isLoading = false;
-        });
-      }
+        List<CheckIn> checkIns = await checkInService.getCheckInHistory();
+        emit(CheckInHistoryLoadedState(checkIns));
     } catch (error) {
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
+        emit(CheckInHistoryErrorState(error.toString()));
     }
-  }
+}
+
 
   List<String> parseHumanMessage(String text) {
     List<String> sentences = text.split(".");
-
     List<String> words = sentences[0].split(" ");
-
     String FeelingForm = words[5];
-
     return [
       FeelingForm.replaceFirst(FeelingForm[0], FeelingForm[0].toUpperCase()),
       sentences.sublist(1, sentences.length).join()
@@ -68,206 +64,110 @@ class CheckInHistoryCardState extends State<CheckInHistoryCard> {
 
   List<String> chekinHistory(String text) {
     List<String> sentences = text.split(".");
-
     List<String> words = sentences[0].split(" ");
-
     List<String> chekinHistoryList = [words[3], words[5], words[8]];
-
-    // Add sentences from index 1 to length-1 to the chekinHistoryList
     for (int i = 1; i < sentences.length; i++) {
       chekinHistoryList.add(sentences[i]);
     }
     return chekinHistoryList;
   }
+}
+
+
+
+
+
+class CheckInHistoryCard extends StatefulWidget {
+  final Color? textColor;
+  final CheckInHistoryBloc bloc;
+
+  const CheckInHistoryCard({
+    Key? key,
+    required this.bloc,
+    this.textColor = Colors.black,
+  }) : super(key: key);
+
+  @override
+  _CheckInHistoryCardState createState() => _CheckInHistoryCardState();
+}
+
+class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
+  final List<Color> cardColors = [
+    Color(0xFF65dc99),
+    Color(0xFFb383ff),
+    Color(0xFF68d0ff),
+    Color(0xFFff9a96),
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bloc.add(FetchCheckInHistoryEvent());
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 28.w),
-      child: GridView(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 19.w,
-          mainAxisExtent: 150.w,
-          mainAxisSpacing: 19.w,
-        ),
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          CheckInCard(
-            onTap: pastCheckIns != null && pastCheckIns!.isNotEmpty
-                ? () {
+    return BlocBuilder<CheckInHistoryBloc, CheckInHistoryState>(
+      bloc: widget.bloc,
+      builder: (context, state) {
+        if (state is CheckInHistoryLoadingState) {
+          return Center(
+            child: SizedBox(
+              width: 50.0.w,
+              height: 50.0.w,
+              child: const CircularProgressIndicator(),
+            ),
+          );
+        } else 
+        if (state is CheckInHistoryLoadedState) {
+          final pastCheckIns = state.pastCheckIns;
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 28.w),
+            child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 19.w,
+                mainAxisExtent: 150.w,
+                mainAxisSpacing: 19.w,
+              ),
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              children: List.generate(pastCheckIns.length, (index) {
+                final checkIn = pastCheckIns[index];
+                final history = widget.bloc.chekinHistory(checkIn.messages[0].text.toLowerCase());
+                return CheckInCard(
+                  gradientStartColor: cardColors[index % cardColors.length],
+                  gradientEndColor: cardColors[index % cardColors.length],
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![3].messages[0].text
-                              .toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![3].messages[0].text
-                              .toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![3].messages[0].text
-                              .toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![3].messages[0].text
-                                  .toLowerCase())
-                              .last,
+                          feeling: history[0],
+                          feelingForm: history[1],
+                          reasonEntity: history[2],
+                          reason: history.last,
                           isPastCheckin: true,
-                          aiResponse: pastCheckIns![3].messages[1].text
+                          aiResponse: checkIn.messages[1].text,
                         ),
                       ),
                     );
-                  }
-                : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CheckInHome()),
-                    );
                   },
-            title: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 3)
-                    ? parseHumanMessage(pastCheckIns![3].messages[0].text)[0]
-                    : 'No check-ins available', //"Calming",
-            body: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 3)
-                    ? parseHumanMessage(pastCheckIns![3].messages[0].text)[1]
-                    : 'No check-ins available',
-            text_color: widget.textColor ?? Colors.white,
-            gradientStartColor: Color(0xFFff9a96),
-            gradientEndColor: Color(0xFFff9a96),
-            // borderColor: Color.fromRGBO(17, 32, 55, 1.0),
-          ),
-          CheckInCard(
-            onTap: pastCheckIns != null && pastCheckIns!.isNotEmpty
-                ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![2].messages[0].text
-                              .toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![2].messages[0].text
-                              .toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![2].messages[0].text
-                              .toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![2].messages[0].text
-                                  .toLowerCase())
-                              .last,
-                          isPastCheckin: true,
-                          aiResponse: pastCheckIns![2].messages[1].text
-                        ),
-                      ),
-                    );
-                  }
-                : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CheckInHome()),
-                    );
-                  },
-            title: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 2)
-                    ? parseHumanMessage(pastCheckIns![2].messages[0].text)[0]
-                    : 'No check-ins available',
-            body: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 2)
-                    ? parseHumanMessage(pastCheckIns![2].messages[0].text)[1]
-                    : 'No check-ins available',
-            text_color: widget.textColor ?? Colors.white,
-            gradientStartColor: Color(0xFF68d0ff),
-            gradientEndColor: Color(0xFF68d0ff),
-            // borderColor: Color.fromRGBO(17, 32, 55, 1.0),
-          ),
-          CheckInCard(
-            onTap: pastCheckIns != null && pastCheckIns!.isNotEmpty
-                ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![1].messages[0].text
-                              .toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![1].messages[0].text
-                              .toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![1].messages[0].text
-                              .toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![1].messages[0].text
-                                  .toLowerCase())
-                              .last,
-                          isPastCheckin: true,
-                          aiResponse: pastCheckIns![1].messages[1].text
-                        ),
-                      ),
-                    );
-                  }
-                : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CheckInHome()),
-                    );
-                  },
-            title: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 1)
-                    ? parseHumanMessage(pastCheckIns![1].messages[0].text)[0]
-                    : 'No check-ins available',
-            body: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 1)
-                    ? parseHumanMessage(pastCheckIns![1].messages[0].text)[1]
-                    : 'No check-ins available',
-            text_color: widget.textColor ?? Colors.white,
-            gradientStartColor: Color(0xFFb383ff),
-            gradientEndColor: Color(0xFFb383ff),
-            // borderColor: Color.fromRGBO(17, 32, 55, 1.0), // Set the border color here
-          ),
-          CheckInCard(
-            onTap: pastCheckIns != null && pastCheckIns!.isNotEmpty
-                ? () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatScreen(
-                          feeling: chekinHistory(pastCheckIns![0].messages[0].text
-                              .toLowerCase())[0],
-                          feelingForm: chekinHistory(pastCheckIns![0].messages[0].text
-                              .toLowerCase())[1],
-                          reasonEntity: chekinHistory(pastCheckIns![0].messages[0].text
-                              .toLowerCase())[2],
-                          reason: chekinHistory(pastCheckIns![0].messages[0].text
-                                  .toLowerCase())
-                              .last,
-                          isPastCheckin: true,
-                          aiResponse: pastCheckIns![0].messages[1].text
-                        ),
-                      ),
-                    );
-                  }
-                : () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CheckInHome()),
-                    );
-                  },
-            title: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 0)
-                    ? parseHumanMessage(pastCheckIns![0].messages[0].text)[0]
-                    : 'No check-ins available',
-            text_color: widget.textColor ?? Colors.white,
-            body: isLoading
-                ? null
-                : (pastCheckIns!.isNotEmpty && pastCheckIns!.length > 0)
-                    ? parseHumanMessage(pastCheckIns![0].messages[0].text)[1]
-                    : 'No check-ins available',
-            gradientStartColor: Color(0xFF65dc99),
-            gradientEndColor: Color(0xFF65dc99),
-            // borderColor:Color.fromRGBO(17, 32, 55, 1.0),
-          ),
-        ],
-      ),
+                  title: widget.bloc.parseHumanMessage(checkIn.messages[0].text)[0],
+                  body: widget.bloc.parseHumanMessage(checkIn.messages[0].text)[1],
+                  text_color: widget.textColor ?? Colors.white,
+                  // ... other properties
+                );
+              }),
+            ),
+          );
+
+        } else if (state is CheckInHistoryErrorState) {
+          return Text('Error: ${state.errorMessage}'); // Show an error message
+        }
+        return Container(); // default return, can be an empty container or some placeholder
+      },
     );
   }
 }
