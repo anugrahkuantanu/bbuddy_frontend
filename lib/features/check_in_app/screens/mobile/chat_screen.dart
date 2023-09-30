@@ -127,12 +127,9 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void navigateBackToHomePage() {
-    context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
-    if (widget.isPastCheckin == true) {
+      context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
       Nav.toNamed(context, '/');
-    } else {
-      Nav.toNamed(context, '/');
-    }
+    
   }
 
 
