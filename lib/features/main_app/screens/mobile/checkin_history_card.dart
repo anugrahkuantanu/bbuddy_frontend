@@ -31,7 +31,6 @@ class CheckInHistoryErrorState extends CheckInHistoryState {
 
 
 
-
 class CheckInHistoryBloc extends Bloc<CheckInHistoryEvent, CheckInHistoryState> {
   final CheckInService checkInService;
 
@@ -47,7 +46,7 @@ Future<void> _onFetchCheckInHistoryEvent(
         List<CheckIn> checkIns = await checkInService.getCheckInHistory();
         emit(CheckInHistoryLoadedState(checkIns));
     } catch (error) {
-        emit(CheckInHistoryErrorState(error.toString()));
+        emit(CheckInHistoryErrorState("Something went wrong !!!"));
     }
 }
 
@@ -119,8 +118,7 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
               child: const CircularProgressIndicator(),
             ),
           );
-        } else 
-        if (state is CheckInHistoryLoadedState) {
+        } else if (state is CheckInHistoryLoadedState) {
           final pastCheckIns = state.pastCheckIns;
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 28.w),
@@ -132,10 +130,11 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
                 mainAxisSpacing: 19.w,
               ),
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              children: List.generate(pastCheckIns.length, (index) {
-                final checkIn = pastCheckIns[index];
-                final history = widget.bloc.chekinHistory(checkIn.messages[0].text.toLowerCase());
+              physics: const NeverScrollableScrollPhysics(),
+              children: List.generate(4, (index) {
+                if (index < pastCheckIns.length) {
+                    final checkIn = pastCheckIns[index];
+                    final history = widget.bloc.chekinHistory(checkIn.messages[0].text.toLowerCase());
                 return CheckInCard(
                   gradientStartColor: cardColors[index % cardColors.length],
                   gradientEndColor: cardColors[index % cardColors.length],
@@ -157,15 +156,53 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
                   title: widget.bloc.parseHumanMessage(checkIn.messages[0].text)[0],
                   body: widget.bloc.parseHumanMessage(checkIn.messages[0].text)[1],
                   text_color: widget.textColor ?? Colors.white,
-                  // ... other properties
                 );
+                }
+                else {
+                    // This is where you return a card with "No check-ins available"
+                    return CheckInCard(
+                      gradientStartColor: cardColors[index % cardColors.length],
+                      gradientEndColor: cardColors[index % cardColors.length],
+                        onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CheckInHome()),
+                            );
+                        },
+                        title: 'No check-ins available',
+                        body: 'No check-ins available',
+                        text_color: widget.textColor ?? Colors.white,
+                    );
+                }
               }),
             ),
           );
 
         } else if (state is CheckInHistoryErrorState) {
-          return Text('Error: ${state.errorMessage}'); // Show an error message
-        }
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal:10.0.w, vertical: 30.w),
+        child: Card(
+            elevation: 5,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Container(
+                height: 300.h,  // Adjusting for the Padding
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                    child: Text(
+                        state.errorMessage,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 30.0.w,
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    );
+}
+
         return Container(); // default return, can be an empty container or some placeholder
       },
     );
