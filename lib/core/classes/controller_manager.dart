@@ -2,6 +2,7 @@ import 'package:bbuddy_app/features/auth_firebase/dialogs/show_auth_error.dart';
 import 'package:bbuddy_app/features/auth_firebase/loading/loading_screen.dart';
 import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
 import 'package:bbuddy_app/features/auth_firebase/controllers/controllers.dart';
+import 'package:bbuddy_app/features/main_app/screens/mobile/head_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,7 @@ abstract class StatelessController extends StatelessWidget {
     return BlocConsumer<AppBloc, AppState>(listener: (context, appState) {
       if (appState.authError == null && !appState.isLoading) {
         if (appState is AppStateLoggedIn) {
+          context.read<HeadHomeBloc>().add(FetchHeadHomeEvent());
           Nav.toNamed(context, '/');
         } else if (appState is AppStateLoggedOut) {
           Nav.toNamed(context, '/login');
@@ -34,6 +36,7 @@ abstract class StatelessController extends StatelessWidget {
         loadingAndDisplayAuthError(context, appState);
       }
     }, builder: (context, appState) {
+      context.read<HeadHomeBloc>().add(FetchHeadHomeEvent());
       return view(context);
     });
   }

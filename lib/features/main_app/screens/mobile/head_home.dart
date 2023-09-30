@@ -1,11 +1,9 @@
 import 'package:bbuddy_app/core/classes/route_manager.dart';
-import 'package:bbuddy_app/features/features.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../widgets/widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 import '../../services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -68,6 +66,7 @@ class HeadHomeBloc extends Bloc<HeadHomeEvent, HeadHomeState> {
         try {
           final userData = await userRef.get();
           name = userData.data()?['firstName'];
+          print(name);
         } catch (e) {
           print('Error retrieving user data: $e');
         }
@@ -77,54 +76,89 @@ class HeadHomeBloc extends Bloc<HeadHomeEvent, HeadHomeState> {
       emit(HeadHomeError('Failed to fetch home header name'));
     }
   }
-
-
 }
 
 
 
-class HeadHomePageWidget extends StatefulWidget {
+// class HeadHomePageWidget extends StatefulWidget {
+//   final Color? text_color;
+
+//   const HeadHomePageWidget({this.text_color});
+
+//   @override
+//   _HeadHomePageWidgetState createState() => _HeadHomePageWidgetState();
+// }
+
+// class _HeadHomePageWidgetState extends State<HeadHomePageWidget> {
+//   late HeadHomeBloc _bloc;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _bloc = HeadHomeBloc(counterStats: context.read<CounterStats>());
+//     _bloc.add(FetchHeadHomeEvent());
+//   }
+
+//   @override
+//   void dispose() {
+//     _bloc.close();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     double screenWidth = MediaQuery.of(context).size.width;
+//     double text_size_s = 16.0.w;
+//     double text_size_xl = 20.0.w;
+//     final counter_stats = Provider.of<CounterStats>(context, listen: false);
+
+//     return BlocProvider<HeadHomeBloc>(
+//       create: (context) {
+//         final bloc = HeadHomeBloc(counterStats: counter_stats);
+//         bloc.add(FetchHeadHomeEvent());
+//         return bloc;
+//       },
+//       child: BlocConsumer<HeadHomeBloc, HeadHomeState>(
+//         listener: (context, state) {
+//           if (state is NavigatedToProfilePageState) {
+//               Nav.toNamed(context, '/profile');
+//           }
+//         },
+//         builder: (context, state) {
+//           Widget nameWidget;
+
+//           if (state is HeadHomeLoading) {
+//             nameWidget = CircularProgressIndicator();
+//           } else if (state is HeadHomeError) {
+//             nameWidget = Text('Error: ${state.error}');
+//           } else if (state is HeadHomeLoaded) {
+//             nameWidget = Text(
+//               '${state.name ?? 'anonym'}',
+//               style: TextStyle(
+//                 fontWeight: FontWeight.w600,
+//                 fontSize: text_size_xl,
+//                 color: widget.text_color ?? Colors.white,
+//               ),
+//             );
+//           } else {
+//             nameWidget = Container();  // For initial or any other state
+//           }
+
+class HeadHomePageWidget extends StatelessWidget {
   final Color? text_color;
 
   const HeadHomePageWidget({this.text_color});
-
-  @override
-  _HeadHomePageWidgetState createState() => _HeadHomePageWidgetState();
-}
-
-class _HeadHomePageWidgetState extends State<HeadHomePageWidget> {
-  late HeadHomeBloc _bloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _bloc = HeadHomeBloc(counterStats: context.read<CounterStats>());
-    _bloc.add(FetchHeadHomeEvent());
-  }
-
-  @override
-  void dispose() {
-    _bloc.close();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double text_size_s = 16.0.w;
     double text_size_xl = 20.0.w;
-    final counter_stats = Provider.of<CounterStats>(context, listen: false);
 
-    return BlocProvider<HeadHomeBloc>(
-      create: (context) {
-        final bloc = HeadHomeBloc(counterStats: counter_stats);
-        bloc.add(FetchHeadHomeEvent());
-        return bloc;
-      },
-      child: BlocConsumer<HeadHomeBloc, HeadHomeState>(
+    return BlocConsumer<HeadHomeBloc, HeadHomeState>(
         listener: (context, state) {
           if (state is NavigatedToProfilePageState) {
-              Nav.toNamed(context, '/profile');
+            Nav.toNamed(context, '/profile');
           }
         },
         builder: (context, state) {
@@ -140,12 +174,13 @@ class _HeadHomePageWidgetState extends State<HeadHomePageWidget> {
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: text_size_xl,
-                color: widget.text_color ?? Colors.white,
+                color: text_color ?? Colors.white,
               ),
             );
-          } else {
+          }  else {
             nameWidget = Container();  // For initial or any other state
           }
+
 
           return Stack(
             children: [
@@ -166,7 +201,7 @@ class _HeadHomePageWidgetState extends State<HeadHomePageWidget> {
                               icon: Icon(
                                 Icons.person,
                                 size: 30.w,
-                                color: widget.text_color ?? Colors.white,
+                                color: text_color ?? Colors.white,
                               ),
                               onPressed: () {
                                 context.read<HeadHomeBloc>().add(GoToProfilePageEvent());
@@ -186,7 +221,7 @@ class _HeadHomePageWidgetState extends State<HeadHomePageWidget> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: text_size_s,
-                                  color: widget.text_color ?? Colors.white,
+                                  color: text_color ?? Colors.white,
                                 ),
                               ),
                               nameWidget
@@ -206,16 +241,15 @@ class _HeadHomePageWidgetState extends State<HeadHomePageWidget> {
                   height: 150.w,
                   width: 1.3 * screenWidth,
                   child: NeededCheckinReflectionWidget(
-                    text_color: widget.text_color ?? Colors.white,
-                    checkInCount: int.tryParse(counter_stats.checkInCounter?.value ?? '0'),
-                    reflectionCount: int.tryParse(counter_stats.reflectionCounter?.value ?? '0'),
+                    text_color: text_color ?? Colors.white,
+                    // checkInCount: int.tryParse(counter_stats.checkInCounter?.value ?? '0'),
+                    // reflectionCount: int.tryParse(counter_stats.reflectionCounter?.value ?? '0'),
                   ),
                 ),
               ),
             ],
           );
-        },
-      ),
-    );
+        }
+        );
   }
 }

@@ -44,7 +44,12 @@ Future main() async {
               ..add(
                 const AppEventInitialize(),
               )),
-        BlocProvider<CheckInHistoryBloc>(create: (_) => CheckInHistoryBloc(CheckInService())..add(FetchCheckInHistoryEvent())),
+        BlocProvider<CheckInHistoryBloc>(
+          create: (_) => CheckInHistoryBloc(CheckInService())
+          ..add(FetchCheckInHistoryEvent())),
+                    BlocProvider<HeadHomeBloc>(
+            create: (_) => HeadHomeBloc(counterStats: CounterStats())..add(FetchHeadHomeEvent()),
+          ),
       ],
       child: const MyApp(),
     ),
