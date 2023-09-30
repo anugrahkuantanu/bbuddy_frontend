@@ -29,8 +29,6 @@ Future main() async {
   }
   await Firebase.initializeApp();
   Provider.debugCheckInvalidValueType = null;
-  final checkInHistoryBloc = CheckInHistoryBloc(CheckInService());
-  checkInHistoryBloc.add(FetchCheckInHistoryEvent());
   runApp(
     MultiProvider(
       providers: [
@@ -46,53 +44,11 @@ Future main() async {
               ..add(
                 const AppEventInitialize(),
               )),
-        BlocProvider<CheckInHistoryBloc>(create: (_) => checkInHistoryBloc),
+        BlocProvider<CheckInHistoryBloc>(create: (_) => CheckInHistoryBloc(CheckInService())..add(FetchCheckInHistoryEvent())),
       ],
       child: const MyApp(),
     ),
   );
 }
-
-
-
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//     await Firebase.initializeApp(
-//     options: DefaultFirebaseOptions.currentPlatform,
-//   );
-//   Provider.debugCheckInvalidValueType = null;
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider(create: (_) => ReflectionHeading()),
-//         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-//         ChangeNotifierProvider(create: (_) => UserDetailsProvider(),),
-//         ChangeNotifierProvider(create: (_) => CounterStats()),
-//         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-//       ],
-//       child: AppStarter(),
-//     ),
-//   );
-// }
-
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   Provider.debugCheckInvalidValueType = null;
-//   runApp(
-//     MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-//         ChangeNotifierProvider(create: (_) => UserDetailsProvider(),),
-//         ChangeNotifierProvider(create: (_) => CounterStats()),
-//         ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-//       ],
-//       child: AppStarter(),
-//     ),
-//   );
-// }
-
-
 
 
