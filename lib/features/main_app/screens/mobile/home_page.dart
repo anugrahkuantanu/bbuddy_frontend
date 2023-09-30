@@ -43,18 +43,15 @@ class HomePageState extends State<HomePage> {
                     fontSize: 20.w),
               ),
             ),
-Padding(
-  padding: EdgeInsets.symmetric(horizontal: 0.w),
-  child: BlocProvider<CheckInHistoryBloc>(
-    create: (context) => CheckInHistoryBloc(CheckInService()),
-    child: Builder(
-      builder: (context) => CheckInHistoryCard(
-        bloc: context.read<CheckInHistoryBloc>(), // Here's the change
-        textColor: Colors.white,
-      ),
-    ),
-  ),
-)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0.w),
+              child: Builder(
+                builder: (context) => CheckInHistoryCard(
+                  bloc: context.read<CheckInHistoryBloc>(), // Use existing BLoC
+                  textColor: Colors.white,
+                ),
+              ),
+            )
           ],
         ),
       ),

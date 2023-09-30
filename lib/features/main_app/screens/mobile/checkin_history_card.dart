@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/widget.dart';
@@ -10,6 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract class CheckInHistoryEvent {}
 
 class FetchCheckInHistoryEvent extends CheckInHistoryEvent {}
+
+  
+
+// STATE
 
 
 abstract class CheckInHistoryState {}
@@ -70,27 +76,44 @@ Future<void> _onFetchCheckInHistoryEvent(
     }
     return chekinHistoryList;
   }
+
 }
 
 
 
 
 
-class CheckInHistoryCard extends StatefulWidget {
+// class CheckInHistoryCard extends StatefulWidget {
+//   final Color? textColor;
+//   final CheckInHistoryBloc bloc;
+
+//   const CheckInHistoryCard({
+//     Key? key,
+//     required this.bloc,
+//     this.textColor = Colors.black,
+//   }) : super(key: key);
+
+//   @override
+//   _CheckInHistoryCardState createState() => _CheckInHistoryCardState();
+// }
+
+// class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
+//   final List<Color> cardColors = [
+//     Color(0xFF65dc99),
+//     Color(0xFFb383ff),
+//     Color(0xFF68d0ff),
+//     Color(0xFFff9a96),
+//   ];
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     widget.bloc.add(FetchCheckInHistoryEvent());
+//   }
+
+class CheckInHistoryCard extends StatelessWidget {
   final Color? textColor;
   final CheckInHistoryBloc bloc;
-
-  const CheckInHistoryCard({
-    Key? key,
-    required this.bloc,
-    this.textColor = Colors.black,
-  }) : super(key: key);
-
-  @override
-  _CheckInHistoryCardState createState() => _CheckInHistoryCardState();
-}
-
-class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
   final List<Color> cardColors = [
     Color(0xFF65dc99),
     Color(0xFFb383ff),
@@ -98,17 +121,16 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
     Color(0xFFff9a96),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    widget.bloc.add(FetchCheckInHistoryEvent());
-  }
-
+   CheckInHistoryCard({
+    Key? key,
+    required this.bloc,
+    this.textColor = Colors.black,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CheckInHistoryBloc, CheckInHistoryState>(
-      bloc: widget.bloc,
+      bloc: bloc,
       builder: (context, state) {
         if (state is CheckInHistoryLoadingState) {
           return Center(
@@ -134,7 +156,7 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
               children: List.generate(4, (index) {
                 if (index < pastCheckIns.length) {
                     final checkIn = pastCheckIns[index];
-                    final history = widget.bloc.chekinHistory(checkIn.messages[0].text.toLowerCase());
+                    final history = bloc.chekinHistory(checkIn.messages[0].text.toLowerCase());
                 return CheckInCard(
                   gradientStartColor: cardColors[index % cardColors.length],
                   gradientEndColor: cardColors[index % cardColors.length],
@@ -153,9 +175,9 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
                       ),
                     );
                   },
-                  title: widget.bloc.parseHumanMessage(checkIn.messages[0].text)[0],
-                  body: widget.bloc.parseHumanMessage(checkIn.messages[0].text)[1],
-                  text_color: widget.textColor ?? Colors.white,
+                  title: bloc.parseHumanMessage(checkIn.messages[0].text)[0],
+                  body: bloc.parseHumanMessage(checkIn.messages[0].text)[1],
+                  text_color: textColor ?? Colors.white,
                 );
                 }
                 else {
@@ -171,7 +193,7 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
                         },
                         title: 'No check-ins available',
                         body: 'No check-ins available',
-                        text_color: widget.textColor ?? Colors.white,
+                        text_color: textColor ?? Colors.white,
                     );
                 }
               }),
@@ -179,30 +201,29 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
           );
 
         } else if (state is CheckInHistoryErrorState) {
-    return Padding(
-        padding: EdgeInsets.symmetric(horizontal:10.0.w, vertical: 30.w),
-        child: Card(
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: Container(
-                height: 300.h,  // Adjusting for the Padding
-                padding: const EdgeInsets.all(10.0),
-                child: Center(
-                    child: Text(
-                        state.errorMessage,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 30.0.w,
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
-}
-
+          return Padding(
+              padding: EdgeInsets.symmetric(horizontal:10.0.w, vertical: 30.w),
+              child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Container(
+                      height: 300.h,  // Adjusting for the Padding
+                      padding: const EdgeInsets.all(10.0),
+                      child: Center(
+                          child: Text(
+                              state.errorMessage,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 30.0.w,
+                              ),
+                          ),
+                      ),
+                  ),
+              ),
+          );
+      }
         return Container(); // default return, can be an empty container or some placeholder
       },
     );

@@ -1,4 +1,6 @@
 //TEST FIREBASE
+import 'package:bbuddy_app/features/check_in_app/services/checkIn_service.dart';
+import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
 import 'package:bbuddy_app/features/main_app/screens/mobile/head_home.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,8 @@ Future main() async {
   }
   await Firebase.initializeApp();
   Provider.debugCheckInvalidValueType = null;
+  final checkInHistoryBloc = CheckInHistoryBloc(CheckInService());
+  checkInHistoryBloc.add(FetchCheckInHistoryEvent());
   runApp(
     MultiProvider(
       providers: [
@@ -42,6 +46,7 @@ Future main() async {
               ..add(
                 const AppEventInitialize(),
               )),
+        BlocProvider<CheckInHistoryBloc>(create: (_) => checkInHistoryBloc),
       ],
       child: const MyApp(),
     ),

@@ -1,3 +1,5 @@
+import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
+
 import '/features/check_in_app/controllers/controller.dart';
 import 'package:flutter/material.dart';
 import '../../models/model.dart';
@@ -10,17 +12,17 @@ class ChatScreen extends StatefulWidget {
   final String feelingForm;
   final String reasonEntity;
   final String reason;
-  final bool isPastCheckin;
+  bool? isPastCheckin =false;
   final String? aiResponse;
   final Color? textColor;
 
-  const ChatScreen(
+  ChatScreen(
       {Key? key,
       required this.feeling,
       required this.feelingForm,
       required this.reasonEntity,
       required this.reason,
-      required this.isPastCheckin,
+      this.isPastCheckin,
       this.textColor,
       this.aiResponse})
       : super(key: key);
@@ -58,7 +60,8 @@ class ChatScreenState extends State<ChatScreen> {
         isBot: false,
       ),
     ];
-    if (widget.isPastCheckin) {
+    if (widget.isPastCheckin == true) {
+      print(widget.isPastCheckin);
       showProgressIndicator = false;
       messages.add(
         Message(
@@ -104,14 +107,13 @@ class ChatScreenState extends State<ChatScreen> {
 
     checkInService.storeCheckIn(widget.feeling, widget.feelingForm,
         widget.reasonEntity, widget.reason, response);
+    
+    
 
     final counterStats = Provider.of<CounterStats>(context, listen: false);
     counterStats.updateCheckInCounter();
   }
 
-  void navigateToHome() {
-    Navigator.of(context).pop(); // Navigate back to MyHomePage
-  }
 
   void sendUserMessage(String message) {
     setState(() {
@@ -125,18 +127,15 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void navigateBackToHomePage() {
-    if (widget.isPastCheckin) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const CheckInHomeController()),
-      );
+    context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
+    if (widget.isPastCheckin == true) {
+      Nav.toNamed(context, '/');
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const CheckInHomeController()),
-      );
+      Nav.toNamed(context, '/');
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +147,7 @@ class ChatScreenState extends State<ChatScreen> {
         automaticallyImplyLeading: false,
         actions: [
           if (showExitButton ||
-              widget.isPastCheckin) // Show the exit button once it appears
+          widget.isPastCheckin == true) // Show the exit button once it appears
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
