@@ -1,16 +1,17 @@
+import 'dart:convert';
+
 import 'package:bbuddy_app/di/di.dart';
 import 'package:flutter/foundation.dart';
-import 'package:dio/dio.dart';
 import '../core.dart';
-import '/config/config.dart';
-import '../classes/dio_util.dart';
 import '../../features/main_app/models/stats.dart';
 
 Future<void> updateStats(UserStats? stat) async {
-  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-  dio.interceptors.add(AuthInterceptor(dio));
+  //final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
+  //dio.interceptors.add(AuthInterceptor(dio));
+  final http = locator.get<Http>();
   try {
-    final response = await dio.post('/update_stats', data: stat!.toJson());
+    final response =
+        await http.post('/update_stats', data: jsonEncode(stat!.toJson()));
     if (response.statusCode != 200) {
       throw Exception('Failed to update stats');
     }
@@ -22,14 +23,23 @@ Future<void> updateStats(UserStats? stat) async {
 class CounterStats extends ChangeNotifier {
   UserStats? checkInCounter;
   UserStats? reflectionCounter;
+  bool _isLoading = true;
+  String _errorMessage = '';
 
-  CounterStats() {
-    checkCounterStats();
-  }
+  CounterStats();
+  bool get isLoading => _isLoading;
+  String get errorMessage => _errorMessage;
 
   void checkCounterStats() async {
     if (checkInCounter == null || reflectionCounter == null) {
-      await getCounterStats();
+      try {
+        _isLoading = true;
+        await getCounterStats();
+        _isLoading = false;
+      } catch (e) {
+        _isLoading = false;
+        _errorMessage = e.toString();
+      }
     }
     notifyListeners();
   }
@@ -61,11 +71,8 @@ class CounterStats extends ChangeNotifier {
   }
 
   Future<void> getCounterStats() async {
-    final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-    dio.interceptors.add(AuthInterceptor(dio));
     final http = locator.get<Http>();
     try {
-      print("Yes");
       final response = await http.get('/counter_stats');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
@@ -78,13 +85,13 @@ class CounterStats extends ChangeNotifier {
             }
           }
         } else {
-          throw Exception('Failed to load check-ins');
+          throw Exception('Unable to fetch data. Something went wrong');
         }
       } else {
-        throw Exception('Failed to load check-ins');
+        throw Exception('Something went wrong');
       }
     } catch (e) {
-      throw Exception('Failed to load check-ins: $e');
+      throw Exception('Something went wrong');
     }
   }
 }

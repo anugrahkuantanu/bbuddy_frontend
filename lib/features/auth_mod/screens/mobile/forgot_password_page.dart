@@ -74,7 +74,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                 Container(
                                   child: TextFormField(
                                     controller: _emailController,
-                                    decoration: ThemeHelper().textInputDecoration("Email", "Enter your email"),
+                                    // decoration: ThemeHelper().textInputDecoration("Email", "Enter your email"),
                                     validator: (val) {
                                       if (val!.isEmpty) {
                                         return "Email can't be empty";

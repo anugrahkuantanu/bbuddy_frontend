@@ -5,13 +5,11 @@ import '../../services/service.dart';
 import '../../models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
 // Events
 @immutable
 abstract class ChatEvent {}
 
-class ChatInitialEvent extends ChatEvent{
+class ChatInitialEvent extends ChatEvent {
   final int goalId;
   final int currentPage;
   final int pageSize;
@@ -24,19 +22,19 @@ class ChatInitialEvent extends ChatEvent{
 }
 
 class StartChatEvent extends ChatEvent {}
+
 class StreamChatEvent extends ChatEvent {
   final String message;
   StreamChatEvent(this.message);
 }
-class EndChatEvent extends ChatEvent {}
 
+class EndChatEvent extends ChatEvent {}
 
 class SendMessageEvent extends ChatEvent {
   final String message;
 
   SendMessageEvent(this.message);
 }
-
 
 class IncomingMessageEvent extends ChatEvent {
   final dynamic messageType;
@@ -50,13 +48,11 @@ class IncomingMessageEvent extends ChatEvent {
   });
 }
 
-
-
 // States
 @immutable
 abstract class ChatState {}
 
-class LoadingState extends ChatState{}
+class LoadingState extends ChatState {}
 
 class InitialChatState extends ChatState {}
 
@@ -65,8 +61,6 @@ class ChatIsLoaded extends ChatState {
 
   ChatIsLoaded(this.messages);
 }
-
-
 
 class IncomingMessageState extends ChatState {
   final Message message;
@@ -80,13 +74,7 @@ class ErrorState extends ChatState {
   ErrorState(this.errorMessage);
 }
 
-class MessageSentState extends ChatState {} 
-
-
-
-
-
-
+class MessageSentState extends ChatState {}
 
 //bloc
 
@@ -109,18 +97,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatInitialEvent>(_chatInitialEvent);
     on<SendMessageEvent>(_sendMessageEvent);
     on<IncomingMessageEvent>(_incomingMessageEvent);
-    add(ChatInitialEvent(goalId: goalId, currentPage: currentPage, pageSize: pageSize));
+    add(ChatInitialEvent(
+        goalId: goalId, currentPage: currentPage, pageSize: pageSize));
   }
 
-
-
-  Future<void> _chatInitialEvent(ChatInitialEvent event, Emitter<ChatState> emit) async {
+  Future<void> _chatInitialEvent(
+      ChatInitialEvent event, Emitter<ChatState> emit) async {
     emit(LoadingState());
 
     isLoadingHistory = true;
 
     try {
-      final fetchedMessages = await fetchChatHistory(event.goalId, event.currentPage, event.pageSize).first;
+      final fetchedMessages = await fetchChatHistory(
+              event.goalId, event.currentPage, event.pageSize)
+          .first;
       messages.addAll(fetchedMessages.reversed);
       currentPage++;
       print(messages);
@@ -132,19 +122,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     isLoadingHistory = false;
   }
 
-  Future<void> _sendMessageEvent(SendMessageEvent event, Emitter<ChatState> emit) async {
+  Future<void> _sendMessageEvent(
+      SendMessageEvent event, Emitter<ChatState> emit) async {
     messages.add(Message(text: event.message, isBot: false));
     messages.add(Message(text: '', isBot: true, isWaiting: true));
     chat?.sendMessage(event.message);
     emit(ChatIsLoaded(messages));
   }
 
-  void _incomingMessageEvent(IncomingMessageEvent event, Emitter<ChatState> emit) {
+  void _incomingMessageEvent(
+      IncomingMessageEvent event, Emitter<ChatState> emit) {
     _handleIncomingMessage(event.messageType, event.message, event.sender);
     emit(ChatIsLoaded(messages));
   }
 
-  void _handleIncomingMessage(dynamic messageType, dynamic message, dynamic sender) {
+  void _handleIncomingMessage(
+      dynamic messageType, dynamic message, dynamic sender) {
     int lastIndex = messages.length - 1;
 
     if (messageType == 'start' && sender == "bot") {
@@ -152,7 +145,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     } else if (messageType == 'stream' && sender == "bot") {
       if (messages.last.isWaiting) {
         messages.removeAt(lastIndex);
-        messages.insert(lastIndex, Message(text: message, isBot: true, isWaiting: false));
+        messages.insert(
+            lastIndex, Message(text: message, isBot: true, isWaiting: false));
       } else {
         messages[lastIndex].text += message;
       }
@@ -177,9 +171,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 }
 
-
-
-
 class GoalChatPage extends StatefulWidget {
   final int goalId;
 
@@ -200,7 +191,8 @@ class _GoalChatPageState extends State<GoalChatPage> {
   void initState() {
     super.initState();
     _chatBloc = ChatBloc(widget.goalId);
-    _chatBloc.add(ChatInitialEvent(goalId: widget.goalId, currentPage: 1, pageSize: 10));
+    _chatBloc.add(
+        ChatInitialEvent(goalId: widget.goalId, currentPage: 1, pageSize: 10));
     // _focusNode.addListener(_onFocusChange);
     // _scrollController.addListener(_scrollListener);
   }
@@ -212,25 +204,21 @@ class _GoalChatPageState extends State<GoalChatPage> {
       child: BlocBuilder<ChatBloc, ChatState>(
         bloc: _chatBloc,
         builder: (context, state) {
-            if(state is LoadingState){
-              return LoadingUI();
-            }
-            else if (state is ChatIsLoaded) {
-              return _buildUI(state.messages, context);
-            }
-            else if (state is ErrorState){
-              return ErrorUI(errorMessage: state.errorMessage);
-            }
-            else{
-              return Container();
-            }
+          if (state is LoadingState) {
+            return LoadingUI();
+          } else if (state is ChatIsLoaded) {
+            return _buildUI(state.messages, context);
+          } else if (state is ErrorState) {
+            return ErrorUI(errorMessage: state.errorMessage);
+          } else {
+            return Container();
+          }
         },
-    ),
+      ),
     );
   }
 
   Widget _buildUI(List<Message> messages, BuildContext context) {
-    print("Yes!!");
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -241,11 +229,11 @@ class _GoalChatPageState extends State<GoalChatPage> {
           ),
         ),
         leading: IconButton(
-        icon: Icon(Icons.arrow_back), // add your custom icon here
-        onPressed: () {
-          Navigator.pop(context);
-       },
-      ),
+          icon: Icon(Icons.arrow_back), // add your custom icon here
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: GestureDetector(
         onTap: () {
@@ -270,9 +258,8 @@ class _GoalChatPageState extends State<GoalChatPage> {
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: message.isBot
-                              ? Colors.grey[300]
-                              : Colors.white,
+                          color:
+                              message.isBot ? Colors.grey[300] : Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -330,7 +317,6 @@ class _GoalChatPageState extends State<GoalChatPage> {
     _scrollController.dispose();
     _chatBloc.close();
     super.dispose();
-    
   }
 
   //   void _onFocusChange() {

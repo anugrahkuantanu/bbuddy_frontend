@@ -3,7 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:bbuddy_app/core/core.dart';
-import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../../errors/auth_error.dart';
 import './bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
@@ -16,6 +17,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppEventInitialize>(_initialize);
     on<AppEventGoToRegistration>(_goToRegistration);
     on<AppEventLogIn>(_logIn);
+    on<AppEventGoogleLogin>(_googleLogin);
+    on<AppEventAppleLogin>(_appleLogin);
     on<AppEventGoToLogin>(_goToLogin);
     on<AppEventRegister>(_register);
     on<AppEventLogOut>(_logOut);
@@ -41,18 +44,93 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         password: event.password,
       );
       final user = userCredential.user!;
-      emit(AppStateLoggedIn(
-        isLoading: false,
-        user: user,
-      ));
+
       final http = locator.get<Http>();
 
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
+
+      emit(AppStateLoggedIn(
+        isLoading: false,
+        user: user,
+      ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
         isLoading: false,
         authError: AuthError.from(e),
+      ));
+    }
+  }
+
+  Future<void> _googleLogin(
+      AppEventGoogleLogin event, Emitter<AppState> emit) async {
+    emit(const AppStateLoggedOut(
+      isLoading: true,
+    ));
+
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
+
+    try {
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = userCredential.user!;
+      emit(AppStateLoggedIn(
+        isLoading: false,
+        user: user,
+      ));
+    } on FirebaseAuthException catch (e) {
+      emit(AppStateLoggedOut(
+        isLoading: false,
+        authError: AuthError.from(e),
+      ));
+    }
+  }
+
+  Future<void> _appleLogin(
+      AppEventAppleLogin event, Emitter<AppState> emit) async {
+    emit(const AppStateLoggedOut(
+      isLoading: true,
+    ));
+
+    try {
+      // Trigger the Apple Sign-In process
+      final appleResult = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      // Convert Apple Sign-In credentials to Firebase credentials
+      final credential = OAuthProvider('apple.com').credential(
+        idToken: appleResult.identityToken,
+        accessToken: appleResult.authorizationCode,
+      );
+
+      // Sign in to Firebase with the Apple Sign-In credentials
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      final user = userCredential.user!;
+      emit(AppStateLoggedIn(
+        isLoading: false,
+        user: user,
+      ));
+    } on FirebaseAuthException catch (e) {
+      emit(AppStateLoggedOut(
+        isLoading: false,
+        authError: AuthError.from(e),
+      ));
+    } catch (error) {
+      emit(const AppStateLoggedOut(
+        isLoading: false,
+        // Handle other potential errors here, possibly create a custom error class for it
       ));
     }
   }
@@ -69,8 +147,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     ));
 
     if (event.password != event.verifiedPassword) {
-      emit(AppStateIsInRegistrationView(
-          isLoading: false, authError: const AuthErrorPasswordNotMatch()));
+      emit(const AppStateIsInRegistrationView(
+          isLoading: false, authError: AuthErrorPasswordNotMatch()));
       return; // Exit early
     }
 

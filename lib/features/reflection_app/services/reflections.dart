@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bbuddy_app/core/classes/http_manager.dart';
 import 'package:bbuddy_app/core/helpers/login_helper.dart';
 import 'package:bbuddy_app/di/di.dart';
@@ -13,15 +15,13 @@ class ReflectionService {
     try {
       final response = await http.get(
         '/reflection_topics',
-        //queryParameters: {'session_id': session_id},
       );
-      print(response.statusCode);
-      return [];
-      // if (response.statusCode == 200) {
-      //   return response.data["questions"];
-      // } else {
-      //   throw Exception('Failed to load check-ins');
-      // }
+
+      if (response.statusCode == 200) {
+        return response.data["questions"];
+      } else {
+        throw Exception('Failed to load check-ins');
+      }
     } catch (e) {
       throw Exception('Failed to load check-ins: $e');
     }
@@ -53,24 +53,24 @@ class ReflectionService {
       throw Exception('Failed to load reflections: $e');
     }
   }
-}
 
-Future<Reflection> getMoodReflections(
-    List topics, List? userReflections, String heading) async {
-  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-  dio.interceptors.add(AuthInterceptor(dio));
-  final response = await dio.post(
-    '/mood_reflection',
-    data: {
-      'topics': topics,
-      'user_reflections': userReflections,
-      'heading': heading
-    },
-  );
+  Future<Reflection> getMoodReflections(
+      List topics, List? userReflections, String heading) async {
+    //final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
+    //dio.interceptors.add(AuthInterceptor(dio));
+    final response = await http.post('/mood_reflection',
+        data: jsonEncode(
+          {
+            'topics': topics,
+            'user_reflections': userReflections,
+            'heading': heading
+          },
+        ));
 
-  final responseData = Map<String, dynamic>.from(response.data);
+    final responseData = Map<String, dynamic>.from(response.data);
 
-  return Reflection.fromJson(responseData);
+    return Reflection.fromJson(responseData);
+  }
 }
 
 Future<String> fetchHeading(List topics) async {

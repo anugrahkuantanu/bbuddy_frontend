@@ -1,7 +1,7 @@
 import '/features/check_in_app/controllers/controller.dart';
 import 'package:flutter/material.dart';
 import '../../models/model.dart';
-import '../../services/checkIn_service.dart';
+import '../../services/checkin_service.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/core/core.dart';
 
@@ -93,7 +93,7 @@ class ChatScreenState extends State<ChatScreen> {
       }
     });
 
-    Future.delayed(Duration(seconds: 0), () {
+    Future.delayed(const Duration(seconds: 0), () {
       setState(() {
         showButtons = true;
         if (!showExitButton) {

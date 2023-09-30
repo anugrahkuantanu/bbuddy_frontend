@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../../../../config/config.dart';
-import '../../../../core/core.dart';
+import '../../../../../config/config.dart';
+import '../../../../../core/core.dart';
 
-import '../screens/screen.dart' as mobile;
+import '../../../auth_mod/screens/screen.dart' as mobile;
 
 class ProfileController extends StatelessController {
   final String _title = 'Home Page';

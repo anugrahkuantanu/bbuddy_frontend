@@ -73,3 +73,13 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
+
+dependencies {
+    implementation 'com.google.android.material:material:1.8.0'
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'mapReleaseSourceSetPaths') {
+        task.dependsOn 'processReleaseGoogleServices'
+    }
+}

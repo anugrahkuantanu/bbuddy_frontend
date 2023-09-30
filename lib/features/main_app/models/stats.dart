@@ -4,11 +4,10 @@ enum StatsType {
 }
 
 class UserStats {
-  final int id;
   final StatsType type;
   String value;
 
-  UserStats({required this.id, required this.type, required this.value});
+  UserStats({required this.type, required this.value});
 
   factory UserStats.fromJson(Map<String, dynamic> json) {
     final typeString = json['type'] as String;
@@ -16,7 +15,6 @@ class UserStats {
         (element) => element.toString().split('.').last == typeString);
 
     return UserStats(
-      id: json['id'] as int,
       type: type,
       value: json['value'] as String,
     );
@@ -24,7 +22,6 @@ class UserStats {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'type': type.toString().split('.').last,
       'value': value,
     };

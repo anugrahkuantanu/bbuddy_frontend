@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/di/di.dart';
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 import '../../../core/classes/dio_util.dart';
-import 'checkIn_utils.dart';
+import 'checkin_utils.dart';
 import '/config/api_endpoints.dart';
 import '../models/model.dart';
 
@@ -39,15 +38,15 @@ class CheckInService {
   }
 
   Future<void> storeCheckIn(String feeling, String feelingForm,
-      String reasonEntity, String reason, String ai_response) async {
-    final String feeling_message =
+      String reasonEntity, String reason, String aiResponse) async {
+    final String feelingMessage =
         "I am feeling $feeling and $feelingForm about my $reasonEntity.";
     try {
       await http.post('/store_mood_check_in',
           data: jsonEncode({
-            'feeling_message': feeling_message,
+            'feeling_message': feelingMessage,
             'reason': reason,
-            'ai_response': ai_response
+            'ai_response': aiResponse
           }));
     } catch (e) {
       throw Exception('Failed to store check-ins: $e');
