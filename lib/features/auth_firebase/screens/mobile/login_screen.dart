@@ -12,11 +12,9 @@ class LoginScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emailController = useTextEditingController(
-    );
+    final emailController = useTextEditingController();
 
-    final passwordController = useTextEditingController(
-    );
+    final passwordController = useTextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -26,9 +24,10 @@ class LoginScreen extends HookWidget {
         centerTitle: true,
         actions: actionsMenuLogin(context),
       ),
-      body: GestureDetector(  // Added GestureDetector
+      body: GestureDetector(
+        // Added GestureDetector
         onTap: () {
-          FocusScope.of(context).unfocus();  // Dismiss the keyboard
+          FocusScope.of(context).unfocus(); // Dismiss the keyboard
         },
         child: SingleChildScrollView(
           child: Padding(
@@ -41,26 +40,32 @@ class LoginScreen extends HookWidget {
                 Container(
                   child: TextField(
                     controller: emailController,
-                    decoration: ThemeHelper().textInputDecoration(labelText: 'Email', hintText: 'Enter your email'),
-                    style: TextStyle(
-                      color: Colors.black,  // This sets the color of the text that the user types
+                    decoration: ThemeHelper().textInputDecoration(
+                        labelText: 'Email', hintText: 'Enter your email'),
+                    style: const TextStyle(
+                      color: Colors
+                          .black, // This sets the color of the text that the user types
                     ),
                     keyboardType: TextInputType.emailAddress,
                     keyboardAppearance: Brightness.dark,
                   ),
                   decoration: ThemeHelper().inputBoxDecorationShaddow(),
                 ),
-                SizedBox(height: 10.h,),
+                SizedBox(
+                  height: 10.h,
+                ),
                 Container(
                   child: TextField(
-                  controller: passwordController,
-                    decoration: ThemeHelper().textInputDecoration(labelText: 'Password', hintText: 'Enter your password'),
-                    style: TextStyle(
-                      color: Colors.black,  // This sets the color of the text that the user types
+                    controller: passwordController,
+                    decoration: ThemeHelper().textInputDecoration(
+                        labelText: 'Password', hintText: 'Enter your password'),
+                    style: const TextStyle(
+                      color: Colors
+                          .black, // This sets the color of the text that the user types
                     ),
-                  keyboardAppearance: Brightness.dark,
-                  obscureText: true,
-                  obscuringCharacter: '◉',
+                    keyboardAppearance: Brightness.dark,
+                    obscureText: true,
+                    obscuringCharacter: '◉',
                   ),
                   decoration: ThemeHelper().inputBoxDecorationShaddow(),
                 ),
@@ -86,18 +91,17 @@ class LoginScreen extends HookWidget {
                           const AppEventGoToRegistration(),
                         );
                   },
-                ),SizedBox(height: 5.0.h),
+                ),
+                SizedBox(height: 5.0.h),
                 Divider(
                   thickness: 0.5,
                   color: Colors.grey[400],
                 ),
-              
-              Text(
+                Text(
                   'Or continue with',
                   style: TextStyle(color: Colors.grey[700]),
                 ),
-              
-              Divider(
+                Divider(
                   thickness: 0.5,
                   color: Colors.grey[400],
                 ),
@@ -107,23 +111,23 @@ class LoginScreen extends HookWidget {
                   children: [
                     // google button
                     SquareTile(
-                      onTap: () {
-                    context.read<AppBloc>().add(
-                          AppEventGoogleLogin(),
-                        );
-                      },
-                      imagePath: 'assets/images/google.png'),
+                        onTap: () {
+                          context.read<AppBloc>().add(
+                                AppEventGoogleLogin(),
+                              );
+                        },
+                        imagePath: 'assets/images/google.png'),
 
-                    SizedBox(width: 25),
+                    SizedBox(width: 25.0.w),
 
                     // apple button
                     SquareTile(
-                      onTap: () {
-                    context.read<AppBloc>().add(
-                          AppEventAppleLogin(),
-                        );
-                      },
-                      imagePath: 'assets/images/apple.png')
+                        onTap: () {
+                          context.read<AppBloc>().add(
+                                AppEventAppleLogin(),
+                              );
+                        },
+                        imagePath: 'assets/images/apple.png')
                   ],
                 ),
               ],

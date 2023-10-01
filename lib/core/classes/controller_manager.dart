@@ -1,7 +1,5 @@
-import 'package:bbuddy_app/features/auth_firebase/dialogs/show_auth_error.dart';
-import 'package:bbuddy_app/features/auth_firebase/loading/loading_screen.dart';
 import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
-import 'package:bbuddy_app/features/auth_firebase/controllers/controllers.dart';
+import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +25,7 @@ abstract class StatelessController extends StatelessWidget {
           final counterStats =
               Provider.of<CounterStats>(context, listen: false);
           counterStats.checkCounterStats();
+          context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
           Nav.toNamed(context, '/');
         } else if (appState is AppStateLoggedOut) {
           Nav.toNamed(context, '/login');

@@ -1,10 +1,9 @@
 import 'package:bbuddy_app/config/config.dart';
-import 'package:bbuddy_app/features/features.dart';
+import 'package:bbuddy_app/features/auth_mod/auth_mod.dart';
+import 'package:bbuddy_app/features/main_app/screens/widgets/widget.dart';
 import 'package:flutter/material.dart';
-import '../widgets/widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../services/service.dart';
 
 class HeadHomePageWidget extends StatelessWidget {
   const HeadHomePageWidget({super.key});
@@ -38,7 +37,6 @@ class HeadHomePageWidget extends StatelessWidget {
         : AppColors.textdark;
 
     double textSizeS = 16.0.w;
-    double textSizeXl = 20.0.w;
 
     return Stack(
       children: [

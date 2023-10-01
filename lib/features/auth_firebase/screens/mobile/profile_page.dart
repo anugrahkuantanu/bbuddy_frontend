@@ -19,23 +19,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  // void logout(BuildContext context) {
-  //   Cache.instance.clear();
-  //   UserProvider userProvider =
-  //       Provider.of<UserProvider>(context, listen: false);
-  //   userProvider.checkLoginStatus();
-  //   Navigator.pushReplacement(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => const LoginPage()),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-    // double _drawerIconSize = 24;
-    // double _drawerFontSize = 17;
-    // double screenWidth = MediaQuery.of(context).size.width;
     final userDetails = Provider.of<UserDetailsProvider>(context);
     //print(userDetails.details?.firstName);
     return Scaffold(
@@ -43,11 +29,10 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: const Text('Profile'),
         leading: IconButton(
-    icon: Icon(Icons.arrow_back),
-    onPressed: () => Nav.toNamed(context, '/'),
-),
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => Nav.toNamed(context, '/'),
+        ),
         centerTitle: true,
-        //actions: actionsMenu(context),
         actions: const [
           MainPopupMenuButton(),
         ],

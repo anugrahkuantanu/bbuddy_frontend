@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/widget.dart';
@@ -10,6 +12,7 @@ abstract class CheckInHistoryEvent {}
 
 class FetchCheckInHistoryEvent extends CheckInHistoryEvent {}
 
+// STATE
 abstract class CheckInHistoryState {}
 
 class CheckInHistoryLoadingState extends CheckInHistoryState {}
@@ -43,16 +46,16 @@ class CheckInHistoryBloc
       List<CheckIn> checkIns = await checkInService.getCheckInHistory();
       emit(CheckInHistoryLoadedState(checkIns));
     } catch (error) {
-      emit(CheckInHistoryErrorState(error.toString()));
+      emit(CheckInHistoryErrorState("Something went wrong !!!"));
     }
   }
 
   List<String> parseHumanMessage(String text) {
     List<String> sentences = text.split(".");
     List<String> words = sentences[0].split(" ");
-    String FeelingForm = words[5];
+    String feelingForm = words[5];
     return [
-      FeelingForm.replaceFirst(FeelingForm[0], FeelingForm[0].toUpperCase()),
+      feelingForm.replaceFirst(feelingForm[0], feelingForm[0].toUpperCase()),
       sentences.sublist(1, sentences.length).join()
     ];
   }
@@ -68,38 +71,26 @@ class CheckInHistoryBloc
   }
 }
 
-class CheckInHistoryCard extends StatefulWidget {
+class CheckInHistoryCard extends StatelessWidget {
   final Color? textColor;
   final CheckInHistoryBloc bloc;
+  final List<Color> cardColors = [
+    const Color(0xFF65dc99),
+    const Color(0xFFb383ff),
+    const Color(0xFF68d0ff),
+    const Color(0xFFff9a96),
+  ];
 
-  const CheckInHistoryCard({
+  CheckInHistoryCard({
     Key? key,
     required this.bloc,
     this.textColor = Colors.black,
   }) : super(key: key);
 
   @override
-  _CheckInHistoryCardState createState() => _CheckInHistoryCardState();
-}
-
-class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
-  final List<Color> cardColors = [
-    Color(0xFF65dc99),
-    Color(0xFFb383ff),
-    Color(0xFF68d0ff),
-    Color(0xFFff9a96),
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    widget.bloc.add(FetchCheckInHistoryEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<CheckInHistoryBloc, CheckInHistoryState>(
-      bloc: widget.bloc,
+      bloc: bloc,
       builder: (context, state) {
         if (state is CheckInHistoryLoadingState) {
           return Center(
@@ -122,40 +113,76 @@ class _CheckInHistoryCardState extends State<CheckInHistoryCard> {
               ),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              children: List.generate(pastCheckIns.length, (index) {
-                final checkIn = pastCheckIns[index];
-                final history = widget.bloc
-                    .chekinHistory(checkIn.messages[0].text.toLowerCase());
-                return CheckInCard(
-                  gradientStartColor: cardColors[index % cardColors.length],
-                  gradientEndColor: cardColors[index % cardColors.length],
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatScreen(
-                          feeling: history[0],
-                          feelingForm: history[1],
-                          reasonEntity: history[2],
-                          reason: history.last,
-                          isPastCheckin: true,
-                          aiResponse: checkIn.messages[1].text,
+              children: List.generate(4, (index) {
+                if (index < pastCheckIns.length) {
+                  final checkIn = pastCheckIns[index];
+                  final history = bloc
+                      .chekinHistory(checkIn.messages[0].text.toLowerCase());
+                  return CheckInCard(
+                    gradientStartColor: cardColors[index % cardColors.length],
+                    gradientEndColor: cardColors[index % cardColors.length],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatScreen(
+                            feeling: history[0],
+                            feelingForm: history[1],
+                            reasonEntity: history[2],
+                            reason: history.last,
+                            isPastCheckin: true,
+                            aiResponse: checkIn.messages[1].text,
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                  title: widget.bloc
-                      .parseHumanMessage(checkIn.messages[0].text)[0],
-                  body: widget.bloc
-                      .parseHumanMessage(checkIn.messages[0].text)[1],
-                  text_color: widget.textColor ?? Colors.white,
-                  // ... other properties
-                );
+                      );
+                    },
+                    title: bloc.parseHumanMessage(checkIn.messages[0].text)[0],
+                    body: bloc.parseHumanMessage(checkIn.messages[0].text)[1],
+                    text_color: textColor ?? Colors.white,
+                  );
+                } else {
+                  // This is where you return a card with "No check-ins available"
+                  return CheckInCard(
+                    gradientStartColor: cardColors[index % cardColors.length],
+                    gradientEndColor: cardColors[index % cardColors.length],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CheckInHome()),
+                      );
+                    },
+                    title: 'No check-ins available',
+                    body: 'No check-ins available',
+                    text_color: textColor ?? Colors.white,
+                  );
+                }
               }),
             ),
           );
         } else if (state is CheckInHistoryErrorState) {
-          return Text('Error: ${state.errorMessage}'); // Show an error message
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 30.w),
+            child: Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Container(
+                height: 300.h, // Adjusting for the Padding
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: Text(
+                    state.errorMessage,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 30.0.w,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
         }
         return Container(); // default return, can be an empty container or some placeholder
       },

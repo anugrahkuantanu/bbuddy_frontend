@@ -1,10 +1,8 @@
-import 'package:bbuddy_app/di/di.dart';
-import 'package:bbuddy_app/features/check_in_app/services/checkin_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/widget.dart';
-import '../../../../../core/core.dart';
-import '/config/config.dart';
+import 'package:bbuddy_app/features/main_app/screens/widgets/widget.dart';
+import 'package:bbuddy_app/core/core.dart';
+import 'package:bbuddy_app/config/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'checkin_history_card.dart';
 
@@ -45,15 +43,10 @@ class HomePageState extends State<HomePage> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.w),
-              child: BlocProvider<CheckInHistoryBloc>(
-                create: (context) =>
-                    CheckInHistoryBloc(locator.get<CheckInService>()),
-                child: Builder(
-                  builder: (context) => CheckInHistoryCard(
-                    bloc:
-                        context.read<CheckInHistoryBloc>(), // Here's the change
-                    textColor: Colors.white,
-                  ),
+              child: Builder(
+                builder: (context) => CheckInHistoryCard(
+                  bloc: context.read<CheckInHistoryBloc>(), // Use existing BLoC
+                  textColor: Colors.white,
                 ),
               ),
             )

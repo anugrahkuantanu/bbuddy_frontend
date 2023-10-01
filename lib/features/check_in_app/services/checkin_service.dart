@@ -17,6 +17,7 @@ class CheckInService {
     return dio;
   }
 
+
   Future<String> getCheckInResponse(String feeling, String feelingForm,
       String reasonEntity, String reason) async {
     try {
