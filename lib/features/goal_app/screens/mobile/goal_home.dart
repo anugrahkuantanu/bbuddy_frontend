@@ -13,78 +13,119 @@ import '/config/config.dart';
 import '../../blocs/bloc.dart';
 import '../../controllers/controller.dart';
 
-class GoalHome extends StatefulWidget {
+// class GoalHome extends StatefulWidget {
+//   const GoalHome({Key? key}) : super(key: key);
+
+//   @override
+//   State<GoalHome> createState() => _GoalHomeState();
+// }
+
+// class _GoalHomeState extends State<GoalHome> {
+//   late final GoalBloc _bloc;
+//   Widget? _currentView;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     final counterStats = Provider.of<CounterStats>(context, listen: false);
+//     _bloc = GoalBloc(
+//         counterStats: counterStats,
+//         goalService: locator.get<GoalService>(),
+//         reflectionService: locator.get<ReflectionService>());
+//     _bloc.add(LoadGoals());
+//     _bloc.add(CountReflections());
+//   }
+
+//   @override
+//   void dispose() {
+//     _bloc.close();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return BlocProvider.value(
+//       value: _bloc,
+//       child: BlocListener<GoalBloc, GoalState>(
+//         listener: (context, state) {
+//           if (state is GoalCreatedSuccessfully) {
+//             Navigator.push(
+//               context,
+//               MaterialPageRoute(
+//                   builder: (context) => ProgressController(goal: state.goal)),
+//             );
+//           } else if (state is GoalInsufficientReflections) {
+//             DialogHelper.showDialogMessage(context,
+//                 message: state.errorMessage,
+//                 title: AppStrings.insufficientReflections);
+//           } else if (state is GoalCreationDenied) {
+//             DialogHelper.showDialogMessage(context,
+//                 message: state.reason, title: AppStrings.goalCreatedTitel);
+//           } else if (state is GoalError) {
+//             DialogHelper.showDialogMessage(context,
+//                 message: state.errorMessage);
+//           }
+//         },
+//         child: BlocBuilder<GoalBloc, GoalState>(
+//           builder: (context, state) {
+//             if (state is GoalLoading) {
+//               return LoadingUI();
+//             } else if (state is GoalHasNotEnoughReflections) {
+//               _currentView = _buildFullGoalUI([], state.personalGoals);
+//             } else if (state is GoalHasEnoughReflections) {
+//               _currentView =
+//                   _buildFullGoalUI(state.generatedGoals, state.personalGoals);
+//             }
+//             return _currentView ??
+//                 Container(); // Always return the current view
+//           },
+//         ),
+//       ),
+//     );
+//   }
+class GoalHome extends StatelessWidget {
   const GoalHome({Key? key}) : super(key: key);
 
   @override
-  State<GoalHome> createState() => _GoalHomeState();
-}
-
-class _GoalHomeState extends State<GoalHome> {
-  late final GoalBloc _bloc;
-  Widget? _currentView;
-
-  @override
-  void initState() {
-    super.initState();
-    final counterStats = Provider.of<CounterStats>(context, listen: false);
-    _bloc = GoalBloc(
-        counterStats: counterStats,
-        goalService: locator.get<GoalService>(),
-        reflectionService: locator.get<ReflectionService>());
-    _bloc.add(LoadGoals());
-    _bloc.add(CountReflections());
-  }
-
-  @override
-  void dispose() {
-    _bloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _bloc,
-      child: BlocListener<GoalBloc, GoalState>(
-        listener: (context, state) {
-          if (state is GoalCreatedSuccessfully) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProgressController(goal: state.goal)),
-            );
-          } else if (state is GoalInsufficientReflections) {
-            DialogHelper.showDialogMessage(context,
-                message: state.errorMessage,
-                title: AppStrings.insufficientReflections);
-          } else if (state is GoalCreationDenied) {
-            DialogHelper.showDialogMessage(context,
-                message: state.reason, title: AppStrings.goalCreatedTitel);
-          } else if (state is GoalError) {
-            DialogHelper.showDialogMessage(context,
-                message: state.errorMessage);
+    return BlocListener<GoalBloc, GoalState>(
+      listener: (context, state) {
+        if (state is GoalCreatedSuccessfully) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProgressController(goal: state.goal),
+            ),
+          );
+        } else if (state is GoalInsufficientReflections) {
+          DialogHelper.showDialogMessage(context,
+              message: state.errorMessage,
+              title: AppStrings.insufficientReflections);
+        } else if (state is GoalCreationDenied) {
+          DialogHelper.showDialogMessage(context,
+              message: state.reason, title: AppStrings.goalCreatedTitel);
+        } else if (state is GoalError) {
+          DialogHelper.showDialogMessage(context,
+              message: state.errorMessage);
+        }
+      },
+      child: BlocBuilder<GoalBloc, GoalState>(
+        builder: (context, state) {
+          if (state is GoalLoading) {
+            return LoadingUI();
+          } else if (state is GoalHasNotEnoughReflections) {
+            return _buildFullGoalUI(context, [], state.personalGoals);
+          } else if (state is GoalHasEnoughReflections) {
+            return _buildFullGoalUI(context,state.generatedGoals, state.personalGoals);
           }
+          return Container(); // Default state
         },
-        child: BlocBuilder<GoalBloc, GoalState>(
-          builder: (context, state) {
-            if (state is GoalLoading) {
-              return LoadingUI();
-            } else if (state is GoalHasNotEnoughReflections) {
-              _currentView = _buildFullGoalUI([], state.personalGoals);
-            } else if (state is GoalHasEnoughReflections) {
-              _currentView =
-                  _buildFullGoalUI(state.generatedGoals, state.personalGoals);
-            }
-            return _currentView ??
-                Container(); // Always return the current view
-          },
-        ),
       ),
     );
   }
 
-  Widget _buildFullGoalUI(List<Goal> generatedGoals, List<Goal> personalGoals) {
+  // Widget _buildFullGoalUI(List<Goal> generatedGoals, List<Goal> personalGoals) {
+    Widget _buildFullGoalUI(BuildContext context, List<Goal> generatedGoals, List<Goal> personalGoals) {
     ScreenUtil.init(context, designSize: const Size(414, 896));
     var tm = context.watch<ThemeProvider>();
     return Scaffold(
@@ -128,7 +169,7 @@ class _GoalHomeState extends State<GoalHome> {
                               TextButton(
                                 onPressed: () {
                                   // context.read<GoalBloc>().add(CreateGeneratedGoals());
-                                  _bloc.add(CreateGeneratedGoals());
+                                  context.read<GoalBloc>().add(CreateGeneratedGoals());
                                 },
                                 child: Text(
                                   "+ Create Goal",
@@ -159,7 +200,7 @@ class _GoalHomeState extends State<GoalHome> {
                                             horizontal: 10.w),
                                         child: TextButton(
                                           onPressed: () {
-                                            _bloc.add(CreateGeneratedGoals());
+                                            context.read<GoalBloc>().add(CreateGeneratedGoals());
                                           },
                                           child: Text(
                                             AppStrings.dontHaveAnyGeneratedGoal,

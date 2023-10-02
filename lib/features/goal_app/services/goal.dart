@@ -26,26 +26,56 @@ class GoalService {
     }
   }
 
-  Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
+  // Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
+  //   // code here
+  //   try {
+  //     final response = await http.get(
+  //       '/set_new_goal',
+  //       params: {
+  //         'start_date': startDate?.toIso8601String(),
+  //         'end_date': endDate?.toIso8601String(),
+  //       },
+  //     );
+
+  //     final goalJson = Map<String, dynamic>.from(response.data);
+  //     print(goalJson);
+
+  //     Goal goal = Goal.fromJson(goalJson);
+
+  //     return goal;
+  //   } catch (e) {
+  //     throw Exception('Failed to load goal: $e');
+  //   }
+  // }
+
+Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
     // code here
     try {
-      final response = await http.get(
-        '/set_new_goal',
-        params: {
-          'start_date': startDate?.toIso8601String(),
-          'end_date': endDate?.toIso8601String(),
-        },
-      );
+        const goalJsonString = """{
+            "create_time": null,
+            "description": "Take time to manage your stress and emotions by addressing your feelings and finding ways to cope.",
+            "type": "generated",
+            "milestones": [
+                {"content": "Identify the sources of stress in my life", "status": null},
+                {"content": "Develop a plan to address the sources of stress", "status": null},
+                {"content": "Set aside time each day to practice relaxation techniques", "status": null},
+                {"content": "Find a support system to talk to about my feelings", "status": null},
+                {"content": "Create a list of activities that help me cope with stress", "status": null}
+            ],
+            "id": "EVlGvHIIbGKPk61NIwyA"
+        }""";
 
-      final goalJson = Map<String, dynamic>.from(response.data);
+        // Convert the JSON string to a Map
+        final goalJson = json.decode(goalJsonString);
+        
+        Goal goal = Goal.fromJson(goalJson);
 
-      Goal goal = Goal.fromJson(goalJson);
-
-      return goal;
+        return goal;
     } catch (e) {
-      throw Exception('Failed to load goal: $e');
+        throw Exception('Failed to load goal: $e');
     }
-  }
+}
+
 
   Future<void> updateGoal(Goal goal) async {
     try {
