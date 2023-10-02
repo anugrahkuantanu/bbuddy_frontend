@@ -20,7 +20,7 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
       : super(GoalLoading()) {
     on<LoadGoals>(_loadGoals);
     on<CreateGeneratedGoals>(_createGeneratedGoals);
-    on<CreateNewGoal>(_createPersonalNewGoal);
+    // on<CreateNewGoal>(_createPersonalNewGoal);
     on<ShowGoalError>(
         (event, emit) => emit(GoalError(errorMessage: event.errorMessage)));
   }
@@ -72,10 +72,10 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
     }
   }
 
-  Future<void> _createPersonalNewGoal(
-      CreateNewGoal event, Emitter<GoalState> emit) async {
-    _createNewGoal(event.startDate, event.endDate, emit);
-  }
+  // Future<void> _createPersonalNewGoal(
+  //     CreateNewGoal event, Emitter<GoalState> emit) async {
+  //   _createNewGoal(event.startDate, event.endDate, emit);
+  // }
 
   // Future<void> _createNewGoal(CreateNewGoal event, Emitter<GoalState> emit) async {
   Future<void> _createNewGoal(

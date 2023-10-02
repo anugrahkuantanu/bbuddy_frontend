@@ -168,8 +168,8 @@ class GoalHome extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  // context.read<GoalBloc>().add(CreateGeneratedGoals());
                                   context.read<GoalBloc>().add(CreateGeneratedGoals());
+                                  context.read<GoalBloc>().add(LoadGoals());
                                 },
                                 child: Text(
                                   "+ Create Goal",
