@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
 import 'package:bbuddy_app/features/auth_firebase/loading/loading_screen.dart';
 import 'package:bbuddy_app/features/auth_firebase/dialogs/dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

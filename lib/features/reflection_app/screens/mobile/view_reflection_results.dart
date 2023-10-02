@@ -5,7 +5,7 @@ import 'package:bbuddy_app/features/reflection_app/services/service.dart';
 import 'package:bbuddy_app/features/main_app/services/service.dart';
 import 'reflection_home.dart';
 import 'package:bbuddy_app/features/reflection_app/models/model.dart';
-import 'package:bbuddy_app/features/reflection_app/screens/blocs/bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/blocs/bloc.dart';
 import '/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

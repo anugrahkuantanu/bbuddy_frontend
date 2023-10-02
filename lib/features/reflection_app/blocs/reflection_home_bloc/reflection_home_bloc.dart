@@ -1,10 +1,10 @@
 import 'package:bbuddy_app/core/core.dart';
-import '../../../services/service.dart';
-import '../../../models/model.dart';
+import '../../services/service.dart';
+import '../../models/model.dart';
 import 'package:provider/provider.dart';
 import '../../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../check_in_app/services/service.dart';
+import '../../../check_in_app/services/service.dart';
 
 class ReflectionHomeBloc
     extends Bloc<ReflectionHomeEvent, ReflectionHomeState> {

@@ -1,4 +1,4 @@
-import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
 import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

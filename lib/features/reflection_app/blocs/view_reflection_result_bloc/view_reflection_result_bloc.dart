@@ -1,5 +1,5 @@
-import '../../../services/service.dart';
-import '../../../../main_app/services/service.dart';
+import '../../services/service.dart';
+import '../../../main_app/services/service.dart';
 import 'dart:async';
 import '../../blocs/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
