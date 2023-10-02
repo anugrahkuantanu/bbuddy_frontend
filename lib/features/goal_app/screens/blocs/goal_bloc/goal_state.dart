@@ -10,8 +10,10 @@ class GoalHasEnoughReflections extends GoalState {
   final List<Goal> generatedGoals;
   final List<Goal> personalGoals;
 
-  GoalHasEnoughReflections({required this.generatedGoals, required this.personalGoals});
+  GoalHasEnoughReflections(
+      {required this.generatedGoals, required this.personalGoals});
 }
+
 class GoalHasNotEnoughReflections extends GoalState {
   final List<Goal> personalGoals;
 
@@ -25,6 +27,7 @@ class GoalError extends GoalState {
 }
 
 class GoalCreationAllowed extends GoalState {}
+
 class GoalCreationDenied extends GoalState {
   final String reason;
 
@@ -32,8 +35,8 @@ class GoalCreationDenied extends GoalState {
 }
 
 class GoalInsufficientReflections extends GoalState {
-    final String reason;
-    final String errorMessage;
+  final String reason;
+  final String errorMessage;
 
   GoalInsufficientReflections(this.reason, this.errorMessage);
 }

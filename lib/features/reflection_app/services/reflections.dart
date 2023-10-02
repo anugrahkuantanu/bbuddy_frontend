@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:bbuddy_app/core/classes/http_manager.dart';
-import 'package:bbuddy_app/core/helpers/login_helper.dart';
+import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/di/di.dart';
 import 'package:dio/dio.dart';
-import '/config/config.dart';
+import 'package:bbuddy_app/config/config.dart';
 import '../../../core/classes/dio_util.dart';
-import '../models/reflection.dart';
+import 'package:bbuddy_app/features/reflection_app/models/reflection.dart';
 
 class ReflectionService {
   final http = locator.get<Http>();
@@ -56,8 +55,6 @@ class ReflectionService {
 
   Future<Reflection> getMoodReflections(
       List topics, List? userReflections, String heading) async {
-    //final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-    //dio.interceptors.add(AuthInterceptor(dio));
     final response = await http.post('/mood_reflection',
         data: jsonEncode(
           {
@@ -70,6 +67,19 @@ class ReflectionService {
     final responseData = Map<String, dynamic>.from(response.data);
 
     return Reflection.fromJson(responseData);
+  }
+
+  Future<int> countReflections() async {
+    try {
+      final response = await http.get('/count_reflections');
+      if (response.statusCode == 200) {
+        return response.data as int;
+      } else {
+        throw Exception('Failed to load check-ins');
+      }
+    } catch (e) {
+      throw Exception('Failed to load check-ins: $e');
+    }
   }
 }
 
@@ -85,41 +95,5 @@ Future<String> fetchHeading(List topics) async {
     return heading;
   } else {
     throw Exception('Failed to load data');
-  }
-}
-
-// class ReflectionHeading extends ChangeNotifier {
-//   String heading = '';
-
-//   String get result => heading;
-
-//   final dio = Dio();
-
-//   Future<void> fetchHeading(List topics) async {
-//     final response = await dio.post(
-//       '$ApiEndpoint.baseURL/reflection_heading',
-//       data: {'topics': topics},
-//     );
-//     if (response.statusCode == 200) {
-//       heading = response.data["heading"];
-//       notifyListeners();
-//     } else {
-//       throw Exception('Failed to load data');
-//     }
-//   }
-// }
-
-Future<int> countReflections() async {
-  final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-  dio.interceptors.add(AuthInterceptor(dio));
-  try {
-    final response = await dio.get('/count_reflections');
-    if (response.statusCode == 200) {
-      return response.data as int;
-    } else {
-      throw Exception('Failed to load check-ins');
-    }
-  } catch (e) {
-    throw Exception('Failed to load check-ins: $e');
   }
 }

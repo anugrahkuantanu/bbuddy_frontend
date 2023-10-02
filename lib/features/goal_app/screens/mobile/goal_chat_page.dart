@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract class ChatEvent {}
 
 class ChatInitialEvent extends ChatEvent {
-  final int goalId;
+  final String goalId;
   final int currentPage;
   final int pageSize;
 
@@ -86,7 +86,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   GoalChat? chat;
 
-  ChatBloc(int goalId) : super(InitialChatState()) {
+  ChatBloc(String goalId) : super(InitialChatState()) {
     chat = GoalChat(
       goalId: goalId,
       onMessageReceived: _handleIncomingMessage,
@@ -172,7 +172,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 }
 
 class GoalChatPage extends StatefulWidget {
-  final int goalId;
+  final String goalId;
 
   GoalChatPage({required this.goalId, Key? key}) : super(key: key);
 

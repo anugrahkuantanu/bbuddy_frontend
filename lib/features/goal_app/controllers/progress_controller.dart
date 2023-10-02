@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/core.dart';
-import '../screens/screen.dart' as mobile;
+import 'package:bbuddy_app/core/core.dart';
+import 'package:bbuddy_app/features/goal_app/screens/screen.dart' as mobile;
 
-import '../models/model.dart';
+import 'package:bbuddy_app/features/goal_app/models/model.dart';
 
 class ProgressController extends StatelessController {
   final Goal goal;
@@ -24,7 +24,10 @@ class ProgressController extends StatelessController {
   Display view(BuildContext context) {
     return Display(
       title: 'Goals',
-      mobile: mobile.ProgressPage(goal: goal, generateMilestones: generateMilestones, updateCallBack: updateCallBack),
+      mobile: mobile.ProgressPage(
+          goal: goal,
+          generateMilestones: generateMilestones,
+          updateCallBack: updateCallBack),
     );
   }
 }

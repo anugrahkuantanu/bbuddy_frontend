@@ -1,8 +1,6 @@
 import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
 
-import '/features/check_in_app/controllers/controller.dart';
 import 'package:flutter/material.dart';
-import '../../models/model.dart';
 import '../../services/checkin_service.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/core/core.dart';
@@ -12,7 +10,7 @@ class ChatScreen extends StatefulWidget {
   final String feelingForm;
   final String reasonEntity;
   final String reason;
-  bool? isPastCheckin =false;
+  bool? isPastCheckin = false;
   final String? aiResponse;
   final Color? textColor;
 
@@ -61,7 +59,6 @@ class ChatScreenState extends State<ChatScreen> {
       ),
     ];
     if (widget.isPastCheckin == true) {
-      print(widget.isPastCheckin);
       showProgressIndicator = false;
       messages.add(
         Message(
@@ -83,13 +80,13 @@ class ChatScreenState extends State<ChatScreen> {
         widget.feeling, widget.feelingForm, widget.reasonEntity, widget.reason);
 
     setState(() {
-      List<String> response_messages = response.split("\n\n");
+      List<String> responseMessages = response.split("\n\n");
       isTyping = false;
       showProgressIndicator = false; // Hide the progress indicator
-      for (int i = 0; i < response_messages.length; i++) {
+      for (int i = 0; i < responseMessages.length; i++) {
         messages.add(
           Message(
-            text: response_messages[i],
+            text: responseMessages[i],
             isBot: true,
           ),
         );
@@ -107,13 +104,10 @@ class ChatScreenState extends State<ChatScreen> {
 
     checkInService.storeCheckIn(widget.feeling, widget.feelingForm,
         widget.reasonEntity, widget.reason, response);
-    
-    
 
     final counterStats = Provider.of<CounterStats>(context, listen: false);
     counterStats.updateCheckInCounter();
   }
-
 
   void sendUserMessage(String message) {
     setState(() {
@@ -127,26 +121,26 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void navigateBackToHomePage() {
+    if (!widget.isPastCheckin!) {
       context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
-      Nav.toNamed(context, '/');
-    
+    }
+    Nav.toNamed(context, '/');
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(''),
-        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(''),
+        iconTheme: const IconThemeData(color: Colors.white),
         automaticallyImplyLeading: false,
         actions: [
           if (showExitButton ||
-          widget.isPastCheckin == true) // Show the exit button once it appears
+              widget.isPastCheckin ==
+                  true) // Show the exit button once it appears
             IconButton(
-              icon: Icon(Icons.exit_to_app),
+              icon: const Icon(Icons.exit_to_app),
               onPressed: () {
                 navigateBackToHomePage();
               },
@@ -193,7 +187,7 @@ class ChatScreenState extends State<ChatScreen> {
                           child: Container(
                             margin: EdgeInsets.fromLTRB(25, 10, 25,
                                 index == messages.length - 1 ? 80 : 10),
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: message.isBot
                                   ? Colors.grey[300]
@@ -202,7 +196,7 @@ class ChatScreenState extends State<ChatScreen> {
                             ),
                             child: Text(
                               message.text,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 16,
                               ),
@@ -212,7 +206,7 @@ class ChatScreenState extends State<ChatScreen> {
                       },
                     ),
                     if (showProgressIndicator) // Display CircularProgressIndicator if showProgressIndicator is true
-                      Center(
+                      const Center(
                         child: CircularProgressIndicator(),
                       ),
                   ],

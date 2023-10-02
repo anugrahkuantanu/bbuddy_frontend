@@ -19,15 +19,15 @@ class PersonalGoal extends StatefulWidget {
 class _PersonalGoalState extends State<PersonalGoal> {
   Color _getGradientEndColor(int index) {
     List<Color> cardColors = [
-      Color(0xFFb383ff),
-      Color(0xFF65dc99),
-      Color(0xFFff9a96),
-      Color(0xFF68d0ff)
+      const Color(0xFFb383ff),
+      const Color(0xFF65dc99),
+      const Color(0xFFff9a96),
+      const Color(0xFF68d0ff)
     ];
     return cardColors[index];
   }
 
-  void updateCallBack(Goal goal){
+  void updateCallBack(Goal goal) {
     setState(() {
       widget.goals![0] = goal;
     });
@@ -55,12 +55,14 @@ class _PersonalGoalState extends State<PersonalGoal> {
             });
             Navigator.of(context).pop(); // Close the dialog
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        ProgressPage(goal: newGoal, generateMilestones: true, updateCallBack: updateCallBack,)
-                        ),
-                      );
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProgressPage(
+                        goal: newGoal,
+                        generateMilestones: true,
+                        updateCallBack: updateCallBack,
+                      )),
+            );
           },
         ),
       );
@@ -85,7 +87,7 @@ class _PersonalGoalState extends State<PersonalGoal> {
           childAspectRatio: 1.0,
           mainAxisSpacing: 20.w,
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: List.generate(4, (index) {
             final goal = displayGoals[index];
             return PersonalCard(

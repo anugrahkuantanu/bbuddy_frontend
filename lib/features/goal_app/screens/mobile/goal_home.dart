@@ -1,8 +1,11 @@
+import 'package:bbuddy_app/di/di.dart';
+import 'package:bbuddy_app/features/goal_app/services/service.dart';
+import 'package:bbuddy_app/features/reflection_app/services/service.dart';
+
 import '/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../../main_app/services/service.dart';
 import '../../models/model.dart';
 import '../screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,11 +13,7 @@ import '/config/config.dart';
 import '../blocs/bloc.dart';
 import '../../controllers/controller.dart';
 
-
-
 class GoalHome extends StatefulWidget {
-
-  
   const GoalHome({Key? key}) : super(key: key);
 
   @override
@@ -22,18 +21,20 @@ class GoalHome extends StatefulWidget {
 }
 
 class _GoalHomeState extends State<GoalHome> {
-  
   late final GoalBloc _bloc;
-  Widget? _currentView; 
+  Widget? _currentView;
 
   @override
   void initState() {
     super.initState();
     final counterStats = Provider.of<CounterStats>(context, listen: false);
-    _bloc = GoalBloc(counterStats: counterStats);
+    _bloc = GoalBloc(
+        counterStats: counterStats,
+        goalService: locator.get<GoalService>(),
+        reflectionService: locator.get<ReflectionService>());
     _bloc.add(LoadGoals());
     _bloc.add(CountReflections());
-    // _currentView = LoadingUI(); 
+    // _currentView = LoadingUI();
   }
 
   @override
@@ -42,7 +43,8 @@ class _GoalHomeState extends State<GoalHome> {
     super.dispose();
   }
 
-Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return BlocProvider.value(
       value: _bloc,
       child: BlocListener<GoalBloc, GoalState>(
@@ -50,14 +52,19 @@ Widget build(BuildContext context) {
           if (state is GoalCreatedSuccessfully) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProgressController(goal: state.goal)),
+              MaterialPageRoute(
+                  builder: (context) => ProgressController(goal: state.goal)),
             );
           } else if (state is GoalInsufficientReflections) {
-            DialogHelper.showDialogMessage(context, message: state.errorMessage, title: AppStrings.goalAlreadyCreated);
+            DialogHelper.showDialogMessage(context,
+                message: state.errorMessage,
+                title: AppStrings.insufficientReflections);
           } else if (state is GoalCreationDenied) {
-            DialogHelper.showDialogMessage(context, message : state.reason, title: AppStrings.goalCreatedTitel);
+            DialogHelper.showDialogMessage(context,
+                message: state.reason, title: AppStrings.goalCreatedTitel);
           } else if (state is GoalError) {
-            DialogHelper.showDialogMessage(context, message: state.errorMessage);
+            DialogHelper.showDialogMessage(context,
+                message: state.errorMessage);
           }
         },
         child: BlocBuilder<GoalBloc, GoalState>(
@@ -67,16 +74,16 @@ Widget build(BuildContext context) {
             } else if (state is GoalHasNotEnoughReflections) {
               _currentView = _buildFullGoalUI([], state.personalGoals);
             } else if (state is GoalHasEnoughReflections) {
-              _currentView = _buildFullGoalUI(state.generatedGoals, state.personalGoals);
-            } 
-            return _currentView ?? Container();  // Always return the current view
+              _currentView =
+                  _buildFullGoalUI(state.generatedGoals, state.personalGoals);
+            }
+            return _currentView ??
+                Container(); // Always return the current view
           },
         ),
       ),
     );
-}
-
-
+  }
 
   Widget _buildFullGoalUI(List<Goal> generatedGoals, List<Goal> personalGoals) {
     ScreenUtil.init(context, designSize: const Size(414, 896));
@@ -85,12 +92,15 @@ Widget build(BuildContext context) {
       appBar: AppBar(
         elevation: 0,
         actions: actionsMenuLogin(context),
-        title: Text('Goals', style: TextStyle(color: tm.isDarkMode ? AppColors.textlight : AppColors.textdark)),
+        title: Text('Goals',
+            style: TextStyle(
+                color:
+                    tm.isDarkMode ? AppColors.textlight : AppColors.textdark)),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: ListView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.w),
@@ -109,7 +119,9 @@ Widget build(BuildContext context) {
                               Text(
                                 "AI generated goal",
                                 style: TextStyle(
-                                  color: tm.isDarkMode ? AppColors.textlight : AppColors.textdark,
+                                  color: tm.isDarkMode
+                                      ? AppColors.textlight
+                                      : AppColors.textdark,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14.w,
                                 ),
@@ -122,7 +134,9 @@ Widget build(BuildContext context) {
                                 child: Text(
                                   "+ Create Goal",
                                   style: TextStyle(
-                                    color: tm.isDarkMode ? AppColors.textlight : AppColors.textdark,
+                                    color: tm.isDarkMode
+                                        ? AppColors.textlight
+                                        : AppColors.textdark,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 14.0.w,
                                   ),
@@ -132,26 +146,29 @@ Widget build(BuildContext context) {
                           ),
                         ),
                         SizedBox(height: 16.h),
-                        (generatedGoals.isNotEmpty) 
-                          ? GeneratedGoalsCard(generatedGoals: generatedGoals)
-                          : Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              child: Card(
-                                color: Colors.white,
-                                child: Container(
-                                  height: 70.0,  // set height to 30px
-                                  child: Center(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          _bloc.add(CreateGeneratedGoals());
-                                        },
-                                        child: Text(
-                                          AppStrings.dontHaveAnyGeneratedGoal,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14.w,  // adjust the font size as needed
+                        (generatedGoals.isNotEmpty)
+                            ? GeneratedGoalsCard(generatedGoals: generatedGoals)
+                            : Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10.w),
+                                child: Card(
+                                  color: Colors.white,
+                                  child: SizedBox(
+                                    height: 70.0, // set height to 30px
+                                    child: Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w),
+                                        child: TextButton(
+                                          onPressed: () {
+                                            _bloc.add(CreateGeneratedGoals());
+                                          },
+                                          child: Text(
+                                            AppStrings.dontHaveAnyGeneratedGoal,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14
+                                                  .w, // adjust the font size as needed
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -159,7 +176,6 @@ Widget build(BuildContext context) {
                                   ),
                                 ),
                               ),
-                            ),
                         SizedBox(height: 28.h),
                         Padding(
                           padding: EdgeInsets.only(left: 10.w),
@@ -168,7 +184,9 @@ Widget build(BuildContext context) {
                             child: Text(
                               "personal goal",
                               style: TextStyle(
-                                color: tm.isDarkMode ? AppColors.textlight : AppColors.textdark,
+                                color: tm.isDarkMode
+                                    ? AppColors.textlight
+                                    : AppColors.textdark,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.w,
                               ),
@@ -192,4 +210,3 @@ Widget build(BuildContext context) {
     );
   }
 }
-

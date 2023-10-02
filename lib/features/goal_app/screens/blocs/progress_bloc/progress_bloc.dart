@@ -4,11 +4,11 @@ import 'dart:async';
 import '../bloc.dart';
 import '../../../models/model.dart';
 
-
 class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
   Goal goal;
-
-  ProgressBloc({required this.goal}) : super(ProgressLoading()) {
+  GoalService goalService;
+  ProgressBloc({required this.goal, required this.goalService})
+      : super(ProgressLoading()) {
     on<InitializePersonalGoal>(_initializePersonalGoal);
     on<DeleteGoal>(_deleteGoal);
     on<DeleteMilestone>(_deleteMilestone);
@@ -20,12 +20,13 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
     on<AddMilestone>(_addMilestone);
   }
 
-  Future<void> _initializePersonalGoal(InitializePersonalGoal event, Emitter<ProgressState> emit) async {
+  Future<void> _initializePersonalGoal(
+      InitializePersonalGoal event, Emitter<ProgressState> emit) async {
     emit(ProgressLoading());
     try {
       Goal newGoal;
       if (event.generateMilestones) {
-        newGoal = await setPersonalGoal(event.goal);
+        newGoal = await goalService.setPersonalGoal(event.goal);
         event.generateMilestones = false;
       } else {
         newGoal = event.goal;
@@ -36,11 +37,13 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
     }
   }
 
-  Future<void> _deleteGoal(DeleteGoal event, Emitter<ProgressState> emit) async {
+  Future<void> _deleteGoal(
+      DeleteGoal event, Emitter<ProgressState> emit) async {
     try {
-      bool isDeleted = await deleteGoal(event.goal.id!);
+      bool isDeleted = await goalService.deleteGoal(event.goal.id!);
       if (isDeleted) {
-        emit(GoalDeleted(goal: event.goal));  // Assuming you have a GoalDeleted state
+        emit(GoalDeleted(
+            goal: event.goal)); // Assuming you have a GoalDeleted state
       } else {
         emit(ProgressError(errorMessage: "Failed to delete goal"));
       }
@@ -49,67 +52,76 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
     }
   }
 
-  Future<void> _deleteMilestone(DeleteMilestone event, Emitter<ProgressState> emit) async {
+  Future<void> _deleteMilestone(
+      DeleteMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones.removeAt(event.index);
-      updateGoal(event.goal);  // Assuming updateGoal is a function you have defined elsewhere
+      goalService.updateGoal(event
+          .goal); // Assuming updateGoal is a function you have defined elsewhere
       emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> _changeMilestoneStatus(ChangeMilestoneStatus event, Emitter<ProgressState> emit) async {
+  Future<void> _changeMilestoneStatus(
+      ChangeMilestoneStatus event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones[event.index].status = event.status;
-      updateGoal(event.goal);
+      goalService.updateGoal(event.goal);
       emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> _editMilestone(EditMilestone event, Emitter<ProgressState> emit) async {
+  Future<void> _editMilestone(
+      EditMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones[event.index].content = event.content;
-      updateGoal(event.goal);
+      goalService.updateGoal(event.goal);
       emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> _addSubMilestone(AddSubMilestone event, Emitter<ProgressState> emit) async {
+  Future<void> _addSubMilestone(
+      AddSubMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones[event.index].tasks.add(event.milestone);
-      updateGoal(event.goal);
+      goalService.updateGoal(event.goal);
       emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> _navigateToChat(NavigateToChat event, Emitter<ProgressState> emit) async {
+  Future<void> _navigateToChat(
+      NavigateToChat event, Emitter<ProgressState> emit) async {
     try {
-      emit(NavigateToChatState(goalId: event.goalId));  // Assuming you have a NavigateToChatState
+      emit(NavigateToChatState(
+          goalId: event.goalId)); // Assuming you have a NavigateToChatState
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> _updateGoal(UpdateGoal event, Emitter<ProgressState> emit) async {
+  Future<void> _updateGoal(
+      UpdateGoal event, Emitter<ProgressState> emit) async {
     try {
-      updateGoal(event.goal);
+      goalService.updateGoal(event.goal);
       emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> _addMilestone(AddMilestone event, Emitter<ProgressState> emit) async {
+  Future<void> _addMilestone(
+      AddMilestone event, Emitter<ProgressState> emit) async {
     try {
       event.goal.milestones.add(event.milestone);
-      updateGoal(event.goal);
+      goalService.updateGoal(event.goal);
       emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));

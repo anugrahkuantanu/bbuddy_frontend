@@ -14,7 +14,7 @@ class GoalChat {
   void Function(dynamic, dynamic, dynamic) onMessageReceived;
   void Function(dynamic) onConnectionError;
   void Function() onConnectionSuccess;
-  int goalId;
+  String goalId;
 
   GoalChat({
     required this.goalId,
@@ -30,10 +30,11 @@ class GoalChat {
     );
     connect();
   }
-  
+
   void connect() async {
     Token? accessToken = await getAccessToken();
-    _webSocket?.connect('${ApiEndpoint.baseWSURL}/${goalId}?authorization=${accessToken!.accessToken}');
+    _webSocket?.connect(
+        '${ApiEndpoint.baseWSURL}/${goalId}?authorization=${accessToken!.accessToken}');
   }
 
   void _handleMessage(dynamic data) {
@@ -68,7 +69,7 @@ class GoalChat {
     _webSocket?.sendBytes(bytes);
   }
 
-  void sendJson(Map<String, dynamic> json){
+  void sendJson(Map<String, dynamic> json) {
     _webSocket?.sendJson(json);
   }
 

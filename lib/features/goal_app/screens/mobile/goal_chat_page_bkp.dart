@@ -5,8 +5,8 @@ import '../../services/service.dart';
 import '../../models/model.dart';
 
 class GoalChatScreen extends StatefulWidget {
-  int goalId; 
-  
+  String goalId;
+
   GoalChatScreen({required this.goalId, Key? key}) : super(key: key);
 
   @override
@@ -26,7 +26,6 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
   final FocusNode _focusNode = FocusNode();
   bool isKeyboardVisible = false;
 
-
   final ScrollController _scrollController = ScrollController();
   bool incommingMsgInprogress = false;
   @override
@@ -35,7 +34,8 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
     messages = [];
     _focusNode.addListener(_onFocusChange);
 
-    fetchChatHistory(widget.goalId, currentPage, pageSize).listen((fetchedMessages) {
+    fetchChatHistory(widget.goalId, currentPage, pageSize)
+        .listen((fetchedMessages) {
       setState(() {
         messages.addAll(fetchedMessages.reversed);
       });
@@ -77,7 +77,8 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
 
     //if (oldPage >= 1) {
     try {
-      fetchChatHistory(widget.goalId, nextPage, pageSize).listen((fetchedMessages) {
+      fetchChatHistory(widget.goalId, nextPage, pageSize)
+          .listen((fetchedMessages) {
         if (fetchedMessages.isNotEmpty) {
           setState(() {
             messages.insertAll(0, fetchedMessages.reversed);
@@ -95,7 +96,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
       isLoadingHistory = false;
     });
   }
- 
+
   @override
   void dispose() {
     messageController.dispose();
@@ -163,8 +164,8 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
         incommingMsgInprogress = true;
         _scrollToBottom();
       }
-    } else if (messageType == 'end' && sender == 'bot'){
-        incommingMsgInprogress = false;
+    } else if (messageType == 'end' && sender == 'bot') {
+      incommingMsgInprogress = false;
     }
     setState(() {});
   }
@@ -181,7 +182,7 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
     ]);
   }
 
-    void _onFocusChange() {
+  void _onFocusChange() {
     setState(() {
       isKeyboardVisible = _focusNode.hasFocus;
     });
@@ -192,7 +193,6 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -211,83 +211,85 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
           ),
         ),
       ),
-      body:
-      GestureDetector(
+      body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
-            },
-      child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                  ListView.builder(
-                    shrinkWrap: true, // Add this to prevent render overflow
-                    physics: const BouncingScrollPhysics(), 
-                    controller: _scrollController,
-                    reverse: false,
-                    itemCount: messages.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Message message = messages[index];
-                      bool isLastMessage = index == messages.length - 1;
-                      bool isBotMessage = message.isBot;
-                      return Align(
-                        alignment: isBotMessage
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color:
-                                isBotMessage ? Colors.grey[300] : Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              displayMessage(context, message),
-                              if (isLastMessage &&
-                                  isBotMessage &&
-                                  message.isWaiting)
-                                const SizedBox(height: 3),
-                              if (isLastMessage &&
-                                  isBotMessage &&
-                                  message.isWaiting)
-                                DotsIndicator(
-                                  dotsCount: 3,
-                                  position: dotsPosition.toInt(),
-                                  decorator: DotsDecorator(
-                                    size: const Size.square(2.0),
-                                    activeSize: const Size.square(2.0),
-                                    color: Colors.grey,
-                                    activeColor: Colors.black,
-                                    spacing: const EdgeInsets.all(3.0),
-                                    activeShape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(3.0),
+        },
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ListView.builder(
+                        shrinkWrap: true, // Add this to prevent render overflow
+                        physics: const BouncingScrollPhysics(),
+                        controller: _scrollController,
+                        reverse: false,
+                        itemCount: messages.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Message message = messages[index];
+                          bool isLastMessage = index == messages.length - 1;
+                          bool isBotMessage = message.isBot;
+                          return Align(
+                            alignment: isBotMessage
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: isBotMessage
+                                    ? Colors.grey[300]
+                                    : Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  displayMessage(context, message),
+                                  if (isLastMessage &&
+                                      isBotMessage &&
+                                      message.isWaiting)
+                                    const SizedBox(height: 3),
+                                  if (isLastMessage &&
+                                      isBotMessage &&
+                                      message.isWaiting)
+                                    DotsIndicator(
+                                      dotsCount: 3,
+                                      position: dotsPosition.toInt(),
+                                      decorator: DotsDecorator(
+                                        size: const Size.square(2.0),
+                                        activeSize: const Size.square(2.0),
+                                        color: Colors.grey,
+                                        activeColor: Colors.black,
+                                        spacing: const EdgeInsets.all(3.0),
+                                        activeShape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(3.0),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      if (isLoadingHistory) // Display waiting indicator when loading chat history above
+                        const Center(child: CircularProgressIndicator()),
+                    ],
                   ),
-                  if (isLoadingHistory) // Display waiting indicator when loading chat history above
-                    const Center(child: CircularProgressIndicator()),
-                ],
+                ),
               ),
-            ),
-            ),
               Container(
                 color: const Color(0xFF2D425F),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
                   children: [
                     Expanded(
@@ -298,35 +300,36 @@ class _GoalChatScreenState extends State<GoalChatScreen> {
                           hintText: 'Type your message...',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  IconButton(
-                    onPressed: () {
-                      String message = messageController.text.trim();
-                      if (message.isNotEmpty &&
-                          (!messages.isNotEmpty || !messages.last.isWaiting) &&
-                          !incommingMsgInprogress) {
-                        sendUserMessage(message);
-                      }
-                    },
-                    icon: const Icon(Icons.send),
-                  ),
-                ],
+                    const SizedBox(width: 10),
+                    IconButton(
+                      onPressed: () {
+                        String message = messageController.text.trim();
+                        if (message.isNotEmpty &&
+                            (!messages.isNotEmpty ||
+                                !messages.last.isWaiting) &&
+                            !incommingMsgInprogress) {
+                          sendUserMessage(message);
+                        }
+                      },
+                      icon: const Icon(Icons.send),
+                    ),
+                  ],
+                ),
               ),
-              
-            ),
-                         // Adjust the chatbox position based on keyboard visibility
+              // Adjust the chatbox position based on keyboard visibility
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: isKeyboardVisible ? kToolbarHeight + 250: 0,
-                child: const SizedBox(),),
-          ],
+                height: isKeyboardVisible ? kToolbarHeight + 250 : 0,
+                child: const SizedBox(),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }

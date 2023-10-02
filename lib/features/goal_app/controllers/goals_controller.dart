@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/core.dart';
-import '../screens/mobile/goal_home.dart' as mobile;
+import 'package:bbuddy_app/core/core.dart';
+import 'package:bbuddy_app/features/goal_app/screens/mobile/goal_home.dart'
+    as mobile;
 
 class GoalsController extends StatelessController {
   const GoalsController({Key? key}) : super(key: key);
@@ -13,7 +14,7 @@ class GoalsController extends StatelessController {
   Display view(BuildContext context) {
     return Display(
       title: 'Goals',
-      mobile: mobile.GoalHome(),
+      mobile: const mobile.GoalHome(),
     );
   }
 }

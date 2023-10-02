@@ -1,50 +1,59 @@
 import 'package:bbuddy_app/core/core.dart';
-import 'package:bbuddy_app/core/utils/app_strings.dart';
-import 'package:bbuddy_app/features/main_app/app.dart';
 
 import '../bloc.dart';
 import '../../../../reflection_app/services/service.dart';
-import '../../../../main_app/services/service.dart';
 import '../../../services/service.dart';
 import '../../../models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GoalBloc extends Bloc<GoalEvent, GoalState> {
   final CounterStats counterStats;
+  final GoalService goalService;
+  final ReflectionService reflectionService;
   List<Goal> generatedGoals = [];
   List<Goal> personalGoals = [];
 
-  GoalBloc({required this.counterStats}) : super(GoalLoading()) {
+  GoalBloc(
+      {required this.counterStats,
+      required this.goalService,
+      required this.reflectionService})
+      : super(GoalLoading()) {
     on<LoadGoals>(_loadGoals);
     on<CreateGeneratedGoals>(_createGeneratedGoals);
     on<CreateNewGoal>(_createPersonalNewGoal);
-    on<ShowGoalError>((event, emit) => emit(GoalError(errorMessage: event.errorMessage)));
+    on<ShowGoalError>(
+        (event, emit) => emit(GoalError(errorMessage: event.errorMessage)));
   }
 
   Future<void> _loadGoals(LoadGoals event, Emitter<GoalState> emit) async {
     emit(GoalLoading());
     try {
-      final history = await getGoalHistory();
+      final history = await goalService.getGoalHistory();
       generatedGoals = history
           .where((goal) => goal.type == GoalType.generated || goal.type == null)
           .toList();
-      personalGoals = history.where((goal) => goal.type == GoalType.personal).toList();
+      personalGoals =
+          history.where((goal) => goal.type == GoalType.personal).toList();
       if (generatedGoals.isEmpty) {
         // emit(GoalHasNotEnoughReflections(personalGoals: personalGoals));
-        emit(GoalHasEnoughReflections(generatedGoals: [], personalGoals: personalGoals));
+        emit(GoalHasEnoughReflections(
+            generatedGoals: [], personalGoals: personalGoals));
       } else {
-        emit(GoalHasEnoughReflections(generatedGoals: generatedGoals, personalGoals: personalGoals));
+        emit(GoalHasEnoughReflections(
+            generatedGoals: generatedGoals, personalGoals: personalGoals));
       }
     } catch (error) {
       emit(GoalError(errorMessage: error.toString()));
     }
   }
 
-  Future<void> _createGeneratedGoals(CreateGeneratedGoals event, Emitter<GoalState> emit) async {
+  Future<void> _createGeneratedGoals(
+      CreateGeneratedGoals event, Emitter<GoalState> emit) async {
     if (generatedGoals.isEmpty) {
       await _createNewGoal(event.startDate, event.endDate, emit);
     } else {
-      DateTime? nextCreateTime = generatedGoals[0].createTime?.add(const Duration(days: 7));
+      DateTime? nextCreateTime =
+          generatedGoals[0].createTime?.add(const Duration(days: 7));
       var nextCreateDate = DateTime.utc(
         nextCreateTime!.year,
         nextCreateTime.month,
@@ -63,22 +72,25 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
     }
   }
 
-
-  Future<void> _createPersonalNewGoal(CreateNewGoal event, Emitter<GoalState> emit) async {
+  Future<void> _createPersonalNewGoal(
+      CreateNewGoal event, Emitter<GoalState> emit) async {
     _createNewGoal(event.startDate, event.endDate, emit);
   }
 
   // Future<void> _createNewGoal(CreateNewGoal event, Emitter<GoalState> emit) async {
-  Future<void> _createNewGoal(DateTime? startDate, DateTime? endDate, Emitter<GoalState> emit) async {
+  Future<void> _createNewGoal(
+      DateTime? startDate, DateTime? endDate, Emitter<GoalState> emit) async {
     emit(GoalLoading());
     if (int.tryParse(counterStats.reflectionCounter!.value)! < 3) {
-      int totalReflections = await countReflections();
+      int totalReflections = await reflectionService.countReflections();
       int modulo = totalReflections % 3;
       int reflectionsneeded = 3 - modulo;
-      emit(GoalInsufficientReflections('${reflectionsneeded}', 'you need ${reflectionsneeded} reflection(s)'));
+      emit(GoalInsufficientReflections('$reflectionsneeded',
+          'you need $reflectionsneeded more reflection(s) to generate the goal'));
     } else {
       try {
-        Goal goal = await setNewGoal(startDate: startDate, endDate: endDate);
+        Goal goal = await goalService.setNewGoal(
+            startDate: startDate, endDate: endDate);
         counterStats.resetReflectionCounter();
         generatedGoals.add(goal);
         emit(GoalCreatedSuccessfully(goal: goal));

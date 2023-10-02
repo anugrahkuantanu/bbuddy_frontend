@@ -2,21 +2,11 @@ import 'dart:convert';
 
 import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/di/di.dart';
-import 'package:dio/dio.dart';
-import '../../../core/classes/dio_util.dart';
-import 'checkin_utils.dart';
-import '/config/api_endpoints.dart';
-import '../models/model.dart';
+import 'package:bbuddy_app/features/check_in_app/services/service.dart';
+import 'package:bbuddy_app/features/check_in_app/models/model.dart';
 
 class CheckInService {
   final http = locator.get<Http>();
-  final Dio _dio = _initializeDio();
-  static Dio _initializeDio() {
-    final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-    dio.interceptors.add(AuthInterceptor(dio));
-    return dio;
-  }
-
 
   Future<String> getCheckInResponse(String feeling, String feelingForm,
       String reasonEntity, String reason) async {
