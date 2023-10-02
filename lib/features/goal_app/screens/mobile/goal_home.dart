@@ -10,7 +10,7 @@ import '../../models/model.dart';
 import '../screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/config/config.dart';
-import '../blocs/bloc.dart';
+import '../../blocs/bloc.dart';
 import '../../controllers/controller.dart';
 
 class GoalHome extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
+import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 
 import 'package:flutter/material.dart';
 import '../../services/checkin_service.dart';

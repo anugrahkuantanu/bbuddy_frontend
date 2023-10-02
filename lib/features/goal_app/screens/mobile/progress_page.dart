@@ -6,7 +6,7 @@ import '../screen.dart';
 import '../../models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '/core/utils/utils.dart';
-import '../blocs/bloc.dart';
+import '../../blocs/bloc.dart';
 
 class ProgressPage extends StatefulWidget {
   final Goal goal;

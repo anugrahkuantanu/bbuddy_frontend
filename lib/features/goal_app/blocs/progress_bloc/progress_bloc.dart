@@ -1,8 +1,8 @@
-import '../../../services/service.dart';
+import '../../services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
 import '../bloc.dart';
-import '../../../models/model.dart';
+import '../../models/model.dart';
 
 class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
   Goal goal;

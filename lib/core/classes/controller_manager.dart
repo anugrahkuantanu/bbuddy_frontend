@@ -1,5 +1,5 @@
 import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
-import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
+import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';

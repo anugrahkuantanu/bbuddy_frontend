@@ -1,6 +1,6 @@
 import 'package:bbuddy_app/di/di.dart';
-import 'package:bbuddy_app/features/goal_app/screens/blocs/goal_bloc/goal_bloc.dart';
-import 'package:bbuddy_app/features/goal_app/screens/blocs/goal_bloc/goal_event.dart';
+import 'package:bbuddy_app/features/goal_app/blocs/goal_bloc/goal_bloc.dart';
+import 'package:bbuddy_app/features/goal_app/blocs/goal_bloc/goal_event.dart';
 import 'package:bbuddy_app/features/goal_app/services/goal.dart';
 import 'package:bbuddy_app/features/reflection_app/screens/blocs/reflection_home_bloc/reflection_home_bloc.dart';
 import 'package:bbuddy_app/features/reflection_app/screens/blocs/reflection_home_bloc/reflection_home_event.dart';
@@ -15,8 +15,8 @@ import 'features/auth_mod/services/service.dart';
 import '/features/main_app/services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/auth_firebase/screens/blocs/bloc.dart';
-import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
 import 'features/check_in_app/services/service.dart';
+import 'features/main_app/bloc/bloc.dart';
 
 Future main() async {
   // ignore: unused_local_variable

@@ -1,9 +1,9 @@
 import 'package:bbuddy_app/core/core.dart';
 
 import '../bloc.dart';
-import '../../../../reflection_app/services/service.dart';
-import '../../../services/service.dart';
-import '../../../models/model.dart';
+import '../../../reflection_app/services/service.dart';
+import '../../services/service.dart';
+import '../../models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GoalBloc extends Bloc<GoalEvent, GoalState> {
