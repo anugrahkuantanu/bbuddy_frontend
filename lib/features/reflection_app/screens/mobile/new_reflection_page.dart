@@ -34,10 +34,9 @@ class NewReflectionPage extends StatelessWidget {
             if (state is ReflectionInitialState) {
               return _buildMainUI(context, bloc, topics, state.userReflections);
             }
-            else if (state is ReflectionUpdatedState) {
-              return _buildMainUI(context, bloc, topics, state.userReflections);
-            }
-            // Handle other states...
+            // else if (state is ReflectionUpdatedState) {
+            //   return _buildMainUI(context, bloc, topics, state.userReflections);
+            // }
             return Container(); // Fallback UI
           },
         );
@@ -80,6 +79,9 @@ class NewReflectionPage extends StatelessWidget {
                                             ),
                                             SizedBox(height: 20),
                                             TextFormField(
+                                                style: TextStyle( // Add this line
+                                                    color: Colors.black,  // And this line
+                                                ), 
                                                 decoration: InputDecoration(
                                                     hintText: AppStrings.enterYourThought,
                                                     border: OutlineInputBorder(
@@ -114,30 +116,11 @@ class NewReflectionPage extends StatelessWidget {
             floatingActionButton: FloatingActionButton(
                 onPressed: () {
                     bloc.add(SubmitReflectionEvent());
+                    context.read<ReflectionHomeBloc>()..add(InitializeReflectionHomeEvent());
                 },
                 backgroundColor: Color.fromRGBO(17, 32, 55, 1.0),
                 child: Icon(Icons.arrow_forward, color: Colors.white),
             ),
-            // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked.withOffset(Offset(0, -50.0)),
-            // floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
         );
   }
 }
-
-
-// class FloatingActionButtonLocationWithOffset extends FloatingActionButtonLocation {
-//   final FloatingActionButtonLocation delegate;
-//   final Offset offset;
-
-//   FloatingActionButtonLocationWithOffset(this.delegate, this.offset);
-
-//   @override
-//   Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
-//     final Offset standardOffset = delegate.getOffset(scaffoldGeometry);
-//     return Offset(standardOffset.dx + offset.dx, standardOffset.dy + offset.dy);
-//   }
-
-//   @override
-//   String toString() => '$delegate with offset $offset';
-// }
-

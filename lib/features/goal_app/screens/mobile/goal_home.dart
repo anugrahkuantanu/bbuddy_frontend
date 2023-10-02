@@ -34,7 +34,6 @@ class _GoalHomeState extends State<GoalHome> {
         reflectionService: locator.get<ReflectionService>());
     _bloc.add(LoadGoals());
     _bloc.add(CountReflections());
-    // _currentView = LoadingUI();
   }
 
   @override

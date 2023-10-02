@@ -1,4 +1,10 @@
 import 'package:bbuddy_app/di/di.dart';
+import 'package:bbuddy_app/features/goal_app/screens/blocs/goal_bloc/goal_bloc.dart';
+import 'package:bbuddy_app/features/goal_app/screens/blocs/goal_bloc/goal_event.dart';
+import 'package:bbuddy_app/features/goal_app/services/goal.dart';
+import 'package:bbuddy_app/features/reflection_app/screens/blocs/reflection_home_bloc/reflection_home_bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/screens/blocs/reflection_home_bloc/reflection_home_event.dart';
+import 'package:bbuddy_app/features/reflection_app/services/reflections.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +50,19 @@ Future main() async {
               )),
         BlocProvider<CheckInHistoryBloc>(
             create: (_) => CheckInHistoryBloc(locator.get<CheckInService>())),
+        BlocProvider<ReflectionHomeBloc>(
+          create: (context) => ReflectionHomeBloc(
+            checkInService: locator.get<CheckInService>(),
+            reflectionService: locator.get<ReflectionService>(),
+          )..add(InitializeReflectionHomeEvent()),
+        ),
+        BlocProvider<GoalBloc>(
+          create: (context) => GoalBloc(
+            counterStats: context.read<CounterStats>(),  // Correctly accessing CounterStats
+            goalService: locator.get<GoalService>(),
+            reflectionService: locator.get<ReflectionService>(),
+          )..add(LoadGoals())..add(CountReflections()),
+        ),
       ],
       child: const MyApp(),
     ),

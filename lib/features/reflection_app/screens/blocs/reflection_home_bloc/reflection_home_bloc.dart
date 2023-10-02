@@ -1,6 +1,5 @@
 import 'package:bbuddy_app/core/core.dart';
 import '../../../services/service.dart';
-import '../../../../main_app/services/service.dart';
 import '../../../models/model.dart';
 import 'package:provider/provider.dart';
 import '../../blocs/bloc.dart';
@@ -15,18 +14,17 @@ class ReflectionHomeBloc
   ReflectionHomeBloc(
       {required this.checkInService, required this.reflectionService})
       : super(ReflectionHomeInitial()) {
-    on<LoadReflectionHome>(_loadReflectionHome);
+    on<InitializeReflectionHomeEvent>(_onInitializeReflectionHomeEvent);
     on<CreateNewReflectionEvent>(_createNewReflection);
   }
 
-  Future<void> _loadReflectionHome(
-      LoadReflectionHome event, Emitter<ReflectionHomeState> emit) async {
+  Future<void> _onInitializeReflectionHomeEvent(
+    InitializeReflectionHomeEvent event, Emitter<ReflectionHomeState> emit) async {
     emit(ReflectionHomeLoading());
     try {
       int? checkInCount = await checkInService.countCheckIn();
       if (checkInCount >= 3) {
-        List<Reflection> history =
-            await reflectionService.getReflectionHistory() ?? [];
+        List<Reflection> history = await reflectionService.getReflectionHistory();
         emit(ReflectionHomeHasEnoughCheckIns(history));
       } else {
         emit(ReflectionHomeInsufficientCheckIns(
@@ -39,28 +37,22 @@ class ReflectionHomeBloc
 
   Future<void> _createNewReflection(
       CreateNewReflectionEvent event, Emitter<ReflectionHomeState> emit) async {
+        print('yess');
     try {
-      final counterStats =
-          Provider.of<CounterStats>(event.context, listen: false);
-      int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
+      // final counterStats =
+      // Provider.of<CounterStats>(event.context, listen: false);
+      // int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
+      
+      int checkInCount = 3;
+      print(checkInCount);
+
 
       if (checkInCount < 3) {
         emit(
             NeedsMoreCheckIns()); // This state indicates the need for more check-ins.
       } else {
-        List<Reflection> history =
-            await reflectionService.getReflectionHistory() ?? [];
-        emit(ReflectionHomeHasEnoughCheckIns(history));
-
-        List reflectionTopics =
-            await reflectionService.getReflectionTopics() ?? [];
+        List reflectionTopics = await reflectionService.getReflectionTopics();
         emit(NavigateToNewReflectionPage(reflectionTopics));
-
-        // List<Reflection> history = await getReflectionHistory();
-        // emit(ReflectionHomeHasEnoughCheckIns(history));
-
-        // List reflectionTopics = await getReflectionTopics();
-        // emit(NavigateToNewReflectionPage(reflectionTopics)); // This state indicates the need to navigate.
       }
     } catch (error) {
       emit(ReflectionHomeError(AppStrings.errorCreateNewReflection));

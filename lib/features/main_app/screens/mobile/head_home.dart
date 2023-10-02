@@ -1,6 +1,8 @@
 import 'package:bbuddy_app/config/config.dart';
 import 'package:bbuddy_app/features/auth_mod/auth_mod.dart';
 import 'package:bbuddy_app/features/main_app/screens/widgets/widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -8,24 +10,27 @@ import 'package:provider/provider.dart';
 class HeadHomePageWidget extends StatelessWidget {
   const HeadHomePageWidget({super.key});
 
-  // Future<String?> getFirstName() async {
-  //   String? getUserId = await FirebaseAuth.instance.currentUser?.uid;
-  //   List<String>? getName =
-  //       await FirebaseAuth.instance.currentUser!.displayName!.split(" ");
-  //   print("my name: ${getName[0].toString()}");
 
-  //   // String? getUserId = await FirebaseAuth.instance.currentUser?.uid;
-  //   final userRef =
-  //       FirebaseFirestore.instance.collection('users').doc(getUserId);
-  //   String? name; // Declare and initialize the 'name' variable
-  //   try {
-  //     final userData = await userRef.get();
-  //     name = userData.data()?['firstName'];
-  //   } catch (e) {
-  //     print('Error retrieving user data: $e');
-  //   }
-  //   return name;
-  // }
+  Future<String?> getFirstName() async {
+  try {
+    String? userId = await FirebaseAuth.instance.currentUser?.uid;
+    List<String>? getName = await FirebaseAuth.instance.currentUser?.displayName?.split(" ");
+
+    String? googleFirstName = getName?.first;
+
+    if (googleFirstName != null && googleFirstName.isNotEmpty) {
+      return googleFirstName;
+    } else if (userId != null) {
+      final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+      final userData = await userRef.get();
+      return userData.data()?['firstName'];
+    }
+  } catch (e) {
+    print('Error retrieving user data: $e');
+  }
+  return null;
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,7 @@ class HeadHomePageWidget extends StatelessWidget {
         : AppColors.textdark;
 
     double textSizeS = 16.0.w;
+    double textSizeXl = 20.w;
 
     return Stack(
       children: [
@@ -84,28 +90,28 @@ class HeadHomePageWidget extends StatelessWidget {
                             color: textColor,
                           ),
                         ),
-                        const Text('xyz'),
-                        // FutureBuilder<String?>(
-                        //   future: getFirstName(),
-                        //   builder: (context, snapshot) {
-                        //     // print("first name: ${snapshot.data}");
-                        //     if (snapshot.connectionState ==
-                        //         ConnectionState.waiting) {
-                        //       return const CircularProgressIndicator();
-                        //     } else if (snapshot.hasError) {
-                        //       return Text('Error: ${snapshot.error}');
-                        //     } else {
-                        //       return Text(
-                        //         snapshot.data ?? 'anonym',
-                        //         style: TextStyle(
-                        //           fontWeight: FontWeight.w600,
-                        //           fontSize: textSizeXl,
-                        //           color: textColor,
-                        //         ),
-                        //       );
-                        //     }
-                        //   },
-                        // ),
+                        // const Text('xyz'),
+                        FutureBuilder<String?>(
+                          future: getFirstName(),
+                          builder: (context, snapshot) {
+                            // print("first name: ${snapshot.data}");
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              return Text(
+                                snapshot.data ?? 'anonym',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: textSizeXl,
+                                  color: textColor,
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
