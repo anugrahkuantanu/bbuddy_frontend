@@ -5,13 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:bbuddy_app/app.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/config/config.dart';
-import 'features/auth_mod/services/service.dart';
-import '/features/main_app/services/service.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'features/auth_firebase/screens/blocs/bloc.dart';
-import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
-import 'features/check_in_app/services/service.dart';
-
 Future main() async {
   // ignore: unused_local_variable
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,21 +23,7 @@ Future main() async {
   setupDependencies();
   runApp(
     MultiProvider(
-      providers: [
-        ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-        ChangeNotifierProvider(
-          create: (_) => UserDetailsProvider(),
-        ),
-        ChangeNotifierProvider(create: (_) => CounterStats()),
-        ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
-        BlocProvider<AppBloc>(
-            create: (_) => AppBloc()
-              ..add(
-                const AppEventInitialize(),
-              )),
-        BlocProvider<CheckInHistoryBloc>(
-            create: (_) => CheckInHistoryBloc(locator.get<CheckInService>())),
-      ],
+      providers: appProviders,
       child: const MyApp(),
     ),
   );

@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:bbuddy_app/di/di.dart';
-import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
+import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 
 import 'package:flutter/material.dart';
 import '../../services/checkin_service.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/core/core.dart';
 
+// ignore: must_be_immutable
 class ChatScreen extends StatefulWidget {
   final String feeling;
   final String feelingForm;
@@ -62,6 +63,7 @@ class ChatScreenState extends State<ChatScreen> {
       ),
     ];
     if (widget.isPastCheckin == true) {
+      print(widget.isPastCheckin);
       showProgressIndicator = false;
       messages.add(
         Message(
@@ -120,6 +122,7 @@ class ChatScreenState extends State<ChatScreen> {
 
     final counterStats = Provider.of<CounterStats>(context, listen: false);
     counterStats.updateCheckInCounter();
+    context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
   }
 
   void sendUserMessage(String message) {
@@ -134,9 +137,6 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void navigateBackToHomePage() {
-    if (!widget.isPastCheckin!) {
-      context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
-    }
     Nav.toNamed(context, '/');
   }
 

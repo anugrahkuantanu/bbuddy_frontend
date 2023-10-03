@@ -1,77 +1,57 @@
-import 'package:bbuddy_app/features/reflection_app/services/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../check_in_app/services/service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bbuddy_app/di/di.dart';
 import '../../../../../core/core.dart';
-import '../blocs/bloc.dart';
+import '../../blocs/bloc.dart';
 import '../widgets/widget.dart';
 import '../../controllers/controller.dart';
+
+
 
 class ReflectionHome extends StatefulWidget {
   final int selectedIndex;
 
-  const ReflectionHome({Key? key, this.selectedIndex = 1}) : super(key: key);
+  const ReflectionHome({Key? key, this.selectedIndex = 1,}) : super(key: key);
 
   @override
   _ReflectionHomeState createState() => _ReflectionHomeState();
 }
 
 class _ReflectionHomeState extends State<ReflectionHome> {
-  late final ReflectionHomeBloc _bloc;
   Widget? _currentView;
 
   @override
-  void initState() {
-    super.initState();
-    _bloc = ReflectionHomeBloc(
-        checkInService: locator.get<CheckInService>(),
-        reflectionService: locator.get<ReflectionService>());
-    _bloc.add(LoadReflectionHome());
-  }
-
-  @override
-  void dispose() {
-    _bloc.close();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _bloc,
-      child: BlocConsumer<ReflectionHomeBloc, ReflectionHomeState>(
-        listener: (context, state) {
-          if (state is NavigateToNewReflectionPage) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    NewReflectionController(topics: state.reflectionTopics),
-              ),
-            );
-          }
-          if (state is NeedsMoreCheckIns) {
-            DialogHelper.showDialogMessage(context,
-                message: AppStrings.reflectionCheckInMessage,
-                title: AppStrings.notEnoughtCheckInTitel);
-          }
-        },
-        builder: (context, state) {
-          if (state is ReflectionHomeLoading) {
-            return LoadingUI();
-          } else if (state is ReflectionHomeHasEnoughCheckIns) {
-            _currentView = _buildHasEnoughCheckInsUI(state.history);
-          } else if (state is ReflectionHomeInsufficientCheckIns) {
-            _currentView = NotEnoughtCheckIn(
-                title: 'Reflection', response: state.errorMessage);
-          } else if (state is ReflectionHomeError) {
-            _currentView = ErrorUI(errorMessage: state.errorMessage);
-          }
-          return _currentView ?? Container(); // Fallback
-        },
-      ),
+    return BlocConsumer<ReflectionHomeBloc, ReflectionHomeState>(
+      listener: (context, state) {
+        if (state is NavigateToNewReflectionPage) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  NewReflectionController(topics: state.reflectionTopics),
+            ),
+          );
+        }
+        if (state is NeedsMoreCheckIns) {
+          DialogHelper.showDialogMessage(context,
+              message: AppStrings.reflectionCheckInMessage,
+              title: AppStrings.notEnoughtCheckInTitel);
+        }
+      },
+      builder: (context, state) {
+        if (state is ReflectionHomeLoading) {
+          _currentView = LoadingUI();
+        } else if (state is ReflectionHomeHasEnoughCheckIns) {
+          _currentView = _buildHasEnoughCheckInsUI(state.history);
+        } else if (state is ReflectionHomeInsufficientCheckIns) {
+          _currentView = NotEnoughtCheckIn(
+              title: 'Reflection', response: state.errorMessage);
+        } else if (state is ReflectionHomeError) {
+          _currentView = ErrorUI(errorMessage: state.errorMessage);
+        }
+        return _currentView ?? Container(); // Fallback
+      },
     );
   }
 
@@ -119,7 +99,7 @@ class _ReflectionHomeState extends State<ReflectionHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _bloc.add(CreateNewReflectionEvent(context));
+          context.read<ReflectionHomeBloc>().add(CreateNewReflectionEvent(context));
         },
         child: const Icon(Icons.add),
       ),

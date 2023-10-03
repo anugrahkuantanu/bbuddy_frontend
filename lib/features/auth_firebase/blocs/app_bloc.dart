@@ -6,7 +6,7 @@ import 'package:bbuddy_app/core/core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:bbuddy_app/features/auth_firebase/errors/auth_error.dart';
-import 'package:bbuddy_app/features/auth_firebase/screens/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
 import 'package:bbuddy_app/di/di.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {

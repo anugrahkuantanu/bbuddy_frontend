@@ -5,7 +5,7 @@ import 'package:bbuddy_app/features/reflection_app/services/service.dart';
 import 'package:bbuddy_app/features/main_app/services/service.dart';
 import 'reflection_home.dart';
 import 'package:bbuddy_app/features/reflection_app/models/model.dart';
-import 'package:bbuddy_app/features/reflection_app/screens/blocs/bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/blocs/bloc.dart';
 import '/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +32,6 @@ class ViewReflectionResults extends StatelessWidget {
         ..add(LoadMoodReflectionsEvent(
           topics,
           userReflections,
-          // Provider.of<ReflectionHeading>(context, listen: false).result,
           '',
           reflection,
         )),
@@ -53,11 +52,12 @@ class ViewReflectionResults extends StatelessWidget {
   }
 
   Widget _buildUI(BuildContext context, reflectionData) {
+    print(reflectionData);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: Text(reflectionData.heading,
-            style: const TextStyle(color: Colors.white)),
+        style: const TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

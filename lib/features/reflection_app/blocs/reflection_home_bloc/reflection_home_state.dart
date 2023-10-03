@@ -1,4 +1,4 @@
-import '../../../models/model.dart';
+import '../../models/model.dart';
 
 abstract class ReflectionHomeState {}
 

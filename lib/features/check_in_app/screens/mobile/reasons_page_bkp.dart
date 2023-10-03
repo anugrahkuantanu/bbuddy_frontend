@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'textbox.dart';
-import '../bloc/bloc.dart';
+import '../../bloc/bloc.dart';
 import '../widget/widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

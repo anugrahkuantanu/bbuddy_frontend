@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bbuddy_app/features/main_app/screens/widgets/widget.dart';

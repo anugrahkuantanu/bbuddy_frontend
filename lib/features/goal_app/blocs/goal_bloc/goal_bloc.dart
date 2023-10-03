@@ -1,9 +1,9 @@
 import 'package:bbuddy_app/core/core.dart';
 
 import '../bloc.dart';
-import '../../../../reflection_app/services/service.dart';
-import '../../../services/service.dart';
-import '../../../models/model.dart';
+import '../../../reflection_app/services/service.dart';
+import '../../services/service.dart';
+import '../../models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GoalBloc extends Bloc<GoalEvent, GoalState> {
@@ -20,7 +20,7 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
       : super(GoalLoading()) {
     on<LoadGoals>(_loadGoals);
     on<CreateGeneratedGoals>(_createGeneratedGoals);
-    on<CreateNewGoal>(_createPersonalNewGoal);
+    // on<CreateNewGoal>(_createPersonalNewGoal);
     on<ShowGoalError>(
         (event, emit) => emit(GoalError(errorMessage: event.errorMessage)));
   }
@@ -64,24 +64,27 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
         DateTime.now().month,
         DateTime.now().day,
       );
-      if (today.isBefore(nextCreateDate)) {
-        emit(GoalCreationDenied(AppStrings.goalAlreadyCreated));
-      } else {
+      // if (today.isBefore(nextCreateDate)) {
+      //   emit(GoalCreationDenied(AppStrings.goalAlreadyCreated));
+      // } else {
         await _createNewGoal(event.startDate, event.endDate, emit);
-      }
+      // }
     }
   }
 
-  Future<void> _createPersonalNewGoal(
-      CreateNewGoal event, Emitter<GoalState> emit) async {
-    _createNewGoal(event.startDate, event.endDate, emit);
-  }
+  // Future<void> _createPersonalNewGoal(
+  //     CreateNewGoal event, Emitter<GoalState> emit) async {
+  //   _createNewGoal(event.startDate, event.endDate, emit);
+  // }
 
   // Future<void> _createNewGoal(CreateNewGoal event, Emitter<GoalState> emit) async {
   Future<void> _createNewGoal(
       DateTime? startDate, DateTime? endDate, Emitter<GoalState> emit) async {
     emit(GoalLoading());
-    if (int.tryParse(counterStats.reflectionCounter!.value)! < 3) {
+    // final counter = int.tryParse(counterStats.reflectionCounter!.value);
+    final counter = 3;
+    
+    if (counter! < 3) {
       int totalReflections = await reflectionService.countReflections();
       int modulo = totalReflections % 3;
       int reflectionsneeded = 3 - modulo;
