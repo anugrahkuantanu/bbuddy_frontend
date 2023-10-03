@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:bbuddy_app/di/di.dart';
 import 'package:bbuddy_app/features/main_app/screens/mobile/checkin_history_card.dart';
 
 import 'package:flutter/material.dart';
@@ -38,7 +41,7 @@ class ChatScreenState extends State<ChatScreen> {
   bool screenAtBottom = false;
   bool isScrolledUp = false;
   bool showExitButton = false;
-  final checkInService = CheckInService();
+  final checkInService = locator.get<CheckInService>();
 
   @override
   void initState() {
@@ -78,6 +81,16 @@ class ChatScreenState extends State<ChatScreen> {
 
     final response = await checkInService.getCheckInResponse(
         widget.feeling, widget.feelingForm, widget.reasonEntity, widget.reason);
+    // StreamSubscription<dynamic>? subscription =
+    //     test?.listen((event) => setState(() {
+    //           print(event);
+    //           return messages.add(Message(text: event, isBot: true));
+    //         }));
+
+    //messages.add(
+    //    Message(text: test?.map((event) => {event.toString()}), isBot: true));
+    // final response = await checkInService.getCheckInResponse(
+    //     widget.feeling, widget.feelingForm, widget.reasonEntity, widget.reason);
 
     setState(() {
       List<String> responseMessages = response.split("\n\n");

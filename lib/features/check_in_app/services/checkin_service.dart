@@ -1,16 +1,45 @@
 import 'dart:convert';
-
+import 'dart:async';
 import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/di/di.dart';
 import 'package:bbuddy_app/features/check_in_app/services/service.dart';
 import 'package:bbuddy_app/features/check_in_app/models/model.dart';
+import 'package:dio/dio.dart';
 
 class CheckInService {
   final http = locator.get<Http>();
 
+  // Future<Stream<dynamic>?> getCheckInResponse(
+  //     String feeling,
+  //     String feelingForm,
+  //     String reasonEntity,
+  //     String reason,
+  //     void Function(String response) onReceiveResponse) async {
+  //   try {
+  //     final stream = await http.streamGet('/mood_check_in', params: {
+  //       'feeling': feeling,
+  //       'feeling_form': feelingForm,
+  //       'reason_entity': reasonEntity,
+  //       'reason': reason
+  //     });
+
+  //     return stream;
+  //   } catch (e) {
+  //     throw Exception('Failed to get check-in response: $e');
+  //   }
+  // }
+
   Future<String> getCheckInResponse(String feeling, String feelingForm,
       String reasonEntity, String reason) async {
     try {
+      // final Response response = await http.post('/mood_check_in',
+      //     data: jsonEncode({
+      //       'feeling': feeling,
+      //       'feeling_form': feelingForm,
+      //       'reason_entity': reasonEntity,
+      //       'reason': reason
+      //     }));
+
       final response = await http.post('/mood_check_in',
           data: jsonEncode({
             'feeling': feeling,
@@ -18,7 +47,9 @@ class CheckInService {
             'reason_entity': reasonEntity,
             'reason': reason
           }));
+
       if (response.statusCode == 200) {
+        print(response.data);
         return response.data['message'];
       } else {
         return GENERAL_ERROR_MESSAGE;
@@ -46,7 +77,6 @@ class CheckInService {
 
   Future<List<CheckIn>> getCheckInHistory({int lastK = 4}) async {
     try {
-      //print(http.)
       final response = await http.get('/mood_check_in_history', params: {
         'last_k': lastK,
       });
