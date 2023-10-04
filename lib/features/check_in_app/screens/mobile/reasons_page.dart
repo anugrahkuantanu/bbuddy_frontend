@@ -153,7 +153,6 @@ class _ReasonPageState extends State<ReasonPage>
                               feeling: widget.feeling,
                               feelingForm: widget.feelingForm,
                               reasonEntity: enteredReason,
-                              textColor: widget.textColor,
                             ),
                           ),
                         );
@@ -180,7 +179,6 @@ class _ReasonPageState extends State<ReasonPage>
             feeling: widget.feeling,
             feelingForm: widget.feelingForm,
             reasonEntity: entity,
-            textColor: widget.textColor,
           ),
         ),
       );

@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import './chat_screen.dart';
 import '/core/utils/utils.dart';
@@ -7,13 +9,11 @@ class TextBox extends StatefulWidget {
   final String? feeling;
   final String? feelingForm;
   final String? reasonEntity;
-  final Color? textColor;
 
   const TextBox({
     this.feeling,
     this.feelingForm,
     this.reasonEntity,
-    this.textColor,
     
   });
 
@@ -31,15 +31,8 @@ class _TextBoxState extends State<TextBox> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-              elevation: 0, // Remove the line dividing the AppBar and the rest of the screen
-              title: Text(
-                '',
-                style: TextStyle(
-                  color: widget.textColor, // Set the color of the font to white
-                ),
-              ),
-              iconTheme: IconThemeData(color: widget.textColor),
-            ),
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16.0.w),
@@ -48,17 +41,9 @@ class _TextBoxState extends State<TextBox> {
             children: [
               Container(
                 padding: EdgeInsets.all(10.0.w),
-                // decoration: BoxDecoration(
-                //   border: Border.all(color: Color(0xFF404659), width: screenWidth * 0.005),
-                //   borderRadius: BorderRadius.circular(screenWidth * 0.03),
-                // ),
                 child: Text(
                   'Share more about what\'s making you ${widget.feeling!.toLowerCase()}',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: widget.textColor,
-                  ),
+                  style: Theme.of(context).textTheme.labelMedium,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -68,7 +53,7 @@ class _TextBoxState extends State<TextBox> {
                   alignment: Alignment.centerLeft,
                   child: Container(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text(
+                    child: const Text(
                       'Oops! You forgot to share more details. Please provide extra details about your feeling below. These details will be used later during the reflection.',
                       style: TextStyle(
                         color: Colors.red,
@@ -81,7 +66,7 @@ class _TextBoxState extends State<TextBox> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: widget.textColor ?? Colors.transparent, width: screenWidth * 0.005),
+                    border: Border.all(color: Colors.white, width: screenWidth * 0.005),
                     borderRadius: BorderRadius.circular(screenWidth * 0.03),
                   ),
                   child: Column(
@@ -94,10 +79,7 @@ class _TextBoxState extends State<TextBox> {
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.all(10.0),
                             hintText: "Write your answer",
-                            hintStyle: TextStyle(
-                        color: widget.textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            hintStyle: Theme.of(context).textTheme.bodySmall,
                           ),
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
@@ -142,15 +124,16 @@ class _TextBoxState extends State<TextBox> {
                               );
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             "Submit",
                             style: TextStyle(
                               fontSize: 20,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           style: ThemeHelper().buttonStyle().copyWith(
-                            backgroundColor: MaterialStateProperty.all<Color>(widget.textColor ?? Colors.black),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                           ),
                         ),
                       ),

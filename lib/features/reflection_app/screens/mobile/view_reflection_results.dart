@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,10 +66,11 @@ class ViewReflectionResults extends StatelessWidget {
             if (reflection != null) {
               Navigator.pop(context);
             } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ReflectionHome()),
-              );
+              Nav.toNamed(context, '/reflections');
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const ReflectionHome()),
+              // );
             }
           },
         ),

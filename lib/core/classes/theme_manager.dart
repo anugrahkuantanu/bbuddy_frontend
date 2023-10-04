@@ -86,8 +86,7 @@ class AppTheme {
             ),
             backgroundColor: AppColors.lightscreen[100],
             iconTheme: IconThemeData(
-              color: AppColors.textdark,
-              size: 50.w),
+              color: AppColors.textdark,),
           ),
           navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: AppColors.lightscreen,

@@ -36,7 +36,6 @@ class CheckInHome extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Check-In'),
         centerTitle: true,
-        actions: actionsMenu(context), // Assuming you have this function defined somewhere
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
