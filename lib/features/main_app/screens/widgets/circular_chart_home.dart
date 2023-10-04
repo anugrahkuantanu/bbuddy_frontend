@@ -65,10 +65,6 @@ class NeededCheckinReflectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
-    Color textColor = tm.isDarkMode
-        ? const Color.fromRGBO(238, 238, 238, 0.933)
-        : AppColors.textdark;
     final counterStats = Provider.of<CounterStats>(context);
 
     //ScreenUtil.init(context, designSize: Size(414, 896));
@@ -87,6 +83,7 @@ class NeededCheckinReflectionWidget extends StatelessWidget {
                                 3,
                         color: Colors.blue,
                         label: 'Check-in',
+                        text_color: Theme.of(context).iconTheme.color,
                         radius: 120.0.w),
               ),
               Padding(
@@ -102,7 +99,7 @@ class NeededCheckinReflectionWidget extends StatelessWidget {
                             3,
                         color: Colors.green,
                         label: 'Reflection',
-                        text_color: textColor,
+                        text_color: Theme.of(context).iconTheme.color,
                       ),
               )
             ],

@@ -1,11 +1,9 @@
-import 'package:bbuddy_app/config/config.dart';
-import 'package:bbuddy_app/features/auth_mod/auth_mod.dart';
+import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/features/main_app/screens/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 class HeadHomePageWidget extends StatelessWidget {
   const HeadHomePageWidget({super.key});
@@ -36,10 +34,6 @@ class HeadHomePageWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    var tm = context.watch<ThemeProvider>();
-    Color textColor = tm.isDarkMode
-        ? const Color.fromRGBO(238, 238, 238, 0.933)
-        : AppColors.textdark;
 
     double textSizeS = 16.0.w;
     double textSizeXl = 20.w;
@@ -63,15 +57,16 @@ class HeadHomePageWidget extends StatelessWidget {
                         icon: Icon(
                           Icons.person,
                           size: 30.w,
-                          color: textColor,
+                          color: Theme.of(context).iconTheme.color,
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const ProfileController()),
-                          );
+                          Nav.to(context, '/profile');
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           const ProfileController()),
+                          // );
                         },
                       ),
                     ),
@@ -84,11 +79,7 @@ class HeadHomePageWidget extends StatelessWidget {
                       children: [
                         Text(
                           'Welcome',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: textSizeS,
-                            color: textColor,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                         // const Text('xyz'),
                         FutureBuilder<String?>(
@@ -103,11 +94,7 @@ class HeadHomePageWidget extends StatelessWidget {
                             } else {
                               return Text(
                                 snapshot.data ?? 'anonym',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: textSizeXl,
-                                  color: textColor,
-                                ),
+                                style: Theme.of(context).textTheme.headlineSmall,
                               );
                             }
                           },
@@ -129,13 +116,6 @@ class HeadHomePageWidget extends StatelessWidget {
             width:
                 1.3 * screenWidth, // Increase the width value to make it wider
             child: const NeededCheckinReflectionWidget(),
-            // child: NeededCheckinReflectionWidget(
-            //   checkInCount: int.tryParse(counterStats.checkInCounter?.value ??
-            //       '0'), // Number of check-ins completed
-            //   reflectionCount: int.tryParse(
-            //       counterStats.reflectionCounter?.value ??
-            //           '0'), // Number of reflections completed
-            // ),
           ),
         )
       ],

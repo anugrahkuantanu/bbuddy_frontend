@@ -33,9 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
             onPressed: () => Nav.toNamed(context, '/'),
         ),
         centerTitle: true,
-        actions: const [
-          MainPopupMenuButton(),
-        ],
+        actions: actionsMenu(context),
       ),
       body: SafeArea(
         child: Column(

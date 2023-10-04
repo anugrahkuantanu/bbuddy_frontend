@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class CheckInHistoryCard extends StatelessWidget {
-  final Color? textColor;
+
   final CheckInHistoryBloc bloc;
   final List<Color> cardColors = [
     const Color(0xFF65dc99),
@@ -19,7 +19,6 @@ class CheckInHistoryCard extends StatelessWidget {
   CheckInHistoryCard({
     Key? key,
     required this.bloc,
-    this.textColor = Colors.black,
   }) : super(key: key);
 
   @override
@@ -73,7 +72,7 @@ class CheckInHistoryCard extends StatelessWidget {
                     },
                     title: bloc.parseHumanMessage(checkIn.messages[0].text)[0],
                     body: bloc.parseHumanMessage(checkIn.messages[0].text)[1],
-                    text_color: textColor ?? Colors.white,
+                    text_color: Colors.white,
                   );
                 } else {
                   // This is where you return a card with "No check-ins available"
@@ -89,34 +88,26 @@ class CheckInHistoryCard extends StatelessWidget {
                     },
                     title: 'No check-ins available',
                     body: 'No check-ins available',
-                    text_color: textColor ?? Colors.white,
+                    text_color: Colors.white,
                   );
                 }
               }),
             ),
           );
         } else if (state is CheckInHistoryErrorState) {
+          // return ErrorUI(errorMessage: state.errorMessage);
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 30.w),
-            child: Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
               child: Container(
                 height: 300.h, // Adjusting for the Padding
                 padding: const EdgeInsets.all(10.0),
                 child: Center(
                   child: Text(
                     state.errorMessage,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30.0.w,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge
                   ),
                 ),
               ),
-            ),
           );
         }
         return Container(); // default return, can be an empty container or some placeholder

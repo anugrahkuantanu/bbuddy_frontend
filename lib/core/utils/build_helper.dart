@@ -17,12 +17,12 @@ class ErrorUI extends StatelessWidget {
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
       ),
-            body: Center(
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Text(
-          'Error: $errorMessage',
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+          errorMessage,
+          style: Theme.of(context).textTheme.bodyLarge
           ),
         ),
       ),
@@ -49,7 +49,7 @@ class GoalCreatedThisWeek extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Text(
           'Response: $response',
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+          style: Theme.of(context).textTheme.bodyLarge
           ),
         ),
       ),
@@ -84,27 +84,17 @@ class NotEnoughtReflection extends StatelessWidget {
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 18.0.w,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
             children: [
               const TextSpan(
                 text: 'You need\n\n',
               ),
               TextSpan(
                 text: response,
-                style: TextStyle(
-                  fontSize: 52.0.w,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.displayMedium,
               ),
               TextSpan(
-                style: TextStyle(
-                  fontSize: 18.0.w,
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
                 text: '\n\nReflection(s) to create the generated goals',
               ),
             ],
@@ -133,27 +123,17 @@ class NotEnoughtCheckIn extends StatelessWidget {
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            style: TextStyle(
-              fontSize: 18.0.w,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium,
             children: [
               const TextSpan(
                 text: 'You need\n\n',
               ),
               TextSpan(
                 text: response,
-                style: TextStyle(
-                  fontSize: 52.0.w,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.displayMedium,
               ),
               TextSpan(
-                style: TextStyle(
-                  fontSize: 18.0.w,
-                  color: Colors.white,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium,
                 text: '\n\nCheck-in(s) to generate the reflections',
               ),
             ],

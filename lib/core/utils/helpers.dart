@@ -116,18 +116,6 @@ class LoginFormStyle{
 class Helper {
 
   Container ScreenHeadingContainer(BuildContext context, String text) {
-    var tm = context.watch<ThemeProvider>(); // Initialize tm here
-
-    double screenWidth = MediaQuery.of(context).size.width;
-    double fontSize;
-    if (screenWidth < 340) {
-      fontSize = screenWidth * 0.1.sp;
-    }
-    if (screenWidth < 375) {
-      fontSize = screenWidth * 0.09.sp;
-    } else {
-      fontSize = screenWidth * 0.07.sp;
-    }
 
     return Container(
       padding: EdgeInsets.all(12.0.w),
@@ -136,11 +124,7 @@ class Helper {
       ),
       child: Text(
         text,
-        style: TextStyle(
-            fontSize: fontSize,
-            fontWeight: FontWeight.bold,
-            color: tm.isDarkMode == true ? AppColors.textlight: AppColors.textdark, // Assuming teal is a MaterialColor and you want the 500 shade
-        ),
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
     );
   }

@@ -11,10 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FeelingFormPage extends StatelessWidget {
   final String feeling;
-  final Color textColor;
   final FeelingBloc _bloc = FeelingBloc();
 
-  FeelingFormPage({Key? key, required this.feeling, required this.textColor}) : super(key: key);
+  FeelingFormPage({Key? key, required this.feeling,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +27,7 @@ class FeelingFormPage extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (context) => ReasonPage(
                       feeling: state.feeling,
-                      feelingForm: state.feelingForm,
-                      textColor: state.textColor),
+                      feelingForm: state.feelingForm,),
                 ),
               ).then((_) {
                 // After coming back from the ReasonPage, reset the BLoC's state.
@@ -105,8 +103,8 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Wrap(
-                    spacing: 20.0,
-                    runSpacing: 30.0,
+                    spacing: 20.0.w,
+                    runSpacing: 30.0.w,
                     children: feelingForms[feeling]!
                         .map(
                           (feelingForm) => SizedBox(
@@ -114,8 +112,6 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
                             child: EntityButton(
                               entity: feelingForm,
                               onTap: () => _handleButtonPress(feelingForm),
-                              textColor: Colors.white,
-                              fontSize: textSize,
                               buttonStyle: ElevatedButton.styleFrom(
                                 backgroundColor: buttonColors[feeling] ?? const Color(0xFF0077C2),
                                 padding: const EdgeInsets.all(16.0),
@@ -137,6 +133,6 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
 
 
   void _handleButtonPress(String feelingForm) {
-    _bloc.add(ButtonPressedEvent(feelingForm, textColor, feeling));
+    _bloc.add(ButtonPressedEvent(feelingForm, feeling));
   }
 }

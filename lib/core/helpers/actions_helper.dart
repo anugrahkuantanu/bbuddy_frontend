@@ -1,18 +1,11 @@
+import 'package:bbuddy_app/features/auth_firebase/screens/mobile/main_popup_menu_button.dart';
 import 'package:flutter/material.dart';
-
-import '../../config/config.dart';
 import '../core.dart';
 
 List<Widget> actionsMenu(BuildContext context) {
   return [
-      // IconButton(
-      //   onPressed: () {
-      //     Nav.to(context, '/profile');
-      //   },
-      //   icon: const Icon(Icons.account_circle_outlined)
-      // ),
       const DayNightSwitch(),
-    ActionTopButtons()
+      const MainPopupMenuButton(),
   ];
 }
 

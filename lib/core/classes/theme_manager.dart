@@ -1,3 +1,5 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../architect.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,65 @@ class AppTheme {
     light = light ??
         ThemeData(
           scaffoldBackgroundColor: AppColors.lightscreen[100],
+          textTheme: TextTheme(
+            displayLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 60.w,
+              fontWeight: FontWeight.bold
+            ),
+            displayMedium: TextStyle(
+              color: AppColors.black, 
+              fontSize: 55.w,
+              fontWeight: FontWeight.bold
+            ),
+            displaySmall: TextStyle(
+              color: AppColors.black, 
+              fontSize: 50.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 30.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineMedium: TextStyle(
+              color: AppColors.black, 
+              fontSize: 25.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineSmall: TextStyle(
+              color: AppColors.black, 
+              fontSize: 22.w,
+              fontWeight: FontWeight.bold
+            ),
+            bodyLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 20.w,
+            ),
+            bodyMedium: TextStyle(
+              color: AppColors.black,
+              fontSize: 18.w
+            ),
+            bodySmall: TextStyle(
+              color: AppColors.black,
+              fontSize: 16.w,
+            ),
+            labelLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 20.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelMedium: TextStyle(
+              color: AppColors.black,
+              fontSize: 18.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelSmall: TextStyle(
+              color: AppColors.black,
+              fontSize: 14.w,
+              fontWeight: FontWeight.bold
+            ),
+          ),
           brightness: Brightness.light,
           primarySwatch: AppColors.lightscreen,
           bottomAppBarColor: Colors.white,
@@ -24,7 +85,9 @@ class AppTheme {
               fontWeight: FontWeight.w500,
             ),
             backgroundColor: AppColors.lightscreen[100],
-            iconTheme: const IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(
+              color: AppColors.textdark,
+              size: 50.w),
           ),
           navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: AppColors.lightscreen,
@@ -52,6 +115,66 @@ class AppTheme {
     dark = dark ??
         ThemeData(
           scaffoldBackgroundColor: AppColors.darkscreen,
+          textTheme: TextTheme(
+            displayLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 60.w,
+              fontWeight: FontWeight.bold
+            ),
+            displayMedium: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 55.w,
+              fontWeight: FontWeight.bold
+            ),
+            displaySmall: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 50.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 30.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineMedium: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 25.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineSmall: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 20.w,
+              fontWeight: FontWeight.bold
+            ),
+            bodyLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 20.w,
+            ),
+            bodyMedium: TextStyle(
+              color: AppColors.grey,
+              fontSize: 18.w
+            ),
+            bodySmall: TextStyle(
+              color: AppColors.grey,
+              fontSize: 16.w,
+            ),
+            labelLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 20.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelMedium: TextStyle(
+              color: AppColors.grey,
+              fontSize: 18.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelSmall: TextStyle(
+              color: AppColors.grey,
+              fontSize: 16.w,
+              fontWeight: FontWeight.bold
+            ),                       
+          ),
+
           brightness: Brightness.dark,
           primarySwatch: Colors.yellow,
           appBarTheme: const AppBarTheme(
