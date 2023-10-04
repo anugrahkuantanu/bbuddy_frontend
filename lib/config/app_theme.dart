@@ -20,7 +20,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeProvider extends BaseThemeProvider {
   int _index = 0;
   // late ThemeMode? _themeMode;
-  ThemeMode? _themeMode = ThemeMode.system;
+  ThemeMode _themeMode = ThemeMode.light;
 
   ThemeProvider() {
     // loadThemeMode().then((mode) {
@@ -29,7 +29,7 @@ class ThemeProvider extends BaseThemeProvider {
     // });
   }
 
-  ThemeMode get themeMode => _themeMode ?? ThemeMode.system;
+  ThemeMode get themeMode => _themeMode;
 
   set themeMode(ThemeMode mode) {
     _themeMode = mode;
