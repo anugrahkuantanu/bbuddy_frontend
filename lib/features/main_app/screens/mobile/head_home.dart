@@ -108,16 +108,17 @@ class HeadHomePageWidget extends StatelessWidget {
           ],
         ),
         Positioned(
-          top: 0.25 * screenWidth,
-          left: (screenWidth - 0.95 * screenWidth) / 2,
+        top: 0.25 * screenWidth,  // Adjust vertical position as needed
+        child: Align(
+          alignment: Alignment.topCenter,
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 1.5),
             height: 150.w, // Increase the height value to make it taller
-            width:
-                1.3 * screenWidth, // Increase the width value to make it wider
+            width: 1.3 * screenWidth, // Increase the width value to make it wider
             child: const NeededCheckinReflectionWidget(),
           ),
-        )
+        ),
+      ),
       ],
     );
   }

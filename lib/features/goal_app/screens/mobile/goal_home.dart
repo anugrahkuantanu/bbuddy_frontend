@@ -53,16 +53,12 @@ class GoalHome extends StatelessWidget {
   // Widget _buildFullGoalUI(List<Goal> generatedGoals, List<Goal> personalGoals) {
   Widget _buildFullGoalUI(BuildContext context, List<Goal> generatedGoals,
       List<Goal> personalGoals) {
-    ScreenUtil.init(context, designSize: const Size(414, 896));
-    var tm = context.watch<ThemeProvider>();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        centerTitle: true,
         actions: actionsMenuLogin(context),
-        title: Text('Goals',
-            style: TextStyle(
-                color:
-                    tm.isDarkMode ? AppColors.textlight : AppColors.textdark)),
+        title: const Text('Goals',),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -86,9 +82,7 @@ class GoalHome extends StatelessWidget {
                               Text(
                                 "AI generated goal",
                                 style: TextStyle(
-                                  color: tm.isDarkMode
-                                      ? AppColors.textlight
-                                      : AppColors.textdark,
+                                  color: Theme.of(context).textTheme.bodySmall!.color,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14.w,
                                 ),
@@ -103,9 +97,7 @@ class GoalHome extends StatelessWidget {
                                 child: Text(
                                   "+ Create Goal",
                                   style: TextStyle(
-                                    color: tm.isDarkMode
-                                        ? AppColors.textlight
-                                        : AppColors.textdark,
+                                    color: Theme.of(context).textTheme.bodySmall!.color,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 14.0.w,
                                   ),
@@ -155,9 +147,7 @@ class GoalHome extends StatelessWidget {
                             child: Text(
                               "personal goal",
                               style: TextStyle(
-                                color: tm.isDarkMode
-                                    ? AppColors.textlight
-                                    : AppColors.textdark,
+                                color:  Theme.of(context).textTheme.bodySmall!.color,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.w,
                               ),

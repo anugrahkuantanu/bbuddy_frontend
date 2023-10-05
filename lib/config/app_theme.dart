@@ -18,9 +18,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 // }
 
 class ThemeProvider extends BaseThemeProvider {
-  int _index = 0;
+  int _index = 1;
   // late ThemeMode? _themeMode;
-  ThemeMode _themeMode = ThemeMode.light;
+  ThemeMode _themeMode = ThemeMode.dark;
 
   ThemeProvider() {
     // loadThemeMode().then((mode) {
