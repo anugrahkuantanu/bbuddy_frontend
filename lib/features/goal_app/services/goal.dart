@@ -22,66 +22,65 @@ class GoalService {
         throw Exception('Failed to load goals');
       }
     } catch (e) {
-      throw Exception('Failed to load goals: $e');
+      throw Exception('Failed to load goals');
+    }
+  }
+
+  Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
+    // code here
+    try {
+      final response = await http.get(
+        '/set_new_goal',
+        params: {
+          'start_date': startDate?.toIso8601String(),
+          'end_date': endDate?.toIso8601String(),
+        },
+      );
+
+      final goalJson = Map<String, dynamic>.from(response.data);
+      //print(goalJson);
+
+      Goal goal = Goal.fromJson(goalJson);
+
+      return goal;
+    } catch (e) {
+      throw Exception('Failed to load goal');
     }
   }
 
   // Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
   //   // code here
   //   try {
-  //     final response = await http.get(
-  //       '/set_new_goal',
-  //       params: {
-  //         'start_date': startDate?.toIso8601String(),
-  //         'end_date': endDate?.toIso8601String(),
-  //       },
-  //     );
+  //     const goalJsonString = """{
+  //           "create_time": null,
+  //           "description": "Take time to manage your stress and emotions by addressing your feelings and finding ways to cope.",
+  //           "type": "generated",
+  //           "milestones": [
+  //               {"content": "Identify the sources of stress in my life", "status": null},
+  //               {"content": "Develop a plan to address the sources of stress", "status": null},
+  //               {"content": "Set aside time each day to practice relaxation techniques", "status": null},
+  //               {"content": "Find a support system to talk to about my feelings", "status": null},
+  //               {"content": "Create a list of activities that help me cope with stress", "status": null}
+  //           ],
+  //           "id": "EVlGvHIIbGKPk61NIwyA"
+  //       }""";
 
-  //     final goalJson = Map<String, dynamic>.from(response.data);
-  //     print(goalJson);
+  //     // Convert the JSON string to a Map
+  //     final goalJson = json.decode(goalJsonString);
 
   //     Goal goal = Goal.fromJson(goalJson);
 
   //     return goal;
   //   } catch (e) {
-  //     throw Exception('Failed to load goal: $e');
+  //     throw Exception('Failed to load goal');
   //   }
   // }
-
-Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
-    // code here
-    try {
-        const goalJsonString = """{
-            "create_time": null,
-            "description": "Take time to manage your stress and emotions by addressing your feelings and finding ways to cope.",
-            "type": "generated",
-            "milestones": [
-                {"content": "Identify the sources of stress in my life", "status": null},
-                {"content": "Develop a plan to address the sources of stress", "status": null},
-                {"content": "Set aside time each day to practice relaxation techniques", "status": null},
-                {"content": "Find a support system to talk to about my feelings", "status": null},
-                {"content": "Create a list of activities that help me cope with stress", "status": null}
-            ],
-            "id": "EVlGvHIIbGKPk61NIwyA"
-        }""";
-
-        // Convert the JSON string to a Map
-        final goalJson = json.decode(goalJsonString);
-        
-        Goal goal = Goal.fromJson(goalJson);
-
-        return goal;
-    } catch (e) {
-        throw Exception('Failed to load goal: $e');
-    }
-}
-
 
   Future<void> updateGoal(Goal goal) async {
     try {
       await http.post('/update_goal', data: jsonEncode(goal.toJson()));
     } catch (e) {
-      throw Exception('Failed to update goal: $e');
+      throw Exception('Failed to update goal');
     }
   }
 
@@ -94,7 +93,7 @@ Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
         return false;
       }
     } catch (error) {
-      throw Exception('Failed to delete goal: $error');
+      throw Exception('Failed to delete goal');
     }
   }
 
@@ -107,7 +106,7 @@ Future<Goal> setNewGoal({DateTime? startDate, DateTime? endDate}) async {
       Goal newGoal = Goal.fromJson(response.data);
       return newGoal;
     } catch (e) {
-      throw Exception('Failed to update goal: $e');
+      throw Exception('Failed to create new goal');
     }
   }
 }
@@ -132,6 +131,6 @@ Stream<List<Message>> fetchChatHistory(
       throw Exception('Failed to fetch chat history');
     }
   } catch (error) {
-    throw Exception('Failed to fetch chat history: $error');
+    throw Exception('Failed to fetch chat history');
   }
 }

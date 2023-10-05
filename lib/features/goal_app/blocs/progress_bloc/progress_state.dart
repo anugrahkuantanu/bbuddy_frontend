@@ -17,11 +17,6 @@ class ProgressError extends ProgressState {
   ProgressError({required this.errorMessage});
 }
 
-class GoalDeleted extends ProgressState {
-  final Goal goal;
-  GoalDeleted({required this.goal});
-}
-
 class NavigateToChatState extends ProgressState {
   final String goalId;
 

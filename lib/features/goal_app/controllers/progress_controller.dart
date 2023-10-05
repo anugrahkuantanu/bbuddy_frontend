@@ -7,13 +7,11 @@ import 'package:bbuddy_app/features/goal_app/models/model.dart';
 
 class ProgressController extends StatelessController {
   final Goal goal;
-  final bool generateMilestones;
   final Function(Goal goal)? updateCallBack;
 
   const ProgressController({
     Key? key,
     required this.goal,
-    this.generateMilestones = false,
     this.updateCallBack,
   }) : super(key: key);
 
@@ -24,10 +22,7 @@ class ProgressController extends StatelessController {
   Display view(BuildContext context) {
     return Display(
       title: 'Goals',
-      mobile: mobile.ProgressPage(
-          goal: goal,
-          generateMilestones: generateMilestones,
-          updateCallBack: updateCallBack),
+      mobile: mobile.ProgressPage(goal: goal, updateCallBack: updateCallBack),
     );
   }
 }

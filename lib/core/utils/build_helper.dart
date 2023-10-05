@@ -7,22 +7,22 @@ class ErrorUI extends StatelessWidget {
   final String errorMessage;
   final String? title;
 
-  const ErrorUI({Key? key, required this.errorMessage, this.title}) : super(key: key);
-
+  const ErrorUI({Key? key, required this.errorMessage, this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
       ),
-            body: Center(
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Text(
-          'Error: $errorMessage',
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+            'Error: $errorMessage',
+            style: const TextStyle(color: Colors.white, fontSize: 18.0),
           ),
         ),
       ),
@@ -35,21 +35,22 @@ class GoalCreatedThisWeek extends StatelessWidget {
   final String response;
   final String? title;
 
-  const GoalCreatedThisWeek ({Key? key, required this.response, this.title}):super(key: key);
+  const GoalCreatedThisWeek({Key? key, required this.response, this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
       ),
-            body: Center(
+      body: Center(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Text(
-          'Response: $response',
-          style: const TextStyle(color: Colors.white, fontSize: 18.0),
+            'Response: $response',
+            style: const TextStyle(color: Colors.white, fontSize: 18.0),
           ),
         ),
       ),
@@ -62,23 +63,24 @@ class NotEnoughtReflection extends StatelessWidget {
   final String response;
   final String? title;
 
-  const NotEnoughtReflection({Key? key, required this.response, this.title}): super(key: key);
+  const NotEnoughtReflection({Key? key, required this.response, this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
         leading: IconButton(
-        icon: const Icon(Icons.arrow_back), // add your custom icon here
-        onPressed: () {
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const GoalHome()),
-        );
-       },
-      ),
+          icon: const Icon(Icons.arrow_back), // add your custom icon here
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => GoalHome()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: RichText(
@@ -120,16 +122,16 @@ class NotEnoughtCheckIn extends StatelessWidget {
   final String response;
   final String? title;
 
-  NotEnoughtCheckIn({required this.response, this.title});
+  const NotEnoughtCheckIn({super.key, required this.response, this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text(title ?? ""),
         automaticallyImplyLeading: false,
       ),
-            body: Center(
+      body: Center(
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
@@ -166,6 +168,8 @@ class NotEnoughtCheckIn extends StatelessWidget {
 }
 
 class LoadingUI extends StatelessWidget {
+  const LoadingUI({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -177,7 +181,8 @@ class LoadingUI extends StatelessWidget {
 }
 
 class DialogHelper {
-  static void showDialogMessage(BuildContext context, {required String message, String title = ''}) {
+  static void showDialogMessage(BuildContext context,
+      {required String message, String title = ''}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -192,7 +197,7 @@ class DialogHelper {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: const Text('Close'),
             ),
           ],
         );

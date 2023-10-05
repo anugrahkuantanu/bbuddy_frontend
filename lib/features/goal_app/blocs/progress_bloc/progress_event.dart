@@ -4,13 +4,7 @@ abstract class ProgressEvent {}
 
 class InitializePersonalGoal extends ProgressEvent {
   late Goal goal;
-  bool generateMilestones;
-  InitializePersonalGoal({required this.goal, this.generateMilestones = false});
-}
-
-class DeleteGoal extends ProgressEvent {
-  final Goal goal;
-  DeleteGoal({required this.goal});
+  InitializePersonalGoal({required this.goal});
 }
 
 class DeleteMilestone extends ProgressEvent {

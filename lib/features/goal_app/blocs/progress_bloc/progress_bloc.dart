@@ -10,7 +10,6 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
   ProgressBloc({required this.goal, required this.goalService})
       : super(ProgressLoading()) {
     on<InitializePersonalGoal>(_initializePersonalGoal);
-    on<DeleteGoal>(_deleteGoal);
     on<DeleteMilestone>(_deleteMilestone);
     on<ChangeMilestoneStatus>(_changeMilestoneStatus);
     on<EditMilestone>(_editMilestone);
@@ -24,29 +23,7 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
       InitializePersonalGoal event, Emitter<ProgressState> emit) async {
     emit(ProgressLoading());
     try {
-      Goal newGoal;
-      if (event.generateMilestones) {
-        newGoal = await goalService.setPersonalGoal(event.goal);
-        event.generateMilestones = false;
-      } else {
-        newGoal = event.goal;
-      }
-      emit(ProgressLoaded(goal: newGoal));
-    } catch (error) {
-      emit(ProgressError(errorMessage: error.toString()));
-    }
-  }
-
-  Future<void> _deleteGoal(
-      DeleteGoal event, Emitter<ProgressState> emit) async {
-    try {
-      bool isDeleted = await goalService.deleteGoal(event.goal.id!);
-      if (isDeleted) {
-        emit(GoalDeleted(
-            goal: event.goal)); // Assuming you have a GoalDeleted state
-      } else {
-        emit(ProgressError(errorMessage: "Failed to delete goal"));
-      }
+      emit(ProgressLoaded(goal: event.goal));
     } catch (error) {
       emit(ProgressError(errorMessage: error.toString()));
     }

@@ -15,7 +15,7 @@ class AppStrings {
   static const String goalCreatedTitel = "generated goal error";
   static const String insufficientReflections = 'Insufficient Reflections';
   static const String goalAlreadyCreated =
-      'You have been created the goal this week';
+      'The goal for this week has been created';
   static const String dontHaveAnyGeneratedGoal =
       'Hey there, \nyou dont have any generated Goal.';
 }

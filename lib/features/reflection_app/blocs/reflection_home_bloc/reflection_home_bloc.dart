@@ -19,12 +19,14 @@ class ReflectionHomeBloc
   }
 
   Future<void> _onInitializeReflectionHomeEvent(
-    InitializeReflectionHomeEvent event, Emitter<ReflectionHomeState> emit) async {
+      InitializeReflectionHomeEvent event,
+      Emitter<ReflectionHomeState> emit) async {
     emit(ReflectionHomeLoading());
     try {
       int? checkInCount = await checkInService.countCheckIn();
       if (checkInCount >= 3) {
-        List<Reflection> history = await reflectionService.getReflectionHistory();
+        List<Reflection> history =
+            await reflectionService.getReflectionHistory();
         emit(ReflectionHomeHasEnoughCheckIns(history));
       } else {
         emit(ReflectionHomeInsufficientCheckIns(
@@ -37,15 +39,14 @@ class ReflectionHomeBloc
 
   Future<void> _createNewReflection(
       CreateNewReflectionEvent event, Emitter<ReflectionHomeState> emit) async {
-        print('yess');
+    print('yess');
     try {
       // final counterStats =
       // Provider.of<CounterStats>(event.context, listen: false);
       // int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
-      
+
       int checkInCount = 3;
       print(checkInCount);
-
 
       if (checkInCount < 3) {
         emit(

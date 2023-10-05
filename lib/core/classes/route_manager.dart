@@ -33,10 +33,9 @@ class Nav {
     Object? arguments,
     Object? result,
   }) {
-    Navigator.pushReplacementNamed(
+    Navigator.pushNamed(
       context,
       url,
-      result: result,
       arguments: arguments,
     );
   }

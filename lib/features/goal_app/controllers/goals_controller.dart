@@ -8,13 +8,10 @@ class GoalsController extends StatelessController {
   const GoalsController({Key? key}) : super(key: key);
 
   @override
-  // bool get auth => true;
-
-  @override
   Display view(BuildContext context) {
     return Display(
       title: 'Goals',
-      mobile: const mobile.GoalHome(),
+      mobile: mobile.GoalHome(),
     );
   }
 }

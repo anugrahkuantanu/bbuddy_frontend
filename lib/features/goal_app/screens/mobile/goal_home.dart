@@ -78,14 +78,21 @@ import '../../controllers/controller.dart';
 //       ),
 //     );
 //   }
+// ignore: must_be_immutable
 class GoalHome extends StatelessWidget {
-  const GoalHome({Key? key}) : super(key: key);
+  List<Goal>? personalGoals;
+  List<Goal>? generatedGoals;
+
+  GoalHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<GoalBloc, GoalState>(
       listener: (context, state) {
         if (state is GoalCreatedSuccessfully) {
+          if (state.closeDialog) {
+            Navigator.pop(context);
+          }
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -106,14 +113,16 @@ class GoalHome extends StatelessWidget {
       child: BlocBuilder<GoalBloc, GoalState>(
         builder: (context, state) {
           if (state is GoalLoading) {
-            return LoadingUI();
-          } else if (state is GoalHasNotEnoughReflections) {
-            return _buildFullGoalUI(context, [], state.personalGoals);
-          } else if (state is GoalHasEnoughReflections) {
+            return const LoadingUI();
+          } else if (state is GoalLoaded) {
+            personalGoals = state.personalGoals;
+            generatedGoals = state.generatedGoals;
             return _buildFullGoalUI(
                 context, state.generatedGoals, state.personalGoals);
           }
-          return Container(); // Default state
+          //print("current state: $state");
+          return _buildFullGoalUI(
+              context, generatedGoals!, personalGoals!); // Default state
         },
       ),
     );
@@ -167,7 +176,6 @@ class GoalHome extends StatelessWidget {
                                   context
                                       .read<GoalBloc>()
                                       .add(CreateGeneratedGoals());
-                                  context.read<GoalBloc>().add(LoadGoals());
                                 },
                                 child: Text(
                                   "+ Create Goal",

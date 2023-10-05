@@ -10,14 +10,11 @@ import '../../blocs/bloc.dart';
 
 class ProgressPage extends StatefulWidget {
   final Goal goal;
-  final bool generateMilestones;
   final Function(Goal goal)? updateCallBack;
 
   const ProgressPage({
     Key? key,
     required this.goal,
-    // this.generateMilestones = false,
-    required this.generateMilestones,
     this.updateCallBack,
   }) : super(key: key);
 
@@ -35,8 +32,7 @@ class ProgressPageState extends State<ProgressPage> {
     _progressBloc = ProgressBloc(
         goal: widget.goal,
         goalService: locator.get<GoalService>()); // Provide necessary services
-    _progressBloc.add(InitializePersonalGoal(
-        goal: widget.goal, generateMilestones: widget.generateMilestones));
+    _progressBloc.add(InitializePersonalGoal(goal: widget.goal));
   }
 
   @override
@@ -48,36 +44,43 @@ class ProgressPageState extends State<ProgressPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => _progressBloc,
-      child: BlocConsumer<ProgressBloc, ProgressState>(
-        listener: (context, state) {
-          if (state is NavigateToChatState) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => GoalChatPage(goalId: state.goalId)),
-            );
-          } else if (state is GoalDeleted) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const GoalHome()),
-            );
-          } else if (state is ProgressError) {
-            _showDialog(context, state.errorMessage);
-          }
-        },
-        builder: (context, state) {
-          if (state is ProgressLoading) {
-            return LoadingUI();
-          } else if (state is ProgressLoaded) {
-            return _buildProgressUI(state.goal);
-          } else {
-            return const ErrorUI(
-                errorMessage: "Some error occurred"); // Fallback
-          }
-        },
-      ),
-    );
+        create: (context) => _progressBloc,
+        child: MultiBlocListener(
+            listeners: [
+              BlocListener<ProgressBloc, ProgressState>(
+                listener: (context, state) {
+                  if (state is NavigateToChatState) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              GoalChatPage(goalId: state.goalId)),
+                    );
+                  } else if (state is ProgressError) {
+                    _showDialog(context, state.errorMessage);
+                  }
+                },
+              ),
+              BlocListener<GoalBloc, GoalState>(
+                listener: (context, state) {
+                  if (state is GoalDeleted) {
+                    Navigator.pop(context);
+                  } // Handle GoalBloc state changes
+                },
+              ),
+            ],
+            child: BlocBuilder<ProgressBloc, ProgressState>(
+              builder: (context, state) {
+                if (state is ProgressLoading) {
+                  return const LoadingUI();
+                } else if (state is ProgressLoaded) {
+                  return _buildProgressUI(state.goal);
+                } else {
+                  return const ErrorUI(
+                      errorMessage: "Some error occurred"); // Fallback
+                }
+              },
+            )));
   }
 
   void _showDialog(BuildContext context, String message) {
@@ -121,8 +124,9 @@ class ProgressPageState extends State<ProgressPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              _progressBloc.add(DeleteGoal(goal: widget.goal));
+              //_progressBloc.add(DeleteGoal(goal: widget.goal));
               // context.read<ProgressBloc>().add(DeleteGoal(goal: widget.goal));
+              context.read<GoalBloc>().add(DeleteGoal(goal: widget.goal));
             },
           ),
         ],

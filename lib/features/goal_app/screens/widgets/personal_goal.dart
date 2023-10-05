@@ -1,9 +1,12 @@
+import 'package:bbuddy_app/features/goal_app/blocs/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/screen.dart';
 import '../../controllers/controller.dart';
 
+// ignore: must_be_immutable
 class PersonalGoal extends StatefulWidget {
   List<Goal>? goals;
 
@@ -43,28 +46,40 @@ class _PersonalGoalState extends State<PersonalGoal> {
     } else {
       showDialog(
         context: context,
-        builder: (context) => EditDialog(
-          dialogHeading: 'New Goal',
-          initialValue: '',
-          allowNullValues: false,
-          onEdit: (content) {
-            Goal newGoal = Goal(
-                description: content, type: GoalType.personal, milestones: []);
-            setState(() {
-              widget.goals!.insert(0, newGoal);
-            });
-            Navigator.of(context).pop(); // Close the dialog
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ProgressPage(
-                        goal: newGoal,
-                        generateMilestones: true,
-                        updateCallBack: updateCallBack,
-                      )),
-            );
-          },
-        ),
+        builder: (context) {
+          return BlocBuilder<GoalBloc, GoalState>(
+            builder: (context, state) {
+              String initialValue = '';
+              return state is PersonalGoalLoading
+                  ? EditDialog(
+                      dialogHeading: 'New Goal',
+                      initialValue: initialValue,
+                      allowNullValues: false,
+                      onEdit: (content) {},
+                      errorString: "Goal can't be empty",
+                      isSaving: true,
+                    )
+                  : EditDialog(
+                      dialogHeading: 'New Goal',
+                      initialValue: initialValue,
+                      allowNullValues: false,
+                      onEdit: (content) {
+                        Goal newGoal = Goal(
+                            description: content,
+                            type: GoalType.personal,
+                            milestones: []);
+                        initialValue = content;
+                        //Navigator.of(context).pop();
+                        context.read<GoalBloc>().add(CreatePersonalGoal(
+                              goal: newGoal,
+                            ));
+                      },
+                      errorString: "Goal can't be empty",
+                      isSaving: false,
+                    );
+            },
+          );
+        },
       );
     }
   }
@@ -107,6 +122,7 @@ class _PersonalGoalState extends State<PersonalGoal> {
           }),
         ),
       ),
+      //),
     );
   }
 }

@@ -6,6 +6,8 @@ abstract class GoalState {}
 
 class GoalLoading extends GoalState {}
 
+class PersonalGoalLoading extends GoalState {}
+
 class GoalHasEnoughReflections extends GoalState {
   final List<Goal> generatedGoals;
   final List<Goal> personalGoals;
@@ -43,6 +45,17 @@ class GoalInsufficientReflections extends GoalState {
 
 class GoalCreatedSuccessfully extends GoalState {
   final Goal goal;
+  final bool closeDialog;
+  GoalCreatedSuccessfully({required this.goal, this.closeDialog = false});
+}
 
-  GoalCreatedSuccessfully({required this.goal});
+class GoalLoaded extends GoalState {
+  final List<Goal> generatedGoals;
+  final List<Goal> personalGoals;
+  GoalLoaded({required this.generatedGoals, required this.personalGoals});
+}
+
+class GoalDeleted extends GoalState {
+  final Goal goal;
+  GoalDeleted({required this.goal});
 }
