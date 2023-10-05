@@ -9,7 +9,6 @@ class NewReflectionBloc extends Bloc<NewReflectionEvent, NewReflectionState> {
   NewReflectionBloc(this.topics)
       : userReflections = List.filled(topics.length, ''),
         super(ReflectionInitialState(userReflections: List.filled(topics.length, ''))) {
-    // on<UpdateReflectionEvent>(_updateReflection);
     on<SubmitReflectionEvent>(_submitReflection);
   }
 
