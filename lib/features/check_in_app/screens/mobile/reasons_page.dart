@@ -153,7 +153,6 @@ class _ReasonPageState extends State<ReasonPage>
                               feeling: widget.feeling,
                               feelingForm: widget.feelingForm,
                               reasonEntity: enteredReason,
-                              textColor: widget.textColor,
                             ),
                           ),
                         );
@@ -180,7 +179,6 @@ class _ReasonPageState extends State<ReasonPage>
             feeling: widget.feeling,
             feelingForm: widget.feelingForm,
             reasonEntity: entity,
-            textColor: widget.textColor,
           ),
         ),
       );
@@ -193,7 +191,6 @@ class _ReasonPageState extends State<ReasonPage>
     double screenHeight = MediaQuery.of(context).size.height;
 
     double emojiSize = _bloc.computeEmojiSize(screenWidth);
-    double textSize = _bloc.computeTextSize(screenWidth);
     double highSpace = _bloc.computeHighSpace(screenWidth, screenHeight);
     
     double entityButtonWidth = screenWidth / 4; // Adjusted for some padding and spacing
@@ -236,7 +233,7 @@ class _ReasonPageState extends State<ReasonPage>
                       padding: EdgeInsets.all(8.0.w),
                       child: Wrap(
                         // spacing: 10.0.w,
-                        spacing: 25.0.w,
+                        spacing: 20.0.w,
                         runSpacing: highSpace,
                         children: _bloc.entities.map((entity) {
                           return SizedBox(
@@ -244,10 +241,8 @@ class _ReasonPageState extends State<ReasonPage>
                             child: EntityButton(
                               entity: entity,
                               icon: _bloc.getIcon(entity),
-                              emojiSize: emojiSize,
-                              textColor: widget.textColor,
+                              iconSize: emojiSize,
                               onTap: () => _handleButtonPress(entity),
-                              fontSize: textSize,
 
                             ),
                           );

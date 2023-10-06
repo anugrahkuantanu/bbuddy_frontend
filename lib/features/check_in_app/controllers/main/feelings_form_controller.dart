@@ -6,12 +6,10 @@ import '../../screens/mobile/feeling_form_page.dart' as mobile;
 class FeelingsFormController extends StatelessController {
   final String _title = '';
   String feeling;
-  Color textColor;
 
   FeelingsFormController({
     Key? key,
     required this.feeling,
-    required this.textColor,
   }) : super(key: key);
 
   @override
@@ -23,7 +21,6 @@ class FeelingsFormController extends StatelessController {
       title: _title,
       mobile: mobile.FeelingFormPage(
         feeling: feeling,
-        textColor: textColor,
       ),
     );
   }

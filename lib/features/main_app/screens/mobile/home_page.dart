@@ -36,18 +36,14 @@ class HomePageState extends State<HomePage> {
               padding: EdgeInsets.only(left: 28.w, bottom: 12.w),
               child: Text(
                 "Check-In Story",
-                style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20.w),
+                style: Theme.of(context).textTheme.headlineSmall
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.w),
               child: Builder(
                 builder: (context) => CheckInHistoryCard(
-                  bloc: context.read<CheckInHistoryBloc>(), // Use existing BLoC
-                  textColor: Colors.white,
+                  bloc: context.read<CheckInHistoryBloc>(),
                 ),
               ),
             )

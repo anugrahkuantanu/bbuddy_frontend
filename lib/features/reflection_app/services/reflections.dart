@@ -2,9 +2,6 @@ import 'dart:convert';
 
 import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/di/di.dart';
-import 'package:dio/dio.dart';
-import 'package:bbuddy_app/config/config.dart';
-import '../../../core/classes/dio_util.dart';
 import 'package:bbuddy_app/features/reflection_app/models/reflection.dart';
 
 class ReflectionService {
@@ -67,41 +64,10 @@ class ReflectionService {
 
       final responseData = Map<String, dynamic>.from(response.data);
       // print(responseData);
-      // const responseData = {
-      //   "heading": "Anxiety and Frustration in School",
-      //   "topic_reflections": [
-      //     {
-      //       "topic":
-      //           "What is causing me to feel anxious and confused about my School?",
-      //       "human_insight": {"content": ""},
-      //       "ai_insights": [
-      //         {
-      //           "content":
-      //               "You are feeling overwhelmed by the pressures of school and money."
-      //         },
-      //         {
-      //           "content":
-      //               "It is important to take time to manage your stress and emotions."
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       "topic":
-      //           "What is causing me to feel angry and frustrated about my School?",
-      //       "human_insight": {"content": ""},
-      //       "ai_insights": [
-      //         {
-      //           "content":
-      //               "You are feeling overwhelmed by the demands of school and money."
-      //         },
-      //         {
-      //           "content":
-      //               "It is understandable to feel frustrated and angry when faced with these pressures."
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // };
+      // const responseData = {"heading": "Anxiety and Frustration in School", "topic_reflections": [{"topic": "What is causing me to feel anxious and confused about my School?", "human_insight": {"content": ""}, "ai_insights": [{"content":
+      //                       "You are feeling overwhelmed by the pressures of school and money."}, {"content": "It is important to take time to manage your stress and emotions."}]}, {"topic":
+      //                       "What is causing me to feel angry and frustrated about my School?", "human_insight": {"content": ""}, "ai_insights": [{"content":
+      //                       "You are feeling overwhelmed by the demands of school and money."}, {"content": "It is understandable to feel frustrated and angry when faced with these pressures."}]}]};
 
       return Reflection.fromJson(responseData);
     } catch (e) {

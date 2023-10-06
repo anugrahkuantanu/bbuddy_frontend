@@ -77,19 +77,20 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
         DateTime.now().month,
         DateTime.now().day,
       );
-      if (today.isBefore(nextCreateDate)) {
-        emit(GoalCreationDenied(AppStrings.goalAlreadyCreated));
-      } else {
-        await _createNewGeneratedGoal(event.startDate, event.endDate, emit);
-      }
+      // if (today.isBefore(nextCreateDate)) {
+      //   emit(GoalCreationDenied(AppStrings.goalAlreadyCreated));
+      // } else {
+      //   await _createNewGeneratedGoal(event.startDate, event.endDate, emit);
+      // }
+      await _createNewGeneratedGoal(event.startDate, event.endDate, emit);
     }
   }
 
   Future<void> _createNewGeneratedGoal(
       DateTime? startDate, DateTime? endDate, Emitter<GoalState> emit) async {
     emit(GoalLoading());
-    final counter = int.tryParse(counterStats.reflectionCounter!.value);
-    //final counter = 3;
+    // final counter = int.tryParse(counterStats.reflectionCounter!.value);
+    final counter = 3;
 
     if (counter! < 3) {
       int totalReflections = await reflectionService.countReflections();

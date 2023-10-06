@@ -1,8 +1,8 @@
+
 import 'package:flutter/material.dart';
 import '../../blocs/bloc.dart';
 import '../../../../core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../controllers/controller.dart';
 
 class NewReflectionPage extends StatelessWidget {
   final List<dynamic> topics;
@@ -18,14 +18,13 @@ class NewReflectionPage extends StatelessWidget {
         return BlocConsumer<NewReflectionBloc, NewReflectionState>(
           listener: (context, state) {
             if (state is ReflectionSubmittedState) {
-              Navigator.push(
+              Nav.toNamed(
                 context,
-                MaterialPageRoute(
-                  builder: (context) => ViewReflectionController(
-                    topics: state.topics,
-                    userReflections: state.userReflections,
-                  ),
-                ),
+                '/viewreflections',
+                arguments: {
+                  'topics': state.topics,
+                  'userReflections': state.userReflections,
+                },
               );
             }
           },
@@ -33,9 +32,9 @@ class NewReflectionPage extends StatelessWidget {
             if (state is ReflectionInitialState) {
               return _buildMainUI(context, bloc, topics, state.userReflections);
             }
-            // else if (state is ReflectionUpdatedState) {
-            //   return _buildMainUI(context, bloc, topics, state.userReflections);
-            // }
+            else if (state is ReflectionUpdatedState) {
+              return _buildMainUI(context, bloc, topics, state.userReflections);
+            }
             return Container(); // Fallback UI
           },
         );
@@ -65,23 +64,18 @@ class NewReflectionPage extends StatelessWidget {
                         margin: const EdgeInsets.only(bottom: 16.0),
                         padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
-                          color: const Color.fromRGBO(17, 32, 55, 1.0),
+                          color: Theme.of(context).cardColor,
                           borderRadius:
                               BorderRadius.circular(screenWidth * 0.03),
                         ),
                         child: Text(
                           topics[index],
-                          style: const TextStyle(
-                            fontSize: 18.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.labelMedium
                         ),
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
                         style: const TextStyle(
-                          // Add this line
                           color: Colors.black, // And this line
                         ),
                         decoration: InputDecoration(
@@ -124,7 +118,7 @@ class NewReflectionPage extends StatelessWidget {
               .add(InitializeReflectionHomeEvent());
         },
         backgroundColor: const Color.fromRGBO(17, 32, 55, 1.0),
-        child: const Icon(Icons.arrow_forward, color: Colors.white),
+        child: Icon(Icons.arrow_forward, color: Colors.white,),
       ),
     );
   }

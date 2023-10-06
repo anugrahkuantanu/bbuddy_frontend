@@ -39,6 +39,7 @@ class ReflectionHomeBloc
 
   Future<void> _createNewReflection(
       CreateNewReflectionEvent event, Emitter<ReflectionHomeState> emit) async {
+      
     try {
       final counterStats =
           Provider.of<CounterStats>(event.context, listen: false);

@@ -16,7 +16,7 @@ class FeelingBloc extends Bloc<FeelingEvent, FeelingState> {
     }
     else if (event is ButtonPressedEvent) {
       // For the sake of completeness, let's assume that ButtonPressedEvent also has `feeling` and `textColor` properties.
-      yield NavigateToReasonPageState(event.feeling, event.feelingForm, event.textColor);
+      yield NavigateToReasonPageState(event.feeling, event.feelingForm);
     }
     else if (event is ResetEvent) {
       yield InitialState();

@@ -1,10 +1,11 @@
+import 'package:bbuddy_app/features/reflection_app/blocs/reflection_home_bloc/reflection_home_bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/blocs/reflection_home_bloc/reflection_home_event.dart';
+import 'package:bbuddy_app/features/reflection_app/blocs/reflection_home_bloc/reflection_home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/core.dart';
-import '../../blocs/bloc.dart';
 import '../widgets/widget.dart';
-import '../../controllers/controller.dart';
 
 
 
@@ -25,13 +26,7 @@ class _ReflectionHomeState extends State<ReflectionHome> {
     return BlocConsumer<ReflectionHomeBloc, ReflectionHomeState>(
       listener: (context, state) {
         if (state is NavigateToNewReflectionPage) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  NewReflectionController(topics: state.reflectionTopics),
-            ),
-          );
+          Nav.toNamed(context, '/newreflections', arguments: {'topics': state.reflectionTopics});
         }
         if (state is NeedsMoreCheckIns) {
           DialogHelper.showDialogMessage(context,
@@ -58,7 +53,8 @@ class _ReflectionHomeState extends State<ReflectionHome> {
   Widget _buildHasEnoughCheckInsUI(List history) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Reflections'),
+        centerTitle: true,
         actions: actionsMenu(context),
         automaticallyImplyLeading: false,
       ),
@@ -80,16 +76,15 @@ class _ReflectionHomeState extends State<ReflectionHome> {
               topicReflections: history[index].topicReflections!,
               reflection: reflection,
               onTap: (topics, reflection) {
-                Navigator.push(
+                Nav.to(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewReflectionController(
-                      topics: topics
+                  '/viewreflections',
+                  arguments: {
+                    'topics': topics
                           .map((reflectionPerTopic) => reflectionPerTopic.topic)
                           .toList(),
-                      reflection: reflection,
-                    ),
-                  ),
+                    'reflection': reflection,
+                  },
                 );
               },
               cardWidth: 200.w,

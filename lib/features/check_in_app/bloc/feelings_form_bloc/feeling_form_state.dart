@@ -16,9 +16,8 @@ class ProvideFeelingDataState extends FeelingState {
 class NavigateToReasonPageState extends FeelingState {
   final String feeling;
   final String feelingForm;
-  final Color textColor;
 
-  NavigateToReasonPageState(this.feeling, this.feelingForm, this.textColor);
+  NavigateToReasonPageState(this.feeling, this.feelingForm);
 }
 
 

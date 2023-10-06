@@ -28,37 +28,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-// home: BlocConsumer<AppBloc, AppState>(
-          //   listener: (context, appState) {
-          //     if (appState.isLoading) {
-          //       LoadingScreen.instance().show(
-          //         context: context,
-          //         text: 'Loading...',
-          //       );
-          //     } else {
-          //       LoadingScreen.instance().hide();
-          //     }
-
-          //     final authError = appState.authError;
-          //     if (authError != null) {
-          //       showAuthError(
-          //         authError: authError,
-          //         context: context,
-          //       );
-          //     }
-          //   },
-          //   builder: (context, appState) {
-          //     if (appState is AppStateLoggedOut) {
-          //       return const LoginView();
-          //     } else if (appState is AppStateLoggedIn) {
-          //       //return const PhotoGalleryView();
-          //       return const HomeController();
-          //     } else if (appState is AppStateIsInRegistrationView) {
-          //       return const RegisterView();
-          //     } else {
-          //       // this should never happen
-          //       return Container();
-          //     }
-          //   },
-          // ),

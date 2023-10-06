@@ -13,3 +13,8 @@ class ReflectionSubmittedState extends NewReflectionState {
   ReflectionSubmittedState({required this.topics, required this.userReflections});
 }
 
+class ReflectionUpdatedState extends NewReflectionState {
+  final List<String> userReflections;
+
+  ReflectionUpdatedState({required this.userReflections});
+}
