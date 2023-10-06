@@ -60,46 +60,33 @@ class PersonalCard extends StatelessWidget {
             SizedBox(
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: 20.w, right: 20.w, top: 20.w, bottom: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      title != null ? title! : '',
-                      style: TextStyle(
-                          fontSize: titlesize ?? 18.w,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
-                    ),
-                    Row(
-                      children: [
-                        if (icon != null)
-                          SizedBox(
-                            width: ((screenWidth + 100.w) / 4),
-                            height: ((screenWidth) / 6),
-                            child: Icon(
-                              icon,
-                              size: ((screenWidth - 80.w) / 3),
-                              color: textColor ?? Colors.white,
-                            ),
-                          ),
-                        if (icon == null) SizedBox(height: 50.w),
-                        Expanded(
-                          child: Text(
-                            body ?? '',
-                            style: TextStyle(
-                              fontSize: bodysize ?? 16.w,
-                              color: textColor ?? Colors.white,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
+                    left: 10.w, right: 10.w, top: 10.w, bottom: 10.w),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 17.w,),
+                      if (icon != null)
+                        SizedBox(
+                          child: Icon(
+                            icon,
+                            size: ((screenWidth) / 4),
+                            color: textColor ?? Colors.white,
                           ),
                         ),
-                      ],
-                    )
-                  ],
+                      Text(
+                        title != null ? title! : '',
+                        style: TextStyle(
+                          fontSize: titlesize ?? 18.w,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

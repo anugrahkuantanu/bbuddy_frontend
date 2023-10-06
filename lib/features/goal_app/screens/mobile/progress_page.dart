@@ -49,14 +49,6 @@ class ProgressPageState extends State<ProgressPage> {
             listeners: [
               BlocListener<ProgressBloc, ProgressState>(
                 listener: (context, state) {
-                  // if (state is NavigateToChatState) {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //         builder: (context) =>
-                  //             GoalChatPage(goalId: state.goalId)),
-                  //   );
-                  // }
                   if (state is NavigateToChatState) {
                     Navigator.push(
                       context,
@@ -120,16 +112,6 @@ class ProgressPageState extends State<ProgressPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        // automaticallyImplyLeading: false,
-        // leading: IconButton(
-        //   icon: Icon(Icons.arrow_back), // add your custom icon here
-        //   onPressed: () {
-        //     Navigator.push(
-        //     context,
-        //     MaterialPageRoute(builder: (context) => GoalHome()),
-        //   );
-        //  },
-        // ),
         title: const Text("Progess Page"),
         actions: [
           IconButton(
@@ -263,11 +245,7 @@ class ProgressPageState extends State<ProgressPage> {
                     },
                     child: Text(
                       "+ New Milestone",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14.0.w,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall
                     ),
                   ),
                 ],
