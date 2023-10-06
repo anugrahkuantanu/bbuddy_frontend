@@ -38,7 +38,6 @@ class GoalService {
       );
 
       final goalJson = Map<String, dynamic>.from(response.data);
-      //print(goalJson);
 
       Goal goal = Goal.fromJson(goalJson);
 
@@ -111,9 +110,10 @@ class GoalService {
   }
 }
 
-Stream<List<Message>> fetchChatHistory(
+Stream<List<Message?>> fetchChatHistory(
     String goalId, int page, int pageSize) async* {
   final http = locator.get<Http>();
+  List<Message> fetchedMessages;
   try {
     final response = await http.get('/chat_history/$goalId', params: {
       'page': page,
@@ -122,14 +122,13 @@ Stream<List<Message>> fetchChatHistory(
 
     if (response.statusCode == 200) {
       List<dynamic> json = response.data;
-      List<Message> fetchedMessages = json
-          .map((message) => Message(
-              text: message['data']['content'], isBot: message['type'] == 'ai'))
-          .toList();
+      fetchedMessages =
+          json.map((message) => Message.fromJson(message)).toList();
       yield fetchedMessages;
     } else {
       throw Exception('Failed to fetch chat history');
     }
+    yield [];
   } catch (error) {
     throw Exception('Failed to fetch chat history');
   }

@@ -1,10 +1,11 @@
+import 'package:bbuddy_app/config/app_theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/widget.dart';
 import '../../../check_in_app/screens/screen.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:bbuddy_app/core/core.dart';
 
 class CheckInHistoryCard extends StatelessWidget {
   final Color? textColor;
@@ -81,11 +82,14 @@ class CheckInHistoryCard extends StatelessWidget {
                     gradientStartColor: cardColors[index % cardColors.length],
                     gradientEndColor: cardColors[index % cardColors.length],
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const CheckInHome()),
-                      );
+                      var tm = context.read<ThemeProvider>();
+                      tm.setNavIndex(1);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => const CheckInHome()),
+                      // );
+                      Nav.toNamed(context, '/checkIn');
                     },
                     title: 'No check-ins available',
                     body: 'No check-ins available',

@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import './websocket.dart';
+import 'package:bbuddy_app/features/goal_app/models/websocket.dart';
 
-import '/config/config.dart';
-
-import '../../auth_mod/services/login.dart';
-import '/features/auth_mod/models/model.dart';
+import 'package:bbuddy_app/config/config.dart';
+import 'package:bbuddy_app/core/core.dart';
 
 class GoalChat {
   WebSocket? _webSocket;
@@ -32,9 +30,10 @@ class GoalChat {
   }
 
   void connect() async {
-    Token? accessToken = await getAccessToken();
-    _webSocket?.connect(
-        '${ApiEndpoint.baseWSURL}/${goalId}?authorization=${accessToken!.accessToken}');
+    //Token? accessToken = await getAccessToken();
+    String? token = await getIdToken();
+    _webSocket
+        ?.connect('${ApiEndpoint.baseWSURL}/$goalId?authorization=$token');
   }
 
   void _handleMessage(dynamic data) {

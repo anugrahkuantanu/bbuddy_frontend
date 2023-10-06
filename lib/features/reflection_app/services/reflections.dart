@@ -54,28 +54,60 @@ class ReflectionService {
   }
 
   Future<Reflection> getMoodReflections(
-    List topics, List? userReflections, String heading) async {
-    // final response = await http.post('/mood_reflection',
-    //     data: jsonEncode(
-    //       {
-    //         'topics': topics,
-    //         'user_reflections': userReflections,
-    //         'heading': heading
-    //       },
-    //     ));
+      List topics, List? userReflections, String heading) async {
+    try {
+      final response = await http.post('/mood_reflection',
+          data: jsonEncode(
+            {
+              'topics': topics,
+              'user_reflections': userReflections,
+              'heading': heading
+            },
+          ));
 
-    // final responseData = Map<String, dynamic>.from(response.data);
-    // print(responseData);
-    const responseData = {"heading": "Anxiety and Frustration in School", "topic_reflections": [{"topic": "What is causing me to feel anxious and confused about my School?", "human_insight": {"content": ""}, "ai_insights": [{"content":
-"You are feeling overwhelmed by the pressures of school and money."}, {"content": "It is important to take time to manage your stress and emotions."}]}, {"topic": 
-"What is causing me to feel angry and frustrated about my School?", "human_insight": {"content": ""}, "ai_insights": [{"content": 
-"You are feeling overwhelmed by the demands of school and money."}, {"content": "It is understandable to feel frustrated and angry when faced with these pressures."}]}]};
+      final responseData = Map<String, dynamic>.from(response.data);
+      // print(responseData);
+      // const responseData = {
+      //   "heading": "Anxiety and Frustration in School",
+      //   "topic_reflections": [
+      //     {
+      //       "topic":
+      //           "What is causing me to feel anxious and confused about my School?",
+      //       "human_insight": {"content": ""},
+      //       "ai_insights": [
+      //         {
+      //           "content":
+      //               "You are feeling overwhelmed by the pressures of school and money."
+      //         },
+      //         {
+      //           "content":
+      //               "It is important to take time to manage your stress and emotions."
+      //         }
+      //       ]
+      //     },
+      //     {
+      //       "topic":
+      //           "What is causing me to feel angry and frustrated about my School?",
+      //       "human_insight": {"content": ""},
+      //       "ai_insights": [
+      //         {
+      //           "content":
+      //               "You are feeling overwhelmed by the demands of school and money."
+      //         },
+      //         {
+      //           "content":
+      //               "It is understandable to feel frustrated and angry when faced with these pressures."
+      //         }
+      //       ]
+      //     }
+      //   ]
+      // };
 
-    return Reflection.fromJson(responseData);
+      return Reflection.fromJson(responseData);
+    } catch (e) {
+      throw Exception('Failed to generate new reflection');
+    }
   }
-
-
-
 
   Future<int> countReflections() async {
     try {
@@ -83,11 +115,10 @@ class ReflectionService {
       if (response.statusCode == 200) {
         return response.data as int;
       } else {
-        throw Exception('Failed to load check-ins');
+        throw Exception('Failed to count reflections');
       }
     } catch (e) {
-      throw Exception('Failed to load check-ins: $e');
+      throw Exception('Failed to count reflections');
     }
   }
 }
-

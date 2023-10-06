@@ -2,9 +2,9 @@ import '../../models/model.dart';
 
 abstract class ProgressEvent {}
 
-class InitializePersonalGoal extends ProgressEvent {
+class InitializeGoal extends ProgressEvent {
   late Goal goal;
-  InitializePersonalGoal({required this.goal});
+  InitializeGoal({required this.goal});
 }
 
 class DeleteMilestone extends ProgressEvent {

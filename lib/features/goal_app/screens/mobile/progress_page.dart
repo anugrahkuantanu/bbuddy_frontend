@@ -32,7 +32,7 @@ class ProgressPageState extends State<ProgressPage> {
     _progressBloc = ProgressBloc(
         goal: widget.goal,
         goalService: locator.get<GoalService>()); // Provide necessary services
-    _progressBloc.add(InitializePersonalGoal(goal: widget.goal));
+    _progressBloc.add(InitializeGoal(goal: widget.goal));
   }
 
   @override
@@ -49,13 +49,27 @@ class ProgressPageState extends State<ProgressPage> {
             listeners: [
               BlocListener<ProgressBloc, ProgressState>(
                 listener: (context, state) {
+                  // if (state is NavigateToChatState) {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) =>
+                  //             GoalChatPage(goalId: state.goalId)),
+                  //   );
+                  // }
                   if (state is NavigateToChatState) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              GoalChatPage(goalId: state.goalId)),
-                    );
+                        builder: (context) =>
+                            GoalChatPage(goalId: state.goalId),
+                      ),
+                    ).then((result) {
+                      // This code will be executed when GoalChatPage is popped
+                      if (result != null) {
+                        _progressBloc.add(InitializeGoal(goal: widget.goal));
+                      }
+                    });
                   } else if (state is ProgressError) {
                     _showDialog(context, state.errorMessage);
                   }
@@ -124,8 +138,6 @@ class ProgressPageState extends State<ProgressPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              //_progressBloc.add(DeleteGoal(goal: widget.goal));
-              // context.read<ProgressBloc>().add(DeleteGoal(goal: widget.goal));
               context.read<GoalBloc>().add(DeleteGoal(goal: widget.goal));
             },
           ),
@@ -149,7 +161,6 @@ class ProgressPageState extends State<ProgressPage> {
                   ElevatedButton(
                     onPressed: () {
                       _progressBloc.add(NavigateToChat(goalId: goal.id!));
-                      // context.read<ProgressBloc>().add(NavigateToChat(goalId: goal.id!));
                     },
                     style: ThemeHelper().buttonStyle().copyWith(
                           backgroundColor: MaterialStateProperty.all<Color>(

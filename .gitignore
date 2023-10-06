@@ -45,3 +45,9 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /ios
+
+flutter_02.png
+lib/app.dart.bkp
+lib/app.dart.bkp2
+lib/features/auth_firebase/screens/blocs/
+lib/features/main_app/screens/mobile/head_home_bloc.dart.bkp

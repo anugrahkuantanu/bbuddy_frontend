@@ -7,8 +7,6 @@ import '../../bloc/bloc.dart';
 import '../widget/widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-
 class CheckInHome extends StatelessWidget {
   const CheckInHome({Key? key}) : super(key: key);
 
@@ -29,19 +27,19 @@ class CheckInHome extends StatelessWidget {
   }
 
   Widget _buildUI(BuildContext context, UpdateUIState state) {
-
     var tm = context.watch<ThemeProvider?>();
     var bloc = BlocProvider.of<CheckInHomeBloc>(context);
 
     double emojiSize = 50.w;
-    double textSize = 16.sp;  // Calculate this
+    double textSize = 16.sp; // Calculate this
     Color textColor = tm!.isDarkMode ? AppColors.textlight : AppColors.textdark;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Check-In'),
         centerTitle: true,
-        actions: actionsMenu(context), // Assuming you have this function defined somewhere
+        actions: actionsMenu(
+            context), // Assuming you have this function defined somewhere
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -50,20 +48,28 @@ class CheckInHome extends StatelessWidget {
             padding: EdgeInsets.all(20.w),
             child: Column(
               children: [
-                Helper().ScreenHeadingContainer(context, 'How are you feeling?'),
+                Helper()
+                    .screenHeadingContainer(context, 'How are you feeling?'),
                 Column(
-                  children: _buildFeelingButtons(context, bloc.feelings, emojiSize, textSize, textColor),
+                  children: _buildFeelingButtons(
+                      context, bloc.feelings, emojiSize, textSize, textColor),
                 ),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomBar(), // Assuming you have this widget defined somewhere
+      bottomNavigationBar:
+          BottomBar(), // Assuming you have this widget defined somewhere
     );
   }
 
-_buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize, double textSize, Color textColor) {
+  _buildFeelingButtons(
+      BuildContext context,
+      List<Map<String, dynamic>> feelings,
+      double emojiSize,
+      double textSize,
+      Color textColor) {
     List<Widget> feelingButtons = [];
 
     for (int i = 0; i < feelings.length; i += 2) {
@@ -72,13 +78,13 @@ _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, 
       // First button
       rowChildren.add(
         Expanded(
-          child: 
-          EntityButton(
+          child: EntityButton(
             entity: feelings[i]['name']!,
             emoji: feelings[i]['emoji']!,
             textColor: textColor,
             fontSize: textSize,
-            onTap: () => _navigateToFeelingFormScreen(context, feelings[i]['name']!, textColor),
+            onTap: () => _navigateToFeelingFormScreen(
+                context, feelings[i]['name']!, textColor),
             emojiSize: emojiSize,
           ),
         ),
@@ -87,13 +93,13 @@ _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, 
         rowChildren.add(SizedBox(width: 60.w));
         rowChildren.add(
           Expanded(
-            child: 
-              EntityButton(
+            child: EntityButton(
               entity: feelings[i + 1]['name']!,
               emoji: feelings[i + 1]['emoji']!,
               textColor: textColor,
               fontSize: textSize,
-              onTap: () => _navigateToFeelingFormScreen(context, feelings[i + 1]['name'], textColor),
+              onTap: () => _navigateToFeelingFormScreen(
+                  context, feelings[i + 1]['name'], textColor),
               icon: null,
               emojiSize: emojiSize,
             ),
@@ -110,16 +116,16 @@ _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, 
     return feelingButtons;
   }
 
-  void _navigateToFeelingFormScreen(BuildContext context, String? feelingName, Color? textColor) {
+  void _navigateToFeelingFormScreen(
+      BuildContext context, String? feelingName, Color? textColor) {
     if (feelingName != null && textColor != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => 
-          FeelingsFormController(
+          builder: (context) => FeelingsFormController(
             feeling: feelingName,
             textColor: textColor,
-            ),
+          ),
         ),
       );
     }

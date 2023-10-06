@@ -9,7 +9,7 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
   GoalService goalService;
   ProgressBloc({required this.goal, required this.goalService})
       : super(ProgressLoading()) {
-    on<InitializePersonalGoal>(_initializePersonalGoal);
+    on<InitializeGoal>(_initializeGoal);
     on<DeleteMilestone>(_deleteMilestone);
     on<ChangeMilestoneStatus>(_changeMilestoneStatus);
     on<EditMilestone>(_editMilestone);
@@ -19,8 +19,8 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
     on<AddMilestone>(_addMilestone);
   }
 
-  Future<void> _initializePersonalGoal(
-      InitializePersonalGoal event, Emitter<ProgressState> emit) async {
+  Future<void> _initializeGoal(
+      InitializeGoal event, Emitter<ProgressState> emit) async {
     emit(ProgressLoading());
     try {
       emit(ProgressLoaded(goal: event.goal));

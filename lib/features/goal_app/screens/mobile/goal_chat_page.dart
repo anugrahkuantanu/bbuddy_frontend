@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bbuddy_app/core/core.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import '../../services/service.dart';
 import '../../models/model.dart';
@@ -21,7 +22,10 @@ class ChatInitialEvent extends ChatEvent {
   });
 }
 
-class StartChatEvent extends ChatEvent {}
+class StartChatEvent extends ChatEvent {
+  final int dotsPosition;
+  StartChatEvent({required this.dotsPosition});
+}
 
 class StreamChatEvent extends ChatEvent {
   final String message;
@@ -56,10 +60,13 @@ class LoadingState extends ChatState {}
 
 class InitialChatState extends ChatState {}
 
-class ChatIsLoaded extends ChatState {
-  final List<Message> messages;
+class MessagesUpdated extends ChatState {
+  MessagesUpdated();
+}
 
-  ChatIsLoaded(this.messages);
+class WaitingForResponse extends ChatState {
+  final int dotsPosition;
+  WaitingForResponse({required this.dotsPosition});
 }
 
 class IncomingMessageState extends ChatState {
@@ -79,11 +86,10 @@ class MessageSentState extends ChatState {}
 //bloc
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  List<Message> messages = [];
+  List<Message?> messages = [];
   final int pageSize = 10;
   int currentPage = 0;
   bool isLoadingHistory = false;
-
   GoalChat? chat;
 
   ChatBloc(String goalId) : super(InitialChatState()) {
@@ -96,7 +102,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     on<ChatInitialEvent>(_chatInitialEvent);
     on<SendMessageEvent>(_sendMessageEvent);
-    on<IncomingMessageEvent>(_incomingMessageEvent);
+    on<EndChatEvent>(_endChatEvent);
+    on<StartChatEvent>(_startChatEvent);
     add(ChatInitialEvent(
         goalId: goalId, currentPage: currentPage, pageSize: pageSize));
   }
@@ -104,22 +111,22 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> _chatInitialEvent(
       ChatInitialEvent event, Emitter<ChatState> emit) async {
     emit(LoadingState());
-
     isLoadingHistory = true;
-
     try {
       final fetchedMessages = await fetchChatHistory(
               event.goalId, event.currentPage, event.pageSize)
           .first;
-      messages.addAll(fetchedMessages.reversed);
+      if (fetchedMessages.isNotEmpty) {
+        messages.addAll(fetchedMessages.reversed);
+      }
       currentPage++;
-      print(messages);
-      emit(ChatIsLoaded(messages));
+      emit(MessagesUpdated());
     } catch (error) {
       emit(ErrorState('Error fetching chat history: $error'));
     }
 
     isLoadingHistory = false;
+    add(StartChatEvent(dotsPosition: 0));
   }
 
   Future<void> _sendMessageEvent(
@@ -127,30 +134,39 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     messages.add(Message(text: event.message, isBot: false));
     messages.add(Message(text: '', isBot: true, isWaiting: true));
     chat?.sendMessage(event.message);
-    emit(ChatIsLoaded(messages));
+    emit(MessagesUpdated());
   }
 
-  void _incomingMessageEvent(
-      IncomingMessageEvent event, Emitter<ChatState> emit) {
-    _handleIncomingMessage(event.messageType, event.message, event.sender);
-    emit(ChatIsLoaded(messages));
+  void _startChatEvent(StartChatEvent event, Emitter<ChatState> emit) async {
+    int dotsPosition = event.dotsPosition;
+
+    emit(WaitingForResponse(dotsPosition: dotsPosition));
+
+    while (true) {
+      await Future.delayed(const Duration(milliseconds: 500));
+      dotsPosition = (dotsPosition + 1) % 3;
+      emit(WaitingForResponse(dotsPosition: dotsPosition));
+    }
+    //emit(WaitingForResponse());
+  }
+
+  void _endChatEvent(EndChatEvent event, Emitter<ChatState> emit) {
+    emit(MessagesUpdated());
   }
 
   void _handleIncomingMessage(
       dynamic messageType, dynamic message, dynamic sender) {
+    add(StartChatEvent(dotsPosition: 0));
     int lastIndex = messages.length - 1;
-
     if (messageType == 'start' && sender == "bot") {
-      add(StartChatEvent());
     } else if (messageType == 'stream' && sender == "bot") {
-      if (messages.last.isWaiting) {
+      if (messages.last!.isWaiting) {
         messages.removeAt(lastIndex);
         messages.insert(
             lastIndex, Message(text: message, isBot: true, isWaiting: false));
       } else {
-        messages[lastIndex].text += message;
+        messages[lastIndex]!.text += message;
       }
-      add(StreamChatEvent(message));
     } else if (messageType == 'end' && sender == 'bot') {
       add(EndChatEvent());
     }
@@ -174,7 +190,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 class GoalChatPage extends StatefulWidget {
   final String goalId;
 
-  GoalChatPage({required this.goalId, Key? key}) : super(key: key);
+  const GoalChatPage({required this.goalId, Key? key}) : super(key: key);
 
   @override
   _GoalChatPageState createState() => _GoalChatPageState();
@@ -186,6 +202,7 @@ class _GoalChatPageState extends State<GoalChatPage> {
   final FocusNode _focusNode = FocusNode();
   final ScrollController _scrollController = ScrollController();
   bool isKeyboardVisible = false;
+  int dotsPosition = 0;
 
   @override
   void initState() {
@@ -193,8 +210,6 @@ class _GoalChatPageState extends State<GoalChatPage> {
     _chatBloc = ChatBloc(widget.goalId);
     _chatBloc.add(
         ChatInitialEvent(goalId: widget.goalId, currentPage: 1, pageSize: 10));
-    // _focusNode.addListener(_onFocusChange);
-    // _scrollController.addListener(_scrollListener);
   }
 
   @override
@@ -205,33 +220,31 @@ class _GoalChatPageState extends State<GoalChatPage> {
         bloc: _chatBloc,
         builder: (context, state) {
           if (state is LoadingState) {
-            return LoadingUI();
-          } else if (state is ChatIsLoaded) {
-            return _buildUI(state.messages, context);
+            return const LoadingUI();
           } else if (state is ErrorState) {
             return ErrorUI(errorMessage: state.errorMessage);
-          } else {
-            return Container();
           }
+          return _buildUI(context, state, _chatBloc.messages);
         },
       ),
     );
   }
 
-  Widget _buildUI(List<Message> messages, BuildContext context) {
+  Widget _buildUI(
+      BuildContext context, ChatState state, List<Message?> messages) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
+        title: const Text(
           'Coach',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back), // add your custom icon here
+          icon: const Icon(Icons.arrow_back), // add your custom icon here
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context, 'refresh');
           },
         ),
       ),
@@ -248,34 +261,58 @@ class _GoalChatPageState extends State<GoalChatPage> {
                   // reverse: true,
                   itemCount: messages.length,
                   itemBuilder: (BuildContext context, int index) {
-                    Message message = messages[index];
+                    Message? message = messages[index];
+                    bool isLastMessage = index == messages.length - 1;
+                    bool shouldDisplayDots = isLastMessage &&
+                        (message?.text == null || message?.text == '');
                     return Align(
-                      alignment: message.isBot
+                      alignment: message!.isBot
                           ? Alignment.centerLeft
                           : Alignment.centerRight,
                       child: Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color:
-                              message.isBot ? Colors.grey[300] : Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          message.text,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color:
+                                message.isBot ? Colors.grey[300] : Colors.white,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                      ),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  message.text,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                if (state is WaitingForResponse &&
+                                    shouldDisplayDots)
+                                  DotsIndicator(
+                                    dotsCount: 3,
+                                    position: (state).dotsPosition,
+                                    decorator: DotsDecorator(
+                                      size: const Size.square(10.0),
+                                      activeSize: const Size.square(10.0),
+                                      color: Colors.grey,
+                                      activeColor: Colors.black,
+                                      spacing: const EdgeInsets.all(3.0),
+                                      activeShape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(3.0),
+                                      ),
+                                    ),
+                                  ),
+                              ])),
                     );
                   },
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
                   children: [
                     Expanded(
@@ -289,7 +326,7 @@ class _GoalChatPageState extends State<GoalChatPage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     IconButton(
                       onPressed: () {
                         String message = messageController.text.trim();
@@ -298,7 +335,7 @@ class _GoalChatPageState extends State<GoalChatPage> {
                           messageController.clear();
                         }
                       },
-                      icon: Icon(Icons.send),
+                      icon: const Icon(Icons.send),
                     ),
                   ],
                 ),
@@ -318,33 +355,33 @@ class _GoalChatPageState extends State<GoalChatPage> {
     _chatBloc.close();
     super.dispose();
   }
-
-  //   void _onFocusChange() {
-  //   setState(() {
-  //     isKeyboardVisible = _focusNode.hasFocus;
-  //   });
-
-  //   if (isKeyboardVisible) {
-  //     Future.delayed(Duration(milliseconds: 300), () {
-  //       _scrollToBottom();
-  //     });
-  //   }
-  // }
-
-  // void _scrollToBottom() {
-  //   if (_scrollController.hasClients) {
-  //     _scrollController.animateTo(
-  //       _scrollController.position.maxScrollExtent,
-  //       duration: Duration(milliseconds: 5),
-  //       curve: Curves.easeInOut,
-  //     );
-  //   }
-  // }
-
-  // void _scrollListener() {
-  //   if (_scrollController.position.pixels == _scrollController.position.minScrollExtent &&
-  //       !_scrollController.position.outOfRange) {
-  //     _chatBloc.add(ChatInitialEvent(goalId: widget.goalId, currentPage: _chatBloc.currentPage + 1, pageSize: 10));
-  //   }
-  // }
 }
+
+//   void _onFocusChange() {
+//   setState(() {
+//     isKeyboardVisible = _focusNode.hasFocus;
+//   });
+
+//   if (isKeyboardVisible) {
+//     Future.delayed(Duration(milliseconds: 300), () {
+//       _scrollToBottom();
+//     });
+//   }
+// }
+
+// void _scrollToBottom() {
+//   if (_scrollController.hasClients) {
+//     _scrollController.animateTo(
+//       _scrollController.position.maxScrollExtent,
+//       duration: Duration(milliseconds: 5),
+//       curve: Curves.easeInOut,
+//     );
+//   }
+// }
+
+// void _scrollListener() {
+//   if (_scrollController.position.pixels == _scrollController.position.minScrollExtent &&
+//       !_scrollController.position.outOfRange) {
+//     _chatBloc.add(ChatInitialEvent(goalId: widget.goalId, currentPage: _chatBloc.currentPage + 1, pageSize: 10));
+//   }
+// }

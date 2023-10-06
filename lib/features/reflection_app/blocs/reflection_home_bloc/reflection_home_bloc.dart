@@ -39,14 +39,10 @@ class ReflectionHomeBloc
 
   Future<void> _createNewReflection(
       CreateNewReflectionEvent event, Emitter<ReflectionHomeState> emit) async {
-    print('yess');
     try {
-      // final counterStats =
-      // Provider.of<CounterStats>(event.context, listen: false);
-      // int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
-
-      int checkInCount = 3;
-      print(checkInCount);
+      final counterStats =
+          Provider.of<CounterStats>(event.context, listen: false);
+      int checkInCount = int.tryParse(counterStats.checkInCounter!.value) ?? 0;
 
       if (checkInCount < 3) {
         emit(

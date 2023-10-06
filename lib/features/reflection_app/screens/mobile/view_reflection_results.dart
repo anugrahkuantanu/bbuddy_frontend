@@ -52,12 +52,11 @@ class ViewReflectionResults extends StatelessWidget {
   }
 
   Widget _buildUI(BuildContext context, reflectionData) {
-    print(reflectionData);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
         title: Text(reflectionData.heading,
-        style: const TextStyle(color: Colors.white)),
+            style: const TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),

@@ -63,7 +63,6 @@ class ChatScreenState extends State<ChatScreen> {
       ),
     ];
     if (widget.isPastCheckin == true) {
-      print(widget.isPastCheckin);
       showProgressIndicator = false;
       messages.add(
         Message(

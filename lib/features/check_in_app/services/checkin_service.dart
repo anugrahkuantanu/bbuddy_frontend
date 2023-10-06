@@ -49,7 +49,6 @@ class CheckInService {
           }));
 
       if (response.statusCode == 200) {
-        print(response.data);
         return response.data['message'];
       } else {
         return GENERAL_ERROR_MESSAGE;
