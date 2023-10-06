@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import './chat_screen.dart';
 import '/core/utils/utils.dart';

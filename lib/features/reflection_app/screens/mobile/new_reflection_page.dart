@@ -1,8 +1,8 @@
+
 import 'package:flutter/material.dart';
 import '../../blocs/bloc.dart';
 import '../../../../core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../controllers/controller.dart';
 
 class NewReflectionPage extends StatelessWidget {
   final List<dynamic> topics;
@@ -26,19 +26,13 @@ class NewReflectionPage extends StatelessWidget {
                   'userReflections': state.userReflections,
                 },
               );
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => ViewReflectionController(
-              //       topics: state.topics,
-              //       userReflections: state.userReflections,
-              //     ),
-              //   ),
-              // );
             }
           },
           builder: (context, state) {
             if (state is ReflectionInitialState) {
+              return _buildMainUI(context, bloc, topics, state.userReflections);
+            }
+            else if (state is ReflectionUpdatedState) {
               return _buildMainUI(context, bloc, topics, state.userReflections);
             }
             return Container(); // Fallback UI

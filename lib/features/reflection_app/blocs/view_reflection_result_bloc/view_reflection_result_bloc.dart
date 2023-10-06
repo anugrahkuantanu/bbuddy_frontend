@@ -12,7 +12,6 @@ class ViewReflectionResultBloc
   ViewReflectionResultBloc(
       {required this.counterStats, required this.reflectionService})
       : super(ReflectionResultInitialState()) {
-    // on<FetchReflectionHeadingEvent>(_fetchReflectionHeadingEvent);
     on<LoadMoodReflectionsEvent>(_loadMoodReflectionsEvent);
   }
 

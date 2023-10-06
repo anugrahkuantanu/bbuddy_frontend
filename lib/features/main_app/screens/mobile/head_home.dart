@@ -26,18 +26,13 @@ class HeadHomePageWidget extends StatelessWidget {
   } catch (e) {
     print('Error retrieving user data: $e');
   }
-  return null;
-}
+    return null;
+  }
 
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-
-
-    double textSizeS = 16.0.w;
-    double textSizeXl = 20.w;
-
     return Stack(
       children: [
         Column(
@@ -61,12 +56,6 @@ class HeadHomePageWidget extends StatelessWidget {
                         ),
                         onPressed: () {
                           Nav.to(context, '/profile');
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           const ProfileController()),
-                          // );
                         },
                       ),
                     ),
