@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bbuddy_app/di/di.dart';
 import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/blocs/reflection_home_bloc/bloc.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../services/checkin_service.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/core/core.dart';
@@ -82,16 +84,7 @@ class ChatScreenState extends State<ChatScreen> {
 
     final response = await checkInService.getCheckInResponse(
         widget.feeling, widget.feelingForm, widget.reasonEntity, widget.reason);
-    // StreamSubscription<dynamic>? subscription =
-    //     test?.listen((event) => setState(() {
-    //           print(event);
-    //           return messages.add(Message(text: event, isBot: true));
-    //         }));
 
-    //messages.add(
-    //    Message(text: test?.map((event) => {event.toString()}), isBot: true));
-    // final response = await checkInService.getCheckInResponse(
-    //     widget.feeling, widget.feelingForm, widget.reasonEntity, widget.reason);
 
     setState(() {
       List<String> responseMessages = response.split("\n\n");
@@ -121,6 +114,7 @@ class ChatScreenState extends State<ChatScreen> {
 
     final counterStats = Provider.of<CounterStats>(context, listen: false);
     counterStats.updateCheckInCounter();
+    
     context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
   }
 

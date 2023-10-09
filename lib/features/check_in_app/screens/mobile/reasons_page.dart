@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'textbox.dart';
-import '../../bloc/bloc.dart';
 import '../widget/widget.dart';
 
 class ReasonPageBloc {
@@ -9,18 +8,18 @@ class ReasonPageBloc {
     'School',
     'Work',
     'Family',
-    'Relationships',
+    'Relation-ships',
     'Partner',
     'Money',
     'Health',
-    'Friendship',
+    'Friend-ship',
     'Social Media',
     'Good Sleep',
     'Career',
     'Goals',
     'Sex',
     'Boredom',
-    'Addiction',
+    'Addict-ion',
     'Food',
     'Other',
   ];
@@ -29,18 +28,18 @@ class ReasonPageBloc {
     'School': Icons.school,
     'Work': Icons.work,
     'Family': Icons.family_restroom,
-    'Relationships': Icons.favorite,
+    'Relation-ships': Icons.favorite,
     'Partner': Icons.favorite_border,
     'Money': Icons.attach_money,
     'Health': Icons.health_and_safety,
-    'Friendship': Icons.emoji_people,
+    'Friend-ship': Icons.emoji_people,
     'Social Media': Icons.social_distance,
     'Good Sleep': Icons.nights_stay,
     'Career': Icons.work_outline,
     'Goals': Icons.check_box_outline_blank,
     'Sex': Icons.people_alt,
     'Boredom': Icons.sentiment_dissatisfied,
-    'Addiction': Icons.smoking_rooms,
+    'Addict-ion': Icons.smoking_rooms,
     'Food': Icons.fastfood,
     'Other': Icons.more_horiz,
   };
@@ -59,9 +58,6 @@ class ReasonPageBloc {
     }
   }
 
-  double computeTextSize(double screenWidth) {
-    return 14.sp;
-  }
 
   double computeHighSpace(double screenWidth, double screenHeight) {
     if (screenWidth < 380) {
@@ -73,7 +69,6 @@ class ReasonPageBloc {
     }
   }
 }
-
 
 
 class ReasonPage extends StatefulWidget {
@@ -210,7 +205,7 @@ class _ReasonPageState extends State<ReasonPage>
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16.0.w),
+          padding: EdgeInsets.all(8.0.w),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -230,9 +225,8 @@ class _ReasonPageState extends State<ReasonPage>
                 Container(
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0.w),
+                      padding: EdgeInsets.all(.0.w),
                       child: Wrap(
-                        // spacing: 10.0.w,
                         spacing: 20.0.w,
                         runSpacing: highSpace,
                         children: _bloc.entities.map((entity) {
@@ -243,7 +237,11 @@ class _ReasonPageState extends State<ReasonPage>
                               icon: _bloc.getIcon(entity),
                               iconSize: emojiSize,
                               onTap: () => _handleButtonPress(entity),
-
+                              style: TextStyle(
+                                fontSize: 12.w,
+                                color: Theme.of(context).textTheme.labelSmall!.color,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           );
                         }).toList(),

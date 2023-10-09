@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 // }
 
 class ThemeProvider extends BaseThemeProvider {
-  int _index = 1;
+  int _index = 0;
   // late ThemeMode? _themeMode;
   ThemeMode _themeMode = ThemeMode.dark;
 

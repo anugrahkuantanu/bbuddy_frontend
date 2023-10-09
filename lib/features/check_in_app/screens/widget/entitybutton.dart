@@ -9,6 +9,7 @@ class EntityButton extends StatelessWidget {
   final double? fontSize;
   final IconData? icon;
   final ButtonStyle? buttonStyle;
+  final TextStyle? style;
 
   const EntityButton({
     this.entity = "",
@@ -17,6 +18,7 @@ class EntityButton extends StatelessWidget {
     this.onTap,
     this.fontSize = 14.0,
     this.buttonStyle,
+    this.style,
   });
 
   @override
@@ -38,7 +40,7 @@ class EntityButton extends StatelessWidget {
           Text(
             entity ?? "",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelSmall,
+            style: style ?? Theme.of(context).textTheme.labelSmall,
           ),
         ],
       ),
