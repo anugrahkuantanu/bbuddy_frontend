@@ -15,7 +15,7 @@ class AppTheme {
   ]) {
     light = light ??
         ThemeData(
-          scaffoldBackgroundColor: AppColors.lightscreen[100],
+          scaffoldBackgroundColor: Colors.white,
           textTheme: TextTheme(
             displayLarge: TextStyle(
               color: AppColors.black, 
@@ -84,12 +84,12 @@ class AppTheme {
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
-            backgroundColor: AppColors.lightscreen[100],
+            backgroundColor: AppColors.lightscreen,
             iconTheme: IconThemeData(
               color: AppColors.textdark,),
           ),
           navigationBarTheme: const NavigationBarThemeData(
-            backgroundColor: AppColors.lightscreen,
+            backgroundColor: AppColors.grey,
           ),
           popupMenuTheme: const PopupMenuThemeData(
             // color: AppColors.space,

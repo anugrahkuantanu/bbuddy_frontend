@@ -113,6 +113,13 @@ class ProgressPageState extends State<ProgressPage> {
       appBar: AppBar(
         elevation: 0,
         title: const Text("Progess Page"),
+          leading: IconButton(
+    icon: const Icon(Icons.arrow_back), // Replace with your desired icon
+    onPressed: () {
+      // Add your back button functionality here
+      Navigator.pop(context);
+    },
+  ),
         actions: [
           IconButton(
             icon: const Icon(

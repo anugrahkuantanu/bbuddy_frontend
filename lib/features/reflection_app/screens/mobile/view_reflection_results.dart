@@ -57,8 +57,8 @@ class ViewReflectionResults extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         title: Text(reflectionData.heading,
-            style: const TextStyle(color: Colors.white)),
-        iconTheme: const IconThemeData(color: Colors.white),
+            style: Theme.of(context).textTheme.bodyMedium,),
+        iconTheme: IconThemeData(color: Theme.of(context).textTheme.labelLarge!.color),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
