@@ -262,12 +262,28 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         isSuccessful: true,
       ));
       emit(const AppStateLoggedOut(isLoading: false));
-    } on FirebaseAuthException catch (e) {
-      emit(AppStatePasswordReset(
-        isLoading: false,
-        isSuccessful: false,
-        authError: AuthError.from(e),
-      ));
-    }
+    } 
+    on FirebaseAuthException catch (e) {
+  AuthError authError;
+  if (e.code == 'no-current-user') {
+    authError = AuthError.from(e);
+  } else {
+    authError = AuthError.from(e);
+  }
+  
+  emit(AppStatePasswordReset(
+    isLoading: false,
+    isSuccessful: false,
+    authError: authError,
+  ));
+}
+
+    // on FirebaseAuthException catch (e) {
+    //   emit(AppStatePasswordReset(
+    //     isLoading: false,
+    //     isSuccessful: false,
+    //     authError: AuthError.from(e),
+    //   ));
+    // }
   }
 }
