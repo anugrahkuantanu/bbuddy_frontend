@@ -7,12 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/core.dart';
 import '../widgets/widget.dart';
 
-
-
 class ReflectionHome extends StatefulWidget {
   final int selectedIndex;
 
-  const ReflectionHome({Key? key, this.selectedIndex = 1,}) : super(key: key);
+  const ReflectionHome({
+    Key? key,
+    this.selectedIndex = 1,
+  }) : super(key: key);
 
   @override
   _ReflectionHomeState createState() => _ReflectionHomeState();
@@ -26,7 +27,8 @@ class _ReflectionHomeState extends State<ReflectionHome> {
     return BlocConsumer<ReflectionHomeBloc, ReflectionHomeState>(
       listener: (context, state) {
         if (state is NavigateToNewReflectionPage) {
-          Nav.toNamed(context, '/newreflections', arguments: {'topics': state.reflectionTopics});
+          Nav.toNamed(context, '/newreflections',
+              arguments: {'topics': state.reflectionTopics});
         }
         if (state is NeedsMoreCheckIns) {
           DialogHelper.showDialogMessage(context,
@@ -36,12 +38,13 @@ class _ReflectionHomeState extends State<ReflectionHome> {
       },
       builder: (context, state) {
         if (state is ReflectionHomeLoading) {
-          _currentView = LoadingUI();
+          _currentView = const LoadingUI();
         } else if (state is ReflectionHomeHasEnoughCheckIns) {
           _currentView = _buildHasEnoughCheckInsUI(state.history);
         } else if (state is ReflectionHomeInsufficientCheckIns) {
           _currentView = NotEnoughtCheckIn(
-              title: 'Reflection', response: state.errorMessage);
+              title: 'Reflection',
+              response: state.neededCheckInCount.toString());
         } else if (state is ReflectionHomeError) {
           _currentView = ErrorUI(errorMessage: state.errorMessage);
         }
@@ -81,8 +84,8 @@ class _ReflectionHomeState extends State<ReflectionHome> {
                   '/viewreflections',
                   arguments: {
                     'topics': topics
-                          .map((reflectionPerTopic) => reflectionPerTopic.topic)
-                          .toList(),
+                        .map((reflectionPerTopic) => reflectionPerTopic.topic)
+                        .toList(),
                     'reflection': reflection,
                   },
                 );
@@ -94,7 +97,9 @@ class _ReflectionHomeState extends State<ReflectionHome> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<ReflectionHomeBloc>().add(CreateNewReflectionEvent(context));
+          context
+              .read<ReflectionHomeBloc>()
+              .add(CreateNewReflectionEvent(context));
         },
         child: const Icon(Icons.add),
       ),

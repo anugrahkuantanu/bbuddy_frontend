@@ -24,7 +24,7 @@ class HeadHomePageWidget extends StatelessWidget {
       return userData.data()?['firstName'];
     }
   } catch (e) {
-    print('Error retrieving user data: $e');
+    throw Exception('Error retrieving user data');
   }
     return null;
   }
@@ -70,19 +70,17 @@ class HeadHomePageWidget extends StatelessWidget {
                           'Welcome',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
-                        // const Text('xyz'),
                         FutureBuilder<String?>(
                           future: getFirstName(),
                           builder: (context, snapshot) {
-                            // print("first name: ${snapshot.data}");
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               return const CircularProgressIndicator();
                             } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
+                              return Text('${snapshot.error}');
                             } else {
                               return Text(
-                                snapshot.data ?? 'anonym',
+                                snapshot.data ?? '',
                                 style: Theme.of(context).textTheme.headlineSmall,
                               );
                             }

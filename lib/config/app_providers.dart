@@ -1,21 +1,19 @@
-import 'package:bbuddy_app/core/classes/global_state_manager.dart';
-import 'package:bbuddy_app/core/services/stats.dart';
-import 'package:bbuddy_app/features/check_in_app/services/checkin_service.dart';
-import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:bbuddy_app/di/di.dart';
-import 'package:bbuddy_app/features/goal_app/blocs/goal_bloc/goal_bloc.dart';
-import 'package:bbuddy_app/features/goal_app/services/goal.dart';
-import 'package:bbuddy_app/features/reflection_app/blocs/bloc.dart';
-import 'package:bbuddy_app/features/reflection_app/services/reflections.dart';
+import 'package:bbuddy_app/core/core.dart';
 import 'package:bbuddy_app/config/config.dart';
-import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
-import 'package:bbuddy_app/features/goal_app/blocs/bloc.dart';
+import 'package:bbuddy_app/di/di.dart';
+
 import 'package:bbuddy_app/features/check_in_app/services/service.dart';
 import 'package:bbuddy_app/features/goal_app/services/service.dart';
+import 'package:bbuddy_app/features/goal_app/services/goal.dart';
 import 'package:bbuddy_app/features/reflection_app/services/service.dart';
+
+import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
+import 'package:bbuddy_app/features/goal_app/blocs/bloc.dart';
 
 List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<ThemeProvider>(

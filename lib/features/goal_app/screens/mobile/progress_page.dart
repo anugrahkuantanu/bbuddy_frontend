@@ -71,7 +71,7 @@ class ProgressPageState extends State<ProgressPage> {
                 listener: (context, state) {
                   if (state is GoalDeleted) {
                     Navigator.pop(context);
-                  } // Handle GoalBloc state changes
+                  } //  Handle GoalBloc state changes
                 },
               ),
             ],
@@ -243,10 +243,8 @@ class ProgressPageState extends State<ProgressPage> {
                             }),
                       );
                     },
-                    child: Text(
-                      "+ New Milestone",
-                      style: Theme.of(context).textTheme.labelSmall
-                    ),
+                    child: Text("+ New Milestone",
+                        style: Theme.of(context).textTheme.labelSmall),
                   ),
                 ],
               ),

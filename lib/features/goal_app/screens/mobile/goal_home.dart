@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/bloc.dart';
 import '../../controllers/controller.dart';
 
-
 // ignore: must_be_immutable
 class GoalHome extends StatelessWidget {
   List<Goal>? personalGoals;
@@ -36,10 +35,11 @@ class GoalHome extends StatelessWidget {
         } else if (state is GoalCreationDenied) {
           DialogHelper.showDialogMessage(context,
               message: state.reason, title: AppStrings.goalCreatedTitel);
-        } 
+        }
       },
       child: BlocBuilder<GoalBloc, GoalState>(
         builder: (context, state) {
+          print(state);
           if (state is GoalLoading) {
             return const LoadingUI();
           } else if (state is GoalLoaded) {
@@ -47,7 +47,7 @@ class GoalHome extends StatelessWidget {
             generatedGoals = state.generatedGoals;
             return _buildFullGoalUI(
                 context, state.generatedGoals, state.personalGoals);
-          }else if (state is GoalError) {
+          } else if (state is GoalError) {
             return ErrorUI(errorMessage: state.errorMessage);
           }
           //print("current state: $state");
@@ -65,7 +65,9 @@ class GoalHome extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         actions: actionsMenuLogin(context),
-        title: const Text('Goals',),
+        title: const Text(
+          'Goals',
+        ),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
@@ -89,7 +91,10 @@ class GoalHome extends StatelessWidget {
                               Text(
                                 "AI generated goal",
                                 style: TextStyle(
-                                  color: Theme.of(context).textTheme.bodySmall!.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .color,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14.w,
                                 ),
@@ -103,7 +108,10 @@ class GoalHome extends StatelessWidget {
                                 child: Text(
                                   "+ Create Goal",
                                   style: TextStyle(
-                                    color: Theme.of(context).textTheme.bodySmall!.color,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .color,
                                     fontWeight: FontWeight.w900,
                                     fontSize: 14.0.w,
                                   ),
@@ -153,7 +161,10 @@ class GoalHome extends StatelessWidget {
                             child: Text(
                               "personal goal",
                               style: TextStyle(
-                                color:  Theme.of(context).textTheme.bodySmall!.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .color,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14.w,
                               ),

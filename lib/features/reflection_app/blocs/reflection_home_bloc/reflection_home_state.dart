@@ -7,12 +7,13 @@ class ReflectionHomeInitial extends ReflectionHomeState {}
 class ReflectionHomeLoading extends ReflectionHomeState {}
 
 class ReflectionHomeInsufficientCheckIns extends ReflectionHomeState {
-  final String errorMessage;
-  ReflectionHomeInsufficientCheckIns({required this.errorMessage});
+  final int neededCheckInCount;
+  ReflectionHomeInsufficientCheckIns({required this.neededCheckInCount});
 }
 
 class ReflectionHomeHasEnoughCheckIns extends ReflectionHomeState {
-  final List<Reflection> history; // Assuming Reflection is a model class for your reflection data.
+  final List<Reflection>
+      history; // Assuming Reflection is a model class for your reflection data.
   ReflectionHomeHasEnoughCheckIns(this.history);
 }
 
@@ -23,7 +24,8 @@ class ReflectionHomeError extends ReflectionHomeState {
 
 // The state to navigate to the new reflection page.
 class NavigateToNewReflectionPage extends ReflectionHomeState {
-  final List<dynamic> reflectionTopics;  // Assuming this is the data type you want to pass.
+  final List<dynamic>
+      reflectionTopics; // Assuming this is the data type you want to pass.
   NavigateToNewReflectionPage(this.reflectionTopics);
 }
 

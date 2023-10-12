@@ -5,6 +5,8 @@ import 'package:bbuddy_app/features/goal_app/blocs/bloc.dart';
 import 'package:bbuddy_app/features/reflection_app/services/service.dart';
 import 'package:bbuddy_app/features/goal_app/services/service.dart';
 
+// Test the case when you have GoalInsufficientReflection if the bottom navigation works or not.
+
 class GoalBloc extends Bloc<GoalEvent, GoalState> {
   final CounterStats counterStats;
   final GoalService goalService;
@@ -36,6 +38,8 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
         }
         emit(GoalDeleted(
             goal: event.goal)); // Assuming you have a GoalDeleted state
+        emit(GoalLoaded(
+            generatedGoals: generatedGoals, personalGoals: personalGoals));
       } else {
         emit(GoalError(errorMessage: "Failed to delete goal"));
       }
@@ -77,20 +81,20 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
         DateTime.now().month,
         DateTime.now().day,
       );
-      // if (today.isBefore(nextCreateDate)) {
-      //   emit(GoalCreationDenied(AppStrings.goalAlreadyCreated));
-      // } else {
-      //   await _createNewGeneratedGoal(event.startDate, event.endDate, emit);
-      // }
-      await _createNewGeneratedGoal(event.startDate, event.endDate, emit);
+      if (today.isBefore(nextCreateDate)) {
+        emit(GoalCreationDenied(AppStrings.goalAlreadyCreated));
+        emit(GoalLoaded(
+            generatedGoals: generatedGoals, personalGoals: personalGoals));
+      } else {
+        await _createNewGeneratedGoal(event.startDate, event.endDate, emit);
+      }
     }
   }
 
   Future<void> _createNewGeneratedGoal(
       DateTime? startDate, DateTime? endDate, Emitter<GoalState> emit) async {
     emit(GoalLoading());
-    // final counter = int.tryParse(counterStats.reflectionCounter!.value);
-    final counter = 3;
+    final counter = int.tryParse(counterStats.reflectionCounter!.value);
 
     if (counter! < 3) {
       int totalReflections = await reflectionService.countReflections();
@@ -98,6 +102,8 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
       int reflectionsneeded = 3 - modulo;
       emit(GoalInsufficientReflections('$reflectionsneeded',
           'you need $reflectionsneeded more reflection(s) to generate the goal'));
+      emit(GoalLoaded(
+          generatedGoals: generatedGoals, personalGoals: personalGoals));
     } else {
       try {
         Goal goal = await goalService.setNewGoal(
@@ -105,6 +111,8 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
         counterStats.resetReflectionCounter();
         generatedGoals.insert(0, goal);
         emit(GoalCreatedSuccessfully(goal: goal));
+        emit(GoalLoaded(
+            generatedGoals: generatedGoals, personalGoals: personalGoals));
       } catch (error) {
         emit(GoalError(errorMessage: error.toString()));
       }

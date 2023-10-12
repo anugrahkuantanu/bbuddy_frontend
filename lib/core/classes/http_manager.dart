@@ -469,42 +469,44 @@ class HttpManager {
   //   return null;
   // }
 
-  // Future<Stream<dynamic>?> streamPost(
-  //   String url, {
-  //   dynamic data,
-  //   Map<String, dynamic>? params,
-  //   Options? options,
-  //   CancelToken? token,
-  //   void Function(Uint8List data)? onReceiveData,
-  //   void Function(String response)? onReceiveResponse,
-  // }) async {
-  //   try {
-  //     _dio.options.headers['Accept'] = 'text/event-stream';
-  //     _dio.options.headers['Cache-Control'] = 'no-cache';
-  //     final response = await _dio.post<ResponseBody>(
-  //       url,
-  //       data: data,
-  //       options: Options(responseType: ResponseType.stream),
-  //       queryParameters: params,
-  //       cancelToken: token,
-  //     );
-  //     StreamTransformer<Uint8List, List<int>> unit8Transformer =
-  //         StreamTransformer.fromHandlers(
-  //       handleData: (data, sink) {
-  //         sink.add(List<int>.from(data));
-  //       },
-  //     );
+  Future<Stream<dynamic>?> streamPost(
+    String url, {
+    dynamic data,
+    Map<String, dynamic>? params,
+    Options? options,
+    CancelToken? token,
+    void Function(Uint8List data)? onReceiveData,
+    void Function(String response)? onReceiveResponse,
+  }) async {
+    try {
+      _dio.options.headers['Accept'] = 'text/event-stream';
+      _dio.options.headers['Cache-Control'] = 'no-cache';
+      _dio.options.headers['Content-Type'] = 'application/json';
+      final response = await _dio.post<ResponseBody>(
+        url,
+        data: data,
+        options: Options(responseType: ResponseType.stream),
+        queryParameters: params,
+        cancelToken: token,
+      );
+      StreamTransformer<Uint8List, List<int>> unit8Transformer =
+          StreamTransformer.fromHandlers(
+        handleData: (data, sink) {
+          sink.add(List<int>.from(data));
+        },
+      );
 
-  //     final stream = response.data?.stream
-  //         .transform(unit8Transformer)
-  //         .transform(const Utf8Decoder())
-  //         .transform(const LineSplitter());
-  //     return stream;
-  //   } catch (e) {
-  //     log(e.toString());
-  //   }
-  //   return null;
-  // }
+      final stream = response.data?.stream
+          .transform(unit8Transformer)
+          .transform(const Utf8Decoder())
+          .transform(const LineSplitter());
+
+      return stream;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
 
   // Future<void> streamPost(
   //   String url, {

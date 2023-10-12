@@ -44,6 +44,7 @@ abstract class StatelessController extends StatelessWidget {
           Nav.toNamed(context, '/');
         } else if (appState is AppStateLoggedOut) {
           Nav.toNamed(context, '/login');
+          Provider.of<CounterStats>(context, listen: false).clearCounterStats();
         } else if (appState is AppStateIsInRegistrationView) {
           Nav.toNamed(context, '/register');
         }

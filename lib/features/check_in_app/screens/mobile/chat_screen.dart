@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:bbuddy_app/di/di.dart';
+import 'package:bbuddy_app/features/goal_app/models/model.dart';
 import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/blocs/bloc.dart';
+import 'package:bbuddy_app/features/reflection_app/screens/mobile/reflection_home.dart';
 
 import 'package:flutter/material.dart';
 import '../../services/checkin_service.dart';
@@ -122,6 +125,13 @@ class ChatScreenState extends State<ChatScreen> {
     final counterStats = Provider.of<CounterStats>(context, listen: false);
     counterStats.updateCheckInCounter();
     context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
+
+    final bloc = context.read<ReflectionHomeBloc>();
+    if (bloc.state is ReflectionHomeInsufficientCheckIns) {
+      final state = bloc.state as ReflectionHomeInsufficientCheckIns;
+      bloc.add(UpdateNeedCheckInCount(
+          neededCheckInCount: state.neededCheckInCount - 1));
+    }
   }
 
   void sendUserMessage(String message) {

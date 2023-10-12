@@ -16,6 +16,7 @@ class ReflectionHomeBloc
       : super(ReflectionHomeInitial()) {
     on<InitializeReflectionHomeEvent>(_onInitializeReflectionHomeEvent);
     on<CreateNewReflectionEvent>(_createNewReflection);
+    on<UpdateNeedCheckInCount>(_updatedNeededCheckInCount);
   }
 
   Future<void> _onInitializeReflectionHomeEvent(
@@ -30,7 +31,7 @@ class ReflectionHomeBloc
         emit(ReflectionHomeHasEnoughCheckIns(history));
       } else {
         emit(ReflectionHomeInsufficientCheckIns(
-            errorMessage: checkInCount > 0 ? checkInCount.toString() : '3'));
+            neededCheckInCount: checkInCount > 0 ? checkInCount : 3));
       }
     } catch (error) {
       emit(ReflectionHomeError(AppStrings.errorLoadReflection));
@@ -39,7 +40,6 @@ class ReflectionHomeBloc
 
   Future<void> _createNewReflection(
       CreateNewReflectionEvent event, Emitter<ReflectionHomeState> emit) async {
-      
     try {
       final counterStats =
           Provider.of<CounterStats>(event.context, listen: false);
@@ -54,6 +54,16 @@ class ReflectionHomeBloc
       }
     } catch (error) {
       emit(ReflectionHomeError(AppStrings.errorCreateNewReflection));
+    }
+  }
+
+  Future<void> _updatedNeededCheckInCount(
+      UpdateNeedCheckInCount event, Emitter<ReflectionHomeState> emit) async {
+    if (event.neededCheckInCount > 0) {
+      emit(ReflectionHomeInsufficientCheckIns(
+          neededCheckInCount: event.neededCheckInCount));
+    } else {
+      emit(ReflectionHomeHasEnoughCheckIns([]));
     }
   }
 }

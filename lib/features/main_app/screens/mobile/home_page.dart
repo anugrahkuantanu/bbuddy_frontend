@@ -18,8 +18,14 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var tm = context.watch<ThemeProvider>();
+    // ignore: unused_local_variable
     Color textColor = tm.isDarkMode
         ? const Color.fromRGBO(238, 238, 238, 0.933)
         : AppColors.textdark;
@@ -34,10 +40,8 @@ class HomePageState extends State<HomePage> {
             ),
             Padding(
               padding: EdgeInsets.only(left: 28.w, bottom: 12.w),
-              child: Text(
-                "Check-In Story",
-                style: Theme.of(context).textTheme.headlineSmall
-              ),
+              child: Text("Check-In Story",
+                  style: Theme.of(context).textTheme.headlineSmall),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.w),

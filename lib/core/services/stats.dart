@@ -1,13 +1,12 @@
 import 'dart:convert';
 
 import 'package:bbuddy_app/di/di.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import '../core.dart';
 import '../../features/main_app/models/stats.dart';
 
 Future<void> updateStats(UserStats? stat) async {
-  //final dio = Dio(BaseOptions(baseUrl: ApiEndpoint.baseURL));
-  //dio.interceptors.add(AuthInterceptor(dio));
   final http = locator.get<Http>();
   try {
     final response =
@@ -41,6 +40,12 @@ class CounterStats extends ChangeNotifier {
         _errorMessage = e.toString();
       }
     }
+    notifyListeners();
+  }
+
+  void clearCounterStats() async {
+    checkInCounter = null;
+    reflectionCounter = null;
     notifyListeners();
   }
 
