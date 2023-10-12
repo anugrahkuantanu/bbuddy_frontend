@@ -75,7 +75,8 @@ class ReflectionCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontSize: 13.sp,
-                          color: Colors.white),
+                          color: Colors.white
+                          ),
                       ),
                       SizedBox(height: 20.0),
                       Text(
