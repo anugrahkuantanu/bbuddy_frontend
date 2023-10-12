@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/features/auth_firebase/screens/mobile/profile_page.dart' as mobile;
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -5,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../../../../../config/config.dart';
 import '../../../../../core/core.dart';
 
-import '../../../auth_mod/screens/screen.dart' as mobile;
 
 class ProfileController extends StatelessController {
   final String _title = 'Home Page';
@@ -22,7 +22,7 @@ class ProfileController extends StatelessController {
 
     return Display(
       title: _title,
-      mobile: mobile.ProfilePage(),
+      mobile: const mobile.ProfilePage(),
     );
   }
 }
