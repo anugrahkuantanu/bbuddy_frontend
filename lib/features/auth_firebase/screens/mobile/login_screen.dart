@@ -93,6 +93,12 @@ class LoginScreen extends HookWidget {
                   },
                 ),
                 SizedBox(height: 5.0.h),
+                TextButton(
+                  onPressed: () {
+                    Nav.to(context, '/forget_password');
+                  },
+                  child: const Text('Forget password?'),
+                ),
                 Divider(
                   thickness: 0.5,
                   color: Colors.grey[400],

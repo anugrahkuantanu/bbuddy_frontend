@@ -6,10 +6,12 @@ class AuthFirebaseApp extends RouteManager {
   static const String login = AuthFirebaseApp.name + '/login';
   static const String register = AuthFirebaseApp.name + '/register';
   static const String profile = AuthFirebaseApp.name + '/profile';
+    static const String forget_password = AuthFirebaseApp.name + '/forget_password';
 
   AuthFirebaseApp() {
     addRoute(AuthFirebaseApp.login, (context) => const LoginController());
     addRoute(AuthFirebaseApp.register, (context) => const RegisterController());
     addRoute(AuthFirebaseApp.profile, (context) => const ProfileController());
+    addRoute(AuthFirebaseApp.forget_password, (context) => const ForgetPasswordController());
   }
 }

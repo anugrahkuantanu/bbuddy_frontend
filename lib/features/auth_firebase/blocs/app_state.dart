@@ -56,6 +56,19 @@ class AppStateIsInRegistrationView extends AppState {
         );
 }
 
+@immutable
+class AppStatePasswordReset extends AppState {
+  final bool isSuccessful;
+
+  const AppStatePasswordReset({
+    required bool isLoading,
+    AuthError? authError,
+    required this.isSuccessful,
+  }) : super(isLoading: isLoading, authError: authError);
+}
+
+
+
 extension GetUser on AppState {
   User? get user {
     final cls = this;
@@ -66,3 +79,4 @@ extension GetUser on AppState {
     }
   }
 }
+

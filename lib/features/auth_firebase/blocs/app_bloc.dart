@@ -23,6 +23,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppEventRegister>(_register);
     on<AppEventLogOut>(_logOut);
     on<AppEventDeleteAccount>(_deleteAccount);
+    on<AppEventForgotPassword>(_forgotPassword); 
   }
 
   void _goToRegistration(
@@ -167,10 +168,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         'email': event.email
       });
 
-      emit(AppStateLoggedIn(
-        isLoading: false,
-        user: credentials.user!,
-      ));
+      // emit(AppStateLoggedIn(
+      //   isLoading: false,
+      //   user: credentials.user!,
+      // ));
+    emit(const AppStateLoggedOut(isLoading: false));
     } on FirebaseAuthException catch (e) {
       emit(AppStateIsInRegistrationView(
         isLoading: false,
@@ -225,6 +227,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         await item.delete().catchError((_) {});
       }
       await FirebaseStorage.instance.ref(user.uid).delete().catchError((_) {});
+
+      final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+      await userRef.delete();
+
+
       await user.delete();
       await FirebaseAuth.instance.signOut();
       emit(const AppStateLoggedOut(
@@ -240,6 +247,26 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     } on FirebaseException {
       emit(const AppStateLoggedOut(
         isLoading: false,
+      ));
+    }
+  }
+
+  Future<void> _forgotPassword(
+      AppEventForgotPassword event, Emitter<AppState> emit) async {
+    emit(AppStatePasswordReset(isLoading: true, isSuccessful: false));
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: event.email);
+      emit(AppStatePasswordReset(
+        isLoading: false,
+        isSuccessful: true,
+      ));
+      emit(const AppStateLoggedOut(isLoading: false));
+    } on FirebaseAuthException catch (e) {
+      emit(AppStatePasswordReset(
+        isLoading: false,
+        isSuccessful: false,
+        authError: AuthError.from(e),
       ));
     }
   }
