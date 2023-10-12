@@ -1,4 +1,5 @@
 import 'package:bbuddy_app/core/classes/route_manager.dart';
+// import 'package:bbuddy_app/features/auth_firebase/screens/mobile/splash_screen.dart';
 import 'controllers/controllers.dart';
 
 class AuthFirebaseApp extends RouteManager {
@@ -15,3 +16,4 @@ class AuthFirebaseApp extends RouteManager {
     addRoute(AuthFirebaseApp.forget_password, (context) => const ForgetPasswordController());
   }
 }
+

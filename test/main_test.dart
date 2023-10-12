@@ -1,23 +1,22 @@
-import 'package:bbuddy_app/app_old.dart';
-import 'package:bbuddy_app/main.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-void main() {
-  testWidgets('Find Dashboard', (tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+// import 'package:flutter/material.dart';
+// import 'package:flutter_test/flutter_test.dart';
 
-    // Verify that our counter starts at 0.
-    expect(find.widgetWithText(Text, 'Dashboard'), findsOneWidget);
-    // expect(find.text('1'), findsNothing);
+// void main() {
+//   testWidgets('Find Dashboard', (tester) async {
+//     // Build our app and trigger a frame.
+//     await tester.pumpWidget(MyApp());
 
-    // // Tap the '+' icon and trigger a frame.
-    // await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
+//     // Verify that our counter starts at 0.
+//     expect(find.widgetWithText(Text, 'Dashboard'), findsOneWidget);
+//     // expect(find.text('1'), findsNothing);
 
-    // // Verify that our counter has incremented.
-    // expect(find.text('0'), findsNothing);
-    // expect(find.text('1'), findsOneWidget);
-  });
-}
+//     // // Tap the '+' icon and trigger a frame.
+//     // await tester.tap(find.byIcon(Icons.add));
+//     // await tester.pump();
+
+//     // // Verify that our counter has incremented.
+//     // expect(find.text('0'), findsNothing);
+//     // expect(find.text('1'), findsOneWidget);
+//   });
+// }

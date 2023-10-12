@@ -231,7 +231,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
       await userRef.delete();
 
-
       await user.delete();
       await FirebaseAuth.instance.signOut();
       emit(const AppStateLoggedOut(
