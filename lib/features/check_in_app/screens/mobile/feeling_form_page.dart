@@ -69,7 +69,7 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
           color: Colors.white,
         ),
       ),
-      iconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(),
         leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {
