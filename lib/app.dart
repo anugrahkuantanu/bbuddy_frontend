@@ -32,26 +32,26 @@ class MyApp extends StatelessWidget {
 }
 
 
-class AppStarter extends StatelessWidget {
-  final Color _primaryColor = HexColor('#FFF6EFEC');
-  final Color _colorScheme = HexColor('#FF404659');
+// class AppStarter extends StatelessWidget {
+//   final Color _primaryColor = HexColor('#FFF6EFEC');
+//   final Color _colorScheme = HexColor('#FF404659');
 
-  @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      builder: (context, child) {
-        return MaterialApp(
-          title: 'BBuddy',
-          theme: ThemeData(
-            primaryColor: _primaryColor,
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)
-                .copyWith(primary: _colorScheme),
-            scaffoldBackgroundColor: Color(0xFFF6EFEC),
-          ),
-          home: SplashScreen(title: 'BBuddy'),
-          debugShowCheckedModeBanner: false,
-        );
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return ScreenUtilInit(
+//       builder: (context, child) {
+//         return MaterialApp(
+//           title: 'BBuddy',
+//           theme: ThemeData(
+//             primaryColor: _primaryColor,
+//             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)
+//                 .copyWith(primary: _colorScheme),
+//             scaffoldBackgroundColor: Color(0xFFF6EFEC),
+//           ),
+//           home: SplashScreen(title: 'BBuddy'),
+//           debugShowCheckedModeBanner: false,
+//         );
+//       },
+//     );
+//   }
+// }

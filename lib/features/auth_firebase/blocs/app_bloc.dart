@@ -207,82 +207,140 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     ));
   }
 
+  // Future<void> _deleteAccount(
+  //     AppEventDeleteAccount event, Emitter<AppState> emit) async {
+  //   final user = FirebaseAuth.instance.currentUser;
+  //   if (user == null) {
+  //     emit(const AppStateLoggedOut(
+  //       isLoading: false,
+  //     ));
+  //     return;
+  //   }
+  //   emit(AppStateLoggedIn(
+  //     isLoading: true,
+  //     user: user,
+  //   ));
+  //   try {
+  //     final folderContents =
+  //         await FirebaseStorage.instance.ref(user.uid).listAll();
+  //     for (final item in folderContents.items) {
+  //       await item.delete().catchError((_) {});
+  //     }
+  //     await FirebaseStorage.instance.ref(user.uid).delete().catchError((_) {});
+
+  //     final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+  //     await userRef.delete();
+
+  //     await user.delete();
+  //     await FirebaseAuth.instance.signOut();
+  //     emit(const AppStateLoggedOut(
+  //       isLoading: false,
+  //     ));
+  //   } on FirebaseAuthException catch (e) {
+  //     emit(AppStateLoggedIn(
+  //       isLoading: false,
+  //       user: user,
+  //       // images: state.images ?? [],
+  //       authError: AuthError.from(e),
+  //     ));
+  //   } on FirebaseException {
+  //     emit(const AppStateLoggedOut(
+  //       isLoading: false,
+  //     ));
+  //   }
+  // }
+
   Future<void> _deleteAccount(
-      AppEventDeleteAccount event, Emitter<AppState> emit) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      emit(const AppStateLoggedOut(
-        isLoading: false,
-      ));
-      return;
-    }
-    emit(AppStateLoggedIn(
-      isLoading: true,
-      user: user,
+    AppEventDeleteAccount event, Emitter<AppState> emit) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    emit(const AppStateLoggedOut(
+      isLoading: false,
     ));
-    try {
-      final folderContents =
-          await FirebaseStorage.instance.ref(user.uid).listAll();
-      for (final item in folderContents.items) {
-        await item.delete().catchError((_) {});
-      }
-      await FirebaseStorage.instance.ref(user.uid).delete().catchError((_) {});
-
-      final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-      await userRef.delete();
-
-      await user.delete();
-      await FirebaseAuth.instance.signOut();
-      emit(const AppStateLoggedOut(
-        isLoading: false,
-      ));
-    } on FirebaseAuthException catch (e) {
-      emit(AppStateLoggedIn(
-        isLoading: false,
-        user: user,
-        // images: state.images ?? [],
-        authError: AuthError.from(e),
-      ));
-    } on FirebaseException {
-      emit(const AppStateLoggedOut(
-        isLoading: false,
-      ));
-    }
+    return;
   }
+  emit(AppStateLoggedIn(
+    isLoading: true,
+    user: user,
+  ));
+  try {
+    // Deleting user data from Firebase Storage
+    final folderContents =
+        await FirebaseStorage.instance.ref(user.uid).listAll();
+    for (final item in folderContents.items) {
+      await item.delete().catchError((_) {});
+    }
+    await FirebaseStorage.instance.ref(user.uid).delete().catchError((_) {});
+
+    // Deleting user data from Firestore
+
+
+    // Deleting user data from other collections
+    final collectionsToDeleteFrom = ['check_in', 'reflections', 'user_stats', 'goals'];
+    for (final collection in collectionsToDeleteFrom) {
+
+
+      final userDocs = await FirebaseFirestore.instance
+          .collection(collection)
+          .where('user_id', isEqualTo: user.uid)
+          .get();
+
+      print('Found ${userDocs.docs.length} documents in $collection.');
+
+      for (final doc in userDocs.docs) {
+        await doc.reference.delete();
+      }
+    }
+
+        final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    await userRef.delete();
+
+    // Deleting user authentication
+    await user.delete();
+    await FirebaseAuth.instance.signOut();
+    emit(const AppStateLoggedOut(
+      isLoading: false,
+    ));
+  } on FirebaseAuthException catch (e) {
+    emit(AppStateLoggedIn(
+      isLoading: false,
+      user: user,
+      // images: state.images ?? [],
+      authError: AuthError.from(e),
+    ));
+  } on FirebaseException {
+    emit(const AppStateLoggedOut(
+      isLoading: false,
+    ));
+  }
+}
+
 
   Future<void> _forgotPassword(
       AppEventForgotPassword event, Emitter<AppState> emit) async {
-    emit(AppStatePasswordReset(isLoading: true, isSuccessful: false));
+    emit(const AppStatePasswordReset(isLoading: true, isSuccessful: false));
 
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: event.email);
-      emit(AppStatePasswordReset(
+      emit(const AppStatePasswordReset(
         isLoading: false,
         isSuccessful: true,
       ));
       emit(const AppStateLoggedOut(isLoading: false));
     } 
     on FirebaseAuthException catch (e) {
-  AuthError authError;
-  if (e.code == 'no-current-user') {
-    authError = AuthError.from(e);
-  } else {
-    authError = AuthError.from(e);
-  }
-  
-  emit(AppStatePasswordReset(
-    isLoading: false,
-    isSuccessful: false,
-    authError: authError,
-  ));
-}
-
-    // on FirebaseAuthException catch (e) {
-    //   emit(AppStatePasswordReset(
-    //     isLoading: false,
-    //     isSuccessful: false,
-    //     authError: AuthError.from(e),
-    //   ));
-    // }
+      AuthError authError;
+      if (e.code == 'no-current-user') {
+        authError = AuthError.from(e);
+      } else {
+        authError = AuthError.from(e);
+      }
+      
+      emit(AppStatePasswordReset(
+        isLoading: false,
+        isSuccessful: false,
+        authError: authError,
+      ));
+    }
   }
 }
