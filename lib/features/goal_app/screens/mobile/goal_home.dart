@@ -64,7 +64,6 @@ class GoalHome extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        actions: actionsMenuLogin(context),
         title: const Text(
           'Goals',
         ),

@@ -143,7 +143,7 @@ class ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         elevation: 0,
         title: const Text(''),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(),
         automaticallyImplyLeading: false,
         actions: [
           if (showExitButton ||
@@ -200,8 +200,8 @@ class ChatScreenState extends State<ChatScreen> {
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: message.isBot
-                                  ? Colors.grey[300]
-                                  : Colors.white,
+                                  ? Colors.grey[400]
+                                  : Colors.grey[100],
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
