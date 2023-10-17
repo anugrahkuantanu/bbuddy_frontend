@@ -6,7 +6,7 @@ class ApiEndpoint {
   // static const String baseURL = 'http://localhost:8000';
   static const String baseURL = 'https://api.bbuddy.ai';
   // static const String baseWSURL = 'ws://localhost:8000/ws';
-  static const String baseWSURL = 'wss://api.bbuddy.ai/ws';
+  static const String baseWSURL = 'wss://api.bbuddy.ai';
 
   // Apps Internals Links
   static const appLoginUrl = AuthFirebaseApp.login;
