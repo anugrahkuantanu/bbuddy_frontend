@@ -1,7 +1,6 @@
 import 'dart:async';
+import 'package:bbuddy_app/app.dart';
 import 'package:flutter/material.dart';
-
-import '../../../../app.dart';
 import '../widgets/widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,31 +14,45 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   bool _isVisible = false;
+  late Timer _navigationTimer;
+  late Timer _visibilityTimer;
 
-  _SplashScreenState() {
-    new Timer(const Duration(milliseconds: 2500), () {
-      setState(() {
-        //_decideNavigation();
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => MyApp()),
-          (route) => false,
-        );
-      });
+  @override
+  void initState() {
+    super.initState();
+
+    _navigationTimer = Timer(const Duration(milliseconds: 2500), () {
+      if (mounted) {
+        setState(() {
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MyApp()),
+            (route) => false,
+          );
+        });
+      }
     });
 
-    new Timer(Duration(milliseconds: 10), () {
-      setState(() {
-        _isVisible =
-            true; // Now it is showing fade effect and navigating to Login page
-      });
+    _visibilityTimer = Timer(const Duration(milliseconds: 10), () {
+      if (mounted) {
+        setState(() {
+          _isVisible = true; 
+        });
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _navigationTimer.cancel();
+    _visibilityTimer.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
           colors: [
             Theme.of(context).colorScheme.primaryContainer,
             Theme.of(context).primaryColor
@@ -52,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0,
-        duration: Duration(milliseconds: 1200),
+        duration: const Duration(milliseconds: 1200),
         child: Center(
           child: Container(
             height: 300.0,

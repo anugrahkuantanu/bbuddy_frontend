@@ -1,6 +1,6 @@
 import 'package:bbuddy_app/architect.dart';
-import 'package:bbuddy_app/features/auth_mod/screens/widgets/button.dart';
-import 'package:bbuddy_app/features/auth_mod/screens/widgets/logo.dart';
+import 'package:bbuddy_app/features/auth_firebase/screens/widgets/button.dart';
+import 'package:bbuddy_app/features/auth_firebase/screens/widgets/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -93,6 +93,12 @@ class LoginScreen extends HookWidget {
                   },
                 ),
                 SizedBox(height: 5.0.h),
+                TextButton(
+                  onPressed: () {
+                    Nav.to(context, '/forget_password');
+                  },
+                  child: const Text('Forget password?'),
+                ),
                 Divider(
                   thickness: 0.5,
                   color: Colors.grey[400],

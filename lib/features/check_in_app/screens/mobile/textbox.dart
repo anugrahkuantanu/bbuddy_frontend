@@ -64,7 +64,7 @@ class _TextBoxState extends State<TextBox> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white, width: screenWidth * 0.005),
+                    border: Border.all(color: Theme.of(context).textTheme.bodySmall!.color ?? Colors.black, width: screenWidth * 0.005),
                     borderRadius: BorderRadius.circular(screenWidth * 0.03),
                   ),
                   child: Column(
@@ -122,16 +122,18 @@ class _TextBoxState extends State<TextBox> {
                               );
                             }
                           },
-                          child: const Text(
+                          child: Text(
                             "Submit",
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.black,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           style: ThemeHelper().buttonStyle().copyWith(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).iconTheme.color ?? Colors.blueGrey,
+                            ),
                           ),
                         ),
                       ),

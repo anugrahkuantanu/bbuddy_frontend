@@ -78,15 +78,15 @@ class AppTheme {
           brightness: Brightness.light,
           primarySwatch: AppColors.lightscreen,
           bottomAppBarColor: Colors.white,
-          appBarTheme: AppBarTheme(
-            titleTextStyle: const TextStyle(
+          appBarTheme: const AppBarTheme(
+            titleTextStyle: TextStyle(
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
-            backgroundColor: AppColors.lightscreen,
+            backgroundColor: Colors.white,
             iconTheme: IconThemeData(
-              color: AppColors.textdark,),
+              color: AppColors.black,),
           ),
           navigationBarTheme: const NavigationBarThemeData(
             backgroundColor: AppColors.grey,
@@ -171,7 +171,7 @@ class AppTheme {
               color: AppColors.grey,
               fontSize: 16.w,
               fontWeight: FontWeight.bold
-            ),                       
+            ),               
           ),
 
           brightness: Brightness.dark,
@@ -183,7 +183,7 @@ class AppTheme {
               fontWeight: FontWeight.w500,
             ),
             backgroundColor: AppColors.darkscreen,
-            iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: AppColors.grey),
           ),
           buttonTheme: const ButtonThemeData(
             textTheme: ButtonTextTheme.primary,

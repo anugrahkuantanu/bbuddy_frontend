@@ -25,6 +25,7 @@ Future main() async {
     MultiProvider(
       providers: appProviders,
       child: const MyApp(),
+      // child: AppStarter(),
     ),
   );
 }

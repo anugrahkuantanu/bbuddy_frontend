@@ -48,6 +48,14 @@ class AppEventGoToLogin implements AppEvent {
 }
 
 @immutable
+class AppEventForgotPassword extends AppEvent {
+  final String email;
+
+  AppEventForgotPassword(this.email);
+}
+
+
+@immutable
 class AppEventRegister implements AppEvent {
   final String email;
   final String password;

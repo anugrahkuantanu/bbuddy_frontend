@@ -11,7 +11,7 @@ const Map<String, AuthError> authErrorMapping = {
   'requires-recent-login': AuthErrorRequiresRecentLogin(),
   'no-current-user': AuthErrorNoCurrentUser(),
   'password-not-match': AuthErrorPasswordNotMatch(),
-  'wrong-password': AuthInvalidPassword()
+  'wrong-password': AuthInvalidPassword(),
 };
 
 @immutable

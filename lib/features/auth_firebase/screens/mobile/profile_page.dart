@@ -1,13 +1,10 @@
 import 'package:bbuddy_app/core/classes/route_manager.dart';
 import 'package:bbuddy_app/core/helpers/actions_helper.dart';
-import 'package:bbuddy_app/features/auth_mod/screens/widgets/user_info_item.dart';
+import 'package:bbuddy_app/features/auth_firebase/screens/widgets/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-// ... other imports ...
 
 class ProfilePage extends StatefulWidget {
   final int selectedIndex;

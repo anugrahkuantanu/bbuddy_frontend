@@ -58,7 +58,6 @@ class _ReflectionHomeState extends State<ReflectionHome> {
       appBar: AppBar(
         title: const Text('Reflections'),
         centerTitle: true,
-        actions: actionsMenu(context),
         automaticallyImplyLeading: false,
       ),
       body: Padding(

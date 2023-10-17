@@ -69,7 +69,7 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
           color: Colors.white,
         ),
       ),
-      iconTheme: const IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(),
         leading: IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () {
@@ -90,11 +90,7 @@ Widget _buildPage(BuildContext context, Map<String, Color> buttonColors, Map<Str
                 ),
                 child: Text(
                   "What manifestation of ${feeling.toLowerCase()} are you feeling?",
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(context).textTheme.labelLarge,
                   textAlign: TextAlign.center,
                 ),
               ),
