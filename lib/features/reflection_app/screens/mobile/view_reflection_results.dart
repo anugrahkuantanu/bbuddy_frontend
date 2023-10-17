@@ -39,7 +39,7 @@ class ViewReflectionResults extends StatelessWidget {
       child: BlocBuilder<ViewReflectionResultBloc, ViewReflectionResultState>(
         builder: (context, state) {
           if (state is ReflectionResultLoadingState) {
-            return LoadingUI();
+            return const LoadingUI();
           } else if (state is ReflectionResultLoadedState) {
             final reflectionData = state.reflection;
             return _buildUI(context, reflectionData);
@@ -56,9 +56,12 @@ class ViewReflectionResults extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(reflectionData.heading,
-            style: Theme.of(context).textTheme.bodyMedium,),
-        iconTheme: IconThemeData(color: Theme.of(context).textTheme.labelLarge!.color),
+        title: Text(
+          reflectionData.heading,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).textTheme.labelLarge!.color),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

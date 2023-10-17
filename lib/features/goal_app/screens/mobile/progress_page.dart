@@ -113,13 +113,13 @@ class ProgressPageState extends State<ProgressPage> {
       appBar: AppBar(
         elevation: 0,
         title: const Text("Progess Page"),
-          leading: IconButton(
-    icon: const Icon(Icons.arrow_back), // Replace with your desired icon
-    onPressed: () {
-      // Add your back button functionality here
-      Navigator.pop(context);
-    },
-  ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back), // Replace with your desired icon
+          onPressed: () {
+            // Add your back button functionality here
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(
@@ -264,19 +264,18 @@ class ProgressPageState extends State<ProgressPage> {
                   Milestone milestone = goal.milestones[index];
                   List<Milestone> milestones = goal.milestones;
                   return CheckBoxTile(
-                    value: milestone.status,
+                    value: milestone.status ?? false,
                     onDelete: () {
                       _progressBloc
                           .add(DeleteMilestone(goal: goal, index: index));
                     },
                     onChanged: (bool? value) {
-                      if (value != null) {
-                        _progressBloc.add(ChangeMilestoneStatus(
-                            goal: goal,
-                            index: index,
-                            status: value,
-                            finishedCount: finishedCount));
-                      }
+                      value ??= false;
+                      _progressBloc.add(ChangeMilestoneStatus(
+                          goal: goal,
+                          index: index,
+                          status: value,
+                          finishedCount: finishedCount));
                     },
                     onEdit: (content) {
                       _progressBloc.add(EditMilestone(

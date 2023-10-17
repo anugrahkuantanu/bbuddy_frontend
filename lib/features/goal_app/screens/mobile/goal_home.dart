@@ -39,7 +39,6 @@ class GoalHome extends StatelessWidget {
       },
       child: BlocBuilder<GoalBloc, GoalState>(
         builder: (context, state) {
-          print(state);
           if (state is GoalLoading) {
             return const LoadingUI();
           } else if (state is GoalLoaded) {
@@ -50,7 +49,6 @@ class GoalHome extends StatelessWidget {
           } else if (state is GoalError) {
             return ErrorUI(errorMessage: state.errorMessage);
           }
-          //print("current state: $state");
           return _buildFullGoalUI(
               context, generatedGoals!, personalGoals!); // Default state
         },

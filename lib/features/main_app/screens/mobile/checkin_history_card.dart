@@ -8,7 +8,6 @@ import '../../../check_in_app/screens/screen.dart';
 import 'package:bbuddy_app/core/core.dart';
 
 class CheckInHistoryCard extends StatelessWidget {
-
   final CheckInHistoryBloc bloc;
   final List<Color> cardColors = [
     const Color(0xFF65dc99),
@@ -64,7 +63,7 @@ class CheckInHistoryCard extends StatelessWidget {
                             feeling: history[0],
                             feelingForm: history[1],
                             reasonEntity: history[2],
-                            reason: history.last,
+                            reason: history.sublist(3).join('.'),
                             isPastCheckin: true,
                             aiResponse: checkIn.messages[1].text,
                           ),
@@ -83,11 +82,6 @@ class CheckInHistoryCard extends StatelessWidget {
                     onTap: () {
                       var tm = context.read<ThemeProvider>();
                       tm.setNavIndex(1);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => const CheckInHome()),
-                      // );
                       Nav.toNamed(context, '/checkIn');
                     },
                     title: 'No check-ins available',
@@ -102,16 +96,14 @@ class CheckInHistoryCard extends StatelessWidget {
           // return ErrorUI(errorMessage: state.errorMessage);
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 30.w),
-              child: Container(
-                height: 300.h, // Adjusting for the Padding
-                padding: const EdgeInsets.all(10.0),
-                child: Center(
-                  child: Text(
-                    state.errorMessage,
-                    style: Theme.of(context).textTheme.bodyLarge
-                  ),
-                ),
+            child: Container(
+              height: 300.h, // Adjusting for the Padding
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Text(state.errorMessage,
+                    style: Theme.of(context).textTheme.bodyLarge),
               ),
+            ),
           );
         }
         return Container(); // default return, can be an empty container or some placeholder

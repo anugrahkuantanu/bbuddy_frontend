@@ -22,7 +22,8 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<GlobalStateManager>(
     create: (context) => GlobalStateManager(),
   ),
-  ChangeNotifierProvider(create: (_) => CounterStats()),
+  ChangeNotifierProvider(
+      create: (_) => CounterStats(statsService: locator.get<StatsService>())),
   ChangeNotifierProvider<ThemeProvider>(create: (_) => ThemeProvider()),
   BlocProvider<AppBloc>(
       create: (_) => AppBloc()

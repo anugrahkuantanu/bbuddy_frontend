@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bbuddy_app/di/di.dart';
 import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 import 'package:bbuddy_app/features/reflection_app/blocs/reflection_home_bloc/bloc.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import '../../services/checkin_service.dart';
 import 'package:provider/provider.dart';
@@ -43,10 +44,18 @@ class ChatScreenState extends State<ChatScreen> {
   bool isScrolledUp = false;
   bool showExitButton = false;
   final checkInService = locator.get<CheckInService>();
+  int dotsPosition = 0;
+  late Timer? _timer;
+  Chat? chat;
 
   @override
   void initState() {
     super.initState();
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      setState(() {
+        dotsPosition = (dotsPosition + 1) % 3; // Assuming you have 3 dots
+      });
+    });
     messages = [
       Message(
         text: "How are you feeling?",
@@ -75,27 +84,75 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    // Cancel the timer in the dispose method
+    _timer?.cancel();
+  }
+
+  void _handleIncomingMessage(
+      dynamic messageType, dynamic message, dynamic sender) async {
+    //add(StartChatEvent(dotsPosition: 0));
+    int lastIndex = messages.length - 1;
+    if (messageType == 'start' && sender == "bot") {
+    } else if (messageType == 'stream' && sender == "bot") {
+      if (messages.last.isWaiting) {
+        setState(() {
+          messages.removeAt(lastIndex);
+          messages.insert(
+              lastIndex, Message(text: message, isBot: true, isWaiting: false));
+        });
+      } else {
+        setState(() {
+          messages[lastIndex].text += message;
+        });
+      }
+    } else if (messageType == 'end' && sender == 'bot') {
+      await checkInService.storeCheckIn(widget.feeling, widget.feelingForm,
+          widget.reasonEntity, widget.reason, messages[lastIndex].text);
+      final counterStats = Provider.of<CounterStats>(context, listen: false);
+      counterStats.updateCheckInCounter();
+
+      context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
+
+      final bloc = context.read<ReflectionHomeBloc>();
+      if (bloc.state is ReflectionHomeInsufficientCheckIns) {
+        final state = bloc.state as ReflectionHomeInsufficientCheckIns;
+        bloc.add(UpdateNeedCheckInCount(
+            neededCheckInCount: state.neededCheckInCount - 1));
+      }
+      //add(EndChatEvent());
+    }
+  }
+
+  void _handleConnectionError(dynamic error) {
+    // Consider creating a new event for this action or handling it differently.
+  }
+
+  void _handleConnectionSuccess() {
+    // Consider creating a new event for this action or handling it differently.
+    chat?.sendJson({
+      'feeling': widget.feeling,
+      'feeling_form': widget.feelingForm,
+      'reason_entity': widget.reasonEntity,
+      'reason': widget.reason
+    });
+  }
+
   Future<void> getResponseAndStore() async {
     setState(() {
       isTyping = true;
     });
+    chat = Chat(
+      endpoint: 'checkin',
+      onMessageReceived: _handleIncomingMessage,
+      onConnectionError: _handleConnectionError,
+      onConnectionSuccess: _handleConnectionSuccess,
+    );
 
-    final response = await checkInService.getCheckInResponse(
-        widget.feeling, widget.feelingForm, widget.reasonEntity, widget.reason);
-
-    setState(() {
-      List<String> responseMessages = response.split("\n\n");
-      isTyping = false;
-      showProgressIndicator = false; // Hide the progress indicator
-      for (int i = 0; i < responseMessages.length; i++) {
-        messages.add(
-          Message(
-            text: responseMessages[i],
-            isBot: true,
-          ),
-        );
-      }
-    });
+    messages.add(Message(text: '', isBot: true, isWaiting: true));
 
     Future.delayed(const Duration(seconds: 0), () {
       setState(() {
@@ -105,21 +162,6 @@ class ChatScreenState extends State<ChatScreen> {
         }
       });
     });
-
-    checkInService.storeCheckIn(widget.feeling, widget.feelingForm,
-        widget.reasonEntity, widget.reason, response);
-
-    final counterStats = Provider.of<CounterStats>(context, listen: false);
-    counterStats.updateCheckInCounter();
-
-    context.read<CheckInHistoryBloc>().add(FetchCheckInHistoryEvent());
-
-    final bloc = context.read<ReflectionHomeBloc>();
-    if (bloc.state is ReflectionHomeInsufficientCheckIns) {
-      final state = bloc.state as ReflectionHomeInsufficientCheckIns;
-      bloc.add(UpdateNeedCheckInCount(
-          neededCheckInCount: state.neededCheckInCount - 1));
-    }
   }
 
   void sendUserMessage(String message) {
@@ -134,6 +176,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void navigateBackToHomePage() {
+    chat?.closeConnection();
     Nav.toNamed(context, '/');
   }
 
@@ -190,6 +233,10 @@ class ChatScreenState extends State<ChatScreen> {
                       itemCount: messages.length,
                       itemBuilder: (BuildContext context, int index) {
                         Message message = messages[index];
+                        bool isLastMessage = index == messages.length - 1;
+                        bool shouldDisplayDots = isLastMessage &&
+                            message.text == '' &&
+                            message.isWaiting;
                         return Align(
                           alignment: message.isBot
                               ? Alignment.centerLeft
@@ -204,21 +251,37 @@ class ChatScreenState extends State<ChatScreen> {
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Text(
-                              message.text,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    message.text,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  if (shouldDisplayDots)
+                                    DotsIndicator(
+                                      dotsCount: 3,
+                                      position: dotsPosition,
+                                      decorator: DotsDecorator(
+                                        size: const Size.square(10.0),
+                                        activeSize: const Size.square(10.0),
+                                        color: Colors.grey,
+                                        activeColor: Colors.black,
+                                        spacing: const EdgeInsets.all(3.0),
+                                        activeShape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(3.0),
+                                        ),
+                                      ),
+                                    ),
+                                ]),
                           ),
                         );
                       },
                     ),
-                    if (showProgressIndicator) // Display CircularProgressIndicator if showProgressIndicator is true
-                      const Center(
-                        child: CircularProgressIndicator(),
-                      ),
                   ],
                 ),
               ),

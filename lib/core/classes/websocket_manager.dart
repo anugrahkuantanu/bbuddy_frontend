@@ -18,6 +18,9 @@ class WebSocket {
   WebSocketSink? get sink => _channel?.sink;
   Stream? get stream => _channel?.stream;
   bool get isConnected => _isConnected;
+  Timer? _timeoutTimer;
+  Duration timeoutDuration =
+      const Duration(minutes: 15); // Set your desired timeout duration
 
   WebSocket({
     required this.onMessageCallback,
@@ -43,7 +46,10 @@ class WebSocket {
     }
     try {
       _streamSubscription = stream!.listen(
-        (rcvd) => onMessageCallback(rcvd),
+        (rcvd) {
+          _resetTimeoutTimer();
+          onMessageCallback(rcvd);
+        },
         onDone: () async {
           _isConnected = false;
           if (_shouldReconnect) {
@@ -55,6 +61,8 @@ class WebSocket {
         },
       );
       _isConnected = true;
+      // Start the timeout timer when the connection is established
+      _startTimeoutTimer();
     } catch (e) {
       _isConnected = false;
     }
@@ -107,5 +115,21 @@ class WebSocket {
     await sink?.close();
     await _streamSubscription?.cancel();
     _isConnected = false;
+  }
+
+  // Reset the timeout timer
+  void _resetTimeoutTimer() {
+    _timeoutTimer?.cancel();
+    _startTimeoutTimer();
+  }
+
+  // Start the timeout timer
+  void _startTimeoutTimer() {
+    _timeoutTimer = Timer(timeoutDuration, () {
+      if (_isConnected) {
+        // No activity detected within the timeout period, close the connection
+        close();
+      }
+    });
   }
 }

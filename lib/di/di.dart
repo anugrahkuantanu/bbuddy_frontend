@@ -15,6 +15,7 @@ void setupDependencies() async {
 
   locator.registerLazySingleton<Http>(
       () => Http(baseUrl: ApiEndpoint.baseURL, headers: headers));
+  locator.registerLazySingleton<StatsService>(() => StatsService());
   locator.registerLazySingleton<CheckInService>(() => CheckInService());
   locator.registerLazySingleton<ReflectionService>(() => ReflectionService());
   locator.registerLazySingleton<GoalService>(() => GoalService());

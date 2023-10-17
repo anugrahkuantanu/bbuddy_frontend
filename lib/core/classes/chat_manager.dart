@@ -3,16 +3,16 @@ import 'dart:typed_data';
 import 'package:bbuddy_app/config/config.dart';
 import 'package:bbuddy_app/core/core.dart';
 
-class GoalChat {
+class Chat {
   WebSocket? _webSocket;
 
   void Function(dynamic, dynamic, dynamic) onMessageReceived;
   void Function(dynamic) onConnectionError;
   void Function() onConnectionSuccess;
-  String goalId;
+  String endpoint;
 
-  GoalChat({
-    required this.goalId,
+  Chat({
+    required this.endpoint,
     required this.onMessageReceived,
     required this.onConnectionError,
     required this.onConnectionSuccess,
@@ -29,8 +29,8 @@ class GoalChat {
   void connect() async {
     //Token? accessToken = await getAccessToken();
     String? token = await getIdToken();
-    _webSocket
-        ?.connect('${ApiEndpoint.baseWSURL}/ws/$goalId?authorization=$token');
+    await _webSocket
+        ?.connect('${ApiEndpoint.baseWSURL}/$endpoint?authorization=$token');
   }
 
   void _handleMessage(dynamic data) {

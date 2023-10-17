@@ -159,7 +159,8 @@ class CheckBoxTile extends StatefulWidget {
   final double iconSize;
   final List<Milestone>? tasks;
 
-  CheckBoxTile({
+  const CheckBoxTile({
+    super.key,
     required this.value,
     required this.onChanged,
     required this.onDelete,
@@ -206,7 +207,7 @@ class _CheckBoxTileState extends State<CheckBoxTile> {
                 ),
                 child: Checkbox(
                   value: widget.value,
-                  tristate: true,
+                  tristate: false,
                   onChanged: widget.onChanged,
                   activeColor: widget.themeColor, // Custom active color
                   checkColor: Colors.white, // Custom check color
@@ -256,10 +257,10 @@ class _CheckBoxTileState extends State<CheckBoxTile> {
                         ),
                       );
                     },
-                    icon: Icon(Icons.edit),
+                    icon: const Icon(Icons.edit),
                     iconSize: widget.iconSize.w,
                     padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
+                    constraints: const BoxConstraints(),
                     color: widget.themeColor,
                   ),
                   IconButton(
@@ -268,10 +269,10 @@ class _CheckBoxTileState extends State<CheckBoxTile> {
                         widget.onDelete();
                       });
                     },
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     iconSize: widget.iconSize.w,
                     padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
+                    constraints: const BoxConstraints(),
                     color: widget.themeColor,
                   ),
                 ],
