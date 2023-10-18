@@ -201,6 +201,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       isLoading: true,
     ));
     await FirebaseAuth.instance.signOut();
+    GoogleSignIn().signOut;
 
     emit(const AppStateLoggedOut(
       isLoading: false,
