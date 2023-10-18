@@ -345,8 +345,10 @@ class _GoalChatPageState extends State<GoalChatPage> {
                               horizontal: 20, vertical: 10),
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color:
-                                message.isBot ? Colors.grey[300] : Colors.white,
+                            color: message.isBot
+                                ? Colors.grey[400]
+                                : Colors.grey[100],
+                            //Colors.grey[300] : Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(

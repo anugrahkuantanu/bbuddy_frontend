@@ -49,6 +49,7 @@ class ReflectionHomeBloc
         emit(
             NeedsMoreCheckIns()); // This state indicates the need for more check-ins.
       } else {
+        emit(ReflectionHomeLoading());
         List reflectionTopics = await reflectionService.getReflectionTopics();
         emit(NavigateToNewReflectionPage(reflectionTopics));
       }

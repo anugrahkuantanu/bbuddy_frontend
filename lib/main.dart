@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:bbuddy_app/app.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/config/config.dart';
+
 Future main() async {
   // ignore: unused_local_variable
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +21,7 @@ Future main() async {
     ));
   }
   await Firebase.initializeApp();
-  setupDependencies();
+  await setupDependencies();
   runApp(
     MultiProvider(
       providers: appProviders,

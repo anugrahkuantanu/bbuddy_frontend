@@ -8,7 +8,7 @@ import 'package:bbuddy_app/features/check_in_app/services/service.dart';
 
 final locator = GetIt.instance;
 
-void setupDependencies() async {
+Future<void> setupDependencies() async {
   Provider.debugCheckInvalidValueType = null;
   String? token = await getIdToken();
   Map<String, dynamic> headers = token != null ? {'token': token} : {};
