@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../blocs/bloc.dart';
 import '../../../../core/core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +71,11 @@ class NewReflectionPage extends StatelessWidget {
                         ),
                         child: Text(
                           topics[index],
-                          style: Theme.of(context).textTheme.labelMedium
+                          style: TextStyle(              
+                            color: Colors.black,
+                            fontSize: 18.w,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -85,7 +90,7 @@ class NewReflectionPage extends StatelessWidget {
                           ),
                           contentPadding: EdgeInsets.all(16.0),
                           filled: true,
-                          fillColor: Colors.white,
+                          fillColor: Theme.of(context).cardColor,
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                             borderSide: const BorderSide(

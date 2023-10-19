@@ -6,10 +6,34 @@ class AppColors {
     500: Color(_black),
   });
 
-    static const int _grey = 0xEEEEEEEE;
+
+  static const int _grey = 0xEEEEEEEE;
   static const MaterialColor grey = MaterialColor(_grey, {
     500: Color(_grey),
   });
+
+
+static final MaterialColor darkgrey = MaterialColor(
+  _darkGreyPrimaryValue,
+  <int, Color>{
+    50: Colors.grey[100]!,
+    100: Colors.grey[200]!,
+    200: Colors.grey[300]!,
+    300: Colors.grey[400]!,
+    400: Colors.grey[500]!,
+    500: Colors.grey[600]!,
+    600: Colors.grey[700]!,
+    700: Colors.grey[800]!,
+    800: Colors.grey[900]!,
+    900: Colors.grey[900]!,
+  },
+);
+
+static const int _darkGreyPrimaryValue = 0xFF616161; 
+
+
+
+
 
 
   static const MaterialColor textdark= MaterialColor(_black, {

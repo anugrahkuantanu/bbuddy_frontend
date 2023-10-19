@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bbuddy_app/di/di.dart';
+import 'package:bbuddy_app/features/auth_firebase/screens/widgets/logo.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +25,37 @@ Future main() async {
   }
   await Firebase.initializeApp();
   await setupDependencies();
-  runApp(
-    MultiProvider(
+    runApp(SplashScreen());
+  Timer(Duration(seconds: 3), () {
+    runApp(
+      MultiProvider(
       providers: appProviders,
       child: const MyApp(),
       // child: AppStarter(),
     ),
-  );
+    );
+  });
+  // runApp(
+  //   MultiProvider(
+  //     providers: appProviders,
+  //     child: const MyApp(),
+  //     // child: AppStarter(),
+  //   ),
+  // );
+}
+
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false, 
+      home: Scaffold(
+        backgroundColor: Colors.white,  // or any color you prefer
+        body: Center(
+          child: LoginLogo(width: 280, height: 280),
+        ),
+      ),
+    );
+  }
 }

@@ -38,8 +38,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
       return {'firstName': firstName, 'lastName': lastName, 'email': email};
     } catch (e) {
-      print('Error retrieving user data: $e');
-      return {'firstName': null, 'lastName': null, 'email': null};
+      throw Exception('Error retrieving user data: $e');
+      // return {'firstName': null, 'lastName': null, 'email': null};
     }
   }
 
@@ -64,11 +64,11 @@ class _ProfilePageState extends State<ProfilePage> {
           future: getUserData(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!['firstName'] == null) {
-              return Center(child: Text('No data available'));
+              return const Center(child: Text('No data available'));
             } else {
               return Padding(
               padding: EdgeInsets.only(top: 150.w),
@@ -79,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 width: double.infinity,
                 height: 400.h,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(10.w),
                   boxShadow: const [
                     BoxShadow(
@@ -95,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         icon: Icons.person,
                         label: 'Firstname:',
                         value: snapshot.data!['firstName'] ?? '',
-
+                        
                       ),
                       SizedBox(height: 50.h),
                       UserInfoItem(

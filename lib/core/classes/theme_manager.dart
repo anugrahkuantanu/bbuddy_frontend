@@ -16,6 +16,7 @@ class AppTheme {
     light = light ??
         ThemeData(
           scaffoldBackgroundColor: Colors.white,
+          cardColor: AppColors.darkgrey[300],
           textTheme: TextTheme(
             displayLarge: TextStyle(
               color: AppColors.black, 
@@ -114,6 +115,7 @@ class AppTheme {
     dark = dark ??
         ThemeData(
           scaffoldBackgroundColor: AppColors.darkscreen,
+          cardColor: Colors.white,
           textTheme: TextTheme(
             displayLarge: TextStyle(
               color: AppColors.grey, 
