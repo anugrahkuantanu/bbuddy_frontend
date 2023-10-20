@@ -7,16 +7,6 @@ import '../features/reflection_app/reflection_app.dart';
 import '../features/goal_app/goal_app.dart';
 import 'package:flutter/widgets.dart';
 
-// class Routes extends RouteManager {
-//   Routes() {
-//     addAll(AuthApp().routes);
-//     addAll(App().routes);
-//     addAll(CheckInApp().routes);
-//     addAll(GoalApp().routes);
-//     addAll(ReflectionApp().routes);
-//   }
-// }
-
 class Routes extends RouteManager {
   Routes() {
     //addAll(AuthApp().routes);

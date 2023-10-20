@@ -1,11 +1,10 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:bbuddy_app/architect.dart';
-import 'package:bbuddy_app/features/auth_firebase/screens/widgets/button.dart';
-import 'package:bbuddy_app/features/auth_firebase/screens/widgets/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/screens/widgets/widget.dart';
 
 class LoginScreen extends HookWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -35,7 +34,7 @@ class LoginScreen extends HookWidget {
             child: Column(
               children: [
                 SizedBox(height: 20.0.h),
-                LoginLogo(),
+                const Logo(),
                 SizedBox(height: 10.0.h),
                 Container(
                   child: TextField(

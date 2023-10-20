@@ -19,10 +19,8 @@ class ErrorUI extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-          child: Text(
-          errorMessage,
-          style: Theme.of(context).textTheme.bodyLarge
-          ),
+          child:
+              Text(errorMessage, style: Theme.of(context).textTheme.bodyLarge),
         ),
       ),
       bottomNavigationBar: BottomBar(),
@@ -47,10 +45,8 @@ class GoalCreatedThisWeek extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-          child: Text(
-          'Response: $response',
-          style: Theme.of(context).textTheme.bodyLarge
-          ),
+          child: Text('Response: $response',
+              style: Theme.of(context).textTheme.bodyLarge),
         ),
       ),
       bottomNavigationBar: BottomBar(),
@@ -181,6 +177,26 @@ class DialogHelper {
           ],
         );
       },
+    );
+  }
+}
+
+class Logo extends StatelessWidget {
+  final double? height;
+  final double? width;
+
+  const Logo({super.key, this.height, this.width});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ClipOval(
+        child: Image.asset(
+          'assets/images/BBuddy_logo2.png',
+          width: width ?? 180,
+          height: height ?? 180,
+        ),
+      ),
     );
   }
 }

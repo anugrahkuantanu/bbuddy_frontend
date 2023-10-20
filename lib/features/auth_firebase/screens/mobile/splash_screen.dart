@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bbuddy_app/app.dart';
 import 'package:flutter/material.dart';
-import '../widgets/widget.dart';
+import 'package:bbuddy_app/core/core.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key, required this.title}) : super(key: key);
@@ -35,7 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
     _visibilityTimer = Timer(const Duration(milliseconds: 10), () {
       if (mounted) {
         setState(() {
-          _isVisible = true; 
+          _isVisible = true;
         });
       }
     });
@@ -59,18 +59,18 @@ class _SplashScreenState extends State<SplashScreen> {
           ],
           begin: const FractionalOffset(0, 0),
           end: const FractionalOffset(0.0, 0.0),
-          stops: [0.0, 1.0],
+          stops: const [0.0, 1.0],
           tileMode: TileMode.clamp,
         ),
       ),
       child: AnimatedOpacity(
         opacity: _isVisible ? 1.0 : 0,
         duration: const Duration(milliseconds: 1200),
-        child: Center(
-          child: Container(
+        child: const Center(
+          child: SizedBox(
             height: 300.0,
             width: 300.0,
-            child: LoginLogo(width: 280, height:280),
+            child: Logo(width: 280, height: 280),
           ),
         ),
       ),
