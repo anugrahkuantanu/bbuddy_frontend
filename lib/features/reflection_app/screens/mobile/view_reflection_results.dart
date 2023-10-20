@@ -3,11 +3,8 @@ import 'package:bbuddy_app/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:bbuddy_app/features/reflection_app/services/service.dart';
-import 'package:bbuddy_app/features/main_app/services/service.dart';
-import 'reflection_home.dart';
 import 'package:bbuddy_app/features/reflection_app/models/model.dart';
 import 'package:bbuddy_app/features/reflection_app/blocs/bloc.dart';
-import '/core/utils/utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ViewReflectionResults extends StatelessWidget {
@@ -69,10 +66,6 @@ class ViewReflectionResults extends StatelessWidget {
               Navigator.pop(context);
             } else {
               Nav.toNamed(context, '/reflections');
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const ReflectionHome()),
-              // );
             }
           },
         ),

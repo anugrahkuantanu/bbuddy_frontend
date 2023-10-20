@@ -33,7 +33,8 @@ class GoalBloc extends Bloc<GoalEvent, GoalState> {
       if (isDeleted) {
         if (event.goal.type == GoalType.personal) {
           personalGoals.removeWhere((goal) => goal.id == event.goal.id);
-        } else if (event.goal.type == GoalType.generated) {
+        } else if (event.goal.type == GoalType.generated ||
+            event.goal.type == null) {
           generatedGoals.removeWhere((goal) => goal.id == event.goal.id);
         }
         emit(GoalDeleted(

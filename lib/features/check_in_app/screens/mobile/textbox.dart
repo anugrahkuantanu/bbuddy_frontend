@@ -9,10 +9,10 @@ class TextBox extends StatefulWidget {
   final String? reasonEntity;
 
   const TextBox({
+    super.key,
     this.feeling,
     this.feelingForm,
     this.reasonEntity,
-    
   });
 
   @override
@@ -20,7 +20,7 @@ class TextBox extends StatefulWidget {
 }
 
 class _TextBoxState extends State<TextBox> {
-  TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
   String inputText = '';
   bool showWarning = false;
 
@@ -45,7 +45,7 @@ class _TextBoxState extends State<TextBox> {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (showWarning)
                 Align(
                   alignment: Alignment.centerLeft,
@@ -60,16 +60,19 @@ class _TextBoxState extends State<TextBox> {
                     ),
                   ),
                 ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).textTheme.bodySmall!.color ?? Colors.black, width: screenWidth * 0.005),
+                    border: Border.all(
+                        color: Theme.of(context).textTheme.bodySmall!.color ??
+                            Colors.black,
+                        width: screenWidth * 0.005),
                     borderRadius: BorderRadius.circular(screenWidth * 0.03),
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Expanded(
                         child: TextField(
                           controller: _textEditingController,
@@ -92,7 +95,7 @@ class _TextBoxState extends State<TextBox> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -113,7 +116,8 @@ class _TextBoxState extends State<TextBox> {
                                 MaterialPageRoute(
                                   builder: (context) => ChatScreen(
                                     feeling: widget.feeling!.toLowerCase(),
-                                    feelingForm: widget.feelingForm!.toLowerCase(),
+                                    feelingForm:
+                                        widget.feelingForm!.toLowerCase(),
                                     reasonEntity: widget.reasonEntity ?? "",
                                     reason: inputText,
                                     isPastCheckin: false,
@@ -131,10 +135,11 @@ class _TextBoxState extends State<TextBox> {
                             ),
                           ),
                           style: ThemeHelper().buttonStyle().copyWith(
-                            backgroundColor: MaterialStateProperty.all(
-                              Theme.of(context).iconTheme.color ?? Colors.blueGrey,
-                            ),
-                          ),
+                                backgroundColor: MaterialStateProperty.all(
+                                  Theme.of(context).iconTheme.color ??
+                                      Colors.blueGrey,
+                                ),
+                              ),
                         ),
                       ),
                     ),
