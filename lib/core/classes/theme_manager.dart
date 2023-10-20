@@ -1,3 +1,5 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../architect.dart';
 import 'package:flutter/material.dart';
 
@@ -13,21 +15,82 @@ class AppTheme {
   ]) {
     light = light ??
         ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          cardColor: AppColors.darkgrey[300],
+          textTheme: TextTheme(
+            displayLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 60.w,
+              fontWeight: FontWeight.bold
+            ),
+            displayMedium: TextStyle(
+              color: AppColors.black, 
+              fontSize: 55.w,
+              fontWeight: FontWeight.bold
+            ),
+            displaySmall: TextStyle(
+              color: AppColors.black, 
+              fontSize: 50.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 30.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineMedium: TextStyle(
+              color: AppColors.black, 
+              fontSize: 25.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineSmall: TextStyle(
+              color: AppColors.black, 
+              fontSize: 22.w,
+              fontWeight: FontWeight.bold
+            ),
+            bodyLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 20.w,
+            ),
+            bodyMedium: TextStyle(
+              color: AppColors.black,
+              fontSize: 18.w
+            ),
+            bodySmall: TextStyle(
+              color: AppColors.black,
+              fontSize: 16.w,
+            ),
+            labelLarge: TextStyle(
+              color: AppColors.black, 
+              fontSize: 20.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelMedium: TextStyle(
+              color: AppColors.black,
+              fontSize: 18.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelSmall: TextStyle(
+              color: AppColors.black,
+              fontSize: 14.w,
+              fontWeight: FontWeight.bold
+            ),
+          ),
           brightness: Brightness.light,
           primarySwatch: AppColors.lightscreen,
           bottomAppBarColor: Colors.white,
-          scaffoldBackgroundColor: const Color.fromARGB(255, 222, 255, 252),
           appBarTheme: const AppBarTheme(
             titleTextStyle: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w500,
             ),
-            backgroundColor: AppColors.lightscreen,
-            iconTheme: IconThemeData(color: Colors.white),
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: AppColors.black,),
           ),
           navigationBarTheme: const NavigationBarThemeData(
-            backgroundColor: AppColors.lightscreen,
+            backgroundColor: AppColors.grey,
           ),
           popupMenuTheme: const PopupMenuThemeData(
             // color: AppColors.space,
@@ -51,8 +114,79 @@ class AppTheme {
 
     dark = dark ??
         ThemeData(
+          scaffoldBackgroundColor: AppColors.darkscreen,
+          cardColor: Colors.white,
+          textTheme: TextTheme(
+            displayLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 60.w,
+              fontWeight: FontWeight.bold
+            ),
+            displayMedium: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 55.w,
+              fontWeight: FontWeight.bold
+            ),
+            displaySmall: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 50.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 30.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineMedium: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 25.w,
+              fontWeight: FontWeight.bold
+            ),
+            headlineSmall: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 20.w,
+              fontWeight: FontWeight.bold
+            ),
+            bodyLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 20.w,
+            ),
+            bodyMedium: TextStyle(
+              color: AppColors.grey,
+              fontSize: 18.w
+            ),
+            bodySmall: TextStyle(
+              color: AppColors.grey,
+              fontSize: 16.w,
+            ),
+            labelLarge: TextStyle(
+              color: AppColors.grey, 
+              fontSize: 20.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelMedium: TextStyle(
+              color: AppColors.grey,
+              fontSize: 18.w,
+              fontWeight: FontWeight.bold
+            ),
+            labelSmall: TextStyle(
+              color: AppColors.grey,
+              fontSize: 16.w,
+              fontWeight: FontWeight.bold
+            ),               
+          ),
+
           brightness: Brightness.dark,
           primarySwatch: Colors.yellow,
+          appBarTheme: const AppBarTheme(
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+            backgroundColor: AppColors.darkscreen,
+            iconTheme: IconThemeData(color: AppColors.grey),
+          ),
           buttonTheme: const ButtonThemeData(
             textTheme: ButtonTextTheme.primary,
             buttonColor: Colors.white,

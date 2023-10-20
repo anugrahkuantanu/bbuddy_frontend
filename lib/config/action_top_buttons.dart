@@ -23,20 +23,5 @@ class ActionTopButtons extends ActionButtons {
             label: 'Logout',
             link: '/logout',
           ),
-          ButtonData(
-            icon: Icons.circle,
-            label: 'register',
-            link: '/register',
-          ),
-          ButtonData(
-            icon: Icons.circle,
-            label: 'forget',
-            link: '/forget',
-          ),
-          ButtonData(
-            icon: Icons.circle,
-            label: 'testlogin',
-            link: '/testlogin',
-          ),
         ]);
 }

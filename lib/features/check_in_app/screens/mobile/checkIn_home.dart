@@ -1,59 +1,62 @@
 import 'package:flutter/material.dart';
-import 'feeling_form_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/core.dart';
-import 'package:provider/provider.dart';
-import '/config/config.dart';
-import '../bloc/bloc.dart';
-import '../widget/widget.dart';
+import '../../bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../controllers/controller.dart';
 
 class CheckInHome extends StatelessWidget {
   const CheckInHome({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
-    var tm = context.watch<ThemeProvider>();
-    var bloc = CheckInHomeBloc();  // Instantiate the BLoC
+    return BlocProvider(
+      create: (_) => CheckInHomeBloc()..add(UpdateUIEvent()),
+      child: BlocConsumer<CheckInHomeBloc, CheckInHomeState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          if (state is UpdateUIState) {
+            return _buildUI(context, state);
+          }
+          return const CircularProgressIndicator(); // Default state for loading or initial
+        },
+      ),
+    );
+  }
 
-    ScreenUtil.init(context, designSize: Size(414, 896));
+  Widget _buildUI(BuildContext context, UpdateUIState state) {
+    var bloc = BlocProvider.of<CheckInHomeBloc>(context);
 
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double emojiSize = bloc.computeEmojiSize(screenWidth);
-    double textSize = bloc.computeTextSize(screenWidth);
-    double buttonHeight = bloc.computeButtonHeight(screenWidth, screenHeight);
-    Color textColor = bloc.getTextColor(tm);
-    Color backgroundColor= bloc.getBackgroundColor(tm);
-
+    double? emojiSize = Theme.of(context).iconTheme.size ?? 50.w;
     return Scaffold(
-      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: bloc.getAppBarColor(tm),
         title: const Text('Check-In'),
         centerTitle: true,
-        actions: actionsMenu(context),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(screenWidth * 0.04.w),
+            padding: EdgeInsets.all(20.w),
             child: Column(
               children: [
-                Helper().ScreenHeadingContainer(context, 'How are you feeling?'),
+                Helper()
+                    .screenHeadingContainer(context, 'How are you feeling?'),
                 Column(
-                  children: _buildFeelingButtons(context, bloc.feelings, emojiSize, textSize, textColor, backgroundColor, buttonHeight, screenWidth),
+                  children: _buildFeelingButtons(context, bloc.feelings, emojiSize),
                 ),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomBar(),
+      bottomNavigationBar:
+          BottomBar(), // Assuming you have this widget defined somewhere
     );
   }
 
-  List<Widget> _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize, double textSize, Color textColor, Color backgroundColor, double buttonHeight, double screenWidth) {
+_buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, double emojiSize) {
     List<Widget> feelingButtons = [];
 
     for (int i = 0; i < feelings.length; i += 2) {
@@ -62,31 +65,47 @@ class CheckInHome extends StatelessWidget {
       // First button
       rowChildren.add(
         Expanded(
-          child: 
-          EntityButton(
-            entity: feelings[i]['name']!,
-            emoji: feelings[i]['emoji']!,
-            textColor: textColor,
-            fontSize: textSize,
-            onTap: () => _navigateToFeelingFormScreen(context, feelings[i]['name']!, textColor, backgroundColor),
-            emojiSize: emojiSize,
+          child: Column(
+            children: [
+              TextButton(
+                onPressed: () => _navigateToFeelingFormScreen(context, feelings[i]['name']!),
+                child: Text(
+                  feelings[i]['emoji'],
+                  style: TextStyle(
+                    fontSize: emojiSize,
+                  ),
+                ),
+              ),
+              SizedBox(height: 0.02.sh),
+              Text(
+                feelings[i]['name'],
+                style: Theme.of(context).textTheme.labelSmall
+              ),
+            ]
           ),
         ),
       );
       if (i + 1 < feelings.length) {
-        rowChildren.add(SizedBox(width: screenWidth * 0.05.w));
+        rowChildren.add(SizedBox(width: 60.w));
         rowChildren.add(
           Expanded(
-            child: 
-
-              EntityButton(
-              entity: feelings[i + 1]['name']!,
-              emoji: feelings[i + 1]['emoji']!,
-              textColor: textColor,
-              fontSize: textSize,
-              onTap: () => _navigateToFeelingFormScreen(context, feelings[i + 1]['name'], textColor, backgroundColor),
-              icon: null,
-              emojiSize: emojiSize,
+            child: Column(
+              children: [
+                TextButton(
+                  onPressed: () => _navigateToFeelingFormScreen(context, feelings[i+1]['name']!),
+                  child: Text(
+                    feelings[i]['emoji'],
+                    style: TextStyle(
+                      fontSize: emojiSize,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 0.02.sh),
+                Text(
+                  feelings[i+1]['name'],
+                  style: Theme.of(context).textTheme.labelSmall
+                ),
+              ]
             ),
           ),
         );
@@ -101,19 +120,16 @@ class CheckInHome extends StatelessWidget {
     return feelingButtons;
   }
 
-  void _navigateToFeelingFormScreen(BuildContext context, String? feelingName, Color? textColor, Color? backgroundColor) {
-    // if (feelingName != null && textColor != null && backgroundColor != null) {
+  void _navigateToFeelingFormScreen(BuildContext context, String? feelingName) {
+    if (feelingName != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => 
-          FeelingFormPage(
-            feeling: feelingName!,
-            textColor: textColor!,
-            backgroundColor: backgroundColor!,
+          builder: (context) => FeelingsFormController(
+            feeling: feelingName,
             ),
         ),
       );
-    // }
+    }
   }
 }

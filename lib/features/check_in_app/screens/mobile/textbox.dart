@@ -7,16 +7,12 @@ class TextBox extends StatefulWidget {
   final String? feeling;
   final String? feelingForm;
   final String? reasonEntity;
-  final Color? backgroundColor;
-  final Color? textColor;
 
   const TextBox({
+    super.key,
     this.feeling,
     this.feelingForm,
     this.reasonEntity,
-    this.backgroundColor,
-    this.textColor,
-    
   });
 
   @override
@@ -24,7 +20,7 @@ class TextBox extends StatefulWidget {
 }
 
 class _TextBoxState extends State<TextBox> {
-  TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
   String inputText = '';
   bool showWarning = false;
 
@@ -32,18 +28,9 @@ class _TextBoxState extends State<TextBox> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-              backgroundColor: widget.backgroundColor,
-              elevation: 0, // Remove the line dividing the AppBar and the rest of the screen
-              title: Text(
-                '',
-                style: TextStyle(
-                  color: widget.textColor, // Set the color of the font to white
-                ),
-              ),
-              iconTheme: IconThemeData(color: widget.textColor),
-            ),
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(16.0.w),
@@ -52,27 +39,19 @@ class _TextBoxState extends State<TextBox> {
             children: [
               Container(
                 padding: EdgeInsets.all(10.0.w),
-                // decoration: BoxDecoration(
-                //   border: Border.all(color: Color(0xFF404659), width: screenWidth * 0.005),
-                //   borderRadius: BorderRadius.circular(screenWidth * 0.03),
-                // ),
                 child: Text(
                   'Share more about what\'s making you ${widget.feeling!.toLowerCase()}',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: widget.textColor,
-                  ),
+                  style: Theme.of(context).textTheme.labelMedium,
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               if (showWarning)
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Container(
                     padding: const EdgeInsets.all(10.0),
-                    child: Text(
+                    child: const Text(
                       'Oops! You forgot to share more details. Please provide extra details about your feeling below. These details will be used later during the reflection.',
                       style: TextStyle(
                         color: Colors.red,
@@ -81,16 +60,19 @@ class _TextBoxState extends State<TextBox> {
                     ),
                   ),
                 ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: widget.textColor ?? Colors.transparent, width: screenWidth * 0.005),
+                    border: Border.all(
+                        color: Theme.of(context).textTheme.bodySmall!.color ??
+                            Colors.black,
+                        width: screenWidth * 0.005),
                     borderRadius: BorderRadius.circular(screenWidth * 0.03),
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Expanded(
                         child: TextField(
                           controller: _textEditingController,
@@ -98,10 +80,7 @@ class _TextBoxState extends State<TextBox> {
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.all(10.0),
                             hintText: "Write your answer",
-                            hintStyle: TextStyle(
-                        color: widget.textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            hintStyle: Theme.of(context).textTheme.bodySmall,
                           ),
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
@@ -116,7 +95,7 @@ class _TextBoxState extends State<TextBox> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
@@ -137,11 +116,11 @@ class _TextBoxState extends State<TextBox> {
                                 MaterialPageRoute(
                                   builder: (context) => ChatScreen(
                                     feeling: widget.feeling!.toLowerCase(),
-                                    feelingForm: widget.feelingForm!.toLowerCase(),
+                                    feelingForm:
+                                        widget.feelingForm!.toLowerCase(),
                                     reasonEntity: widget.reasonEntity ?? "",
                                     reason: inputText,
                                     isPastCheckin: false,
-                                    backgroundColor: widget.backgroundColor ?? Colors.blueGrey,
                                   ),
                                 ),
                               );
@@ -151,13 +130,16 @@ class _TextBoxState extends State<TextBox> {
                             "Submit",
                             style: TextStyle(
                               fontSize: 20,
+                              color: Theme.of(context).scaffoldBackgroundColor,
                               fontWeight: FontWeight.bold,
-                              color: widget.backgroundColor,
                             ),
                           ),
                           style: ThemeHelper().buttonStyle().copyWith(
-                            backgroundColor: MaterialStateProperty.all<Color>(widget.textColor ?? Colors.black),
-                          ),
+                                backgroundColor: MaterialStateProperty.all(
+                                  Theme.of(context).iconTheme.color ??
+                                      Colors.blueGrey,
+                                ),
+                              ),
                         ),
                       ),
                     ),

@@ -1,12 +1,11 @@
+import 'package:bbuddy_app/features/main_app/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/widget.dart';
-import '../../../../../core/core.dart';
-import '/config/config.dart';
+import 'package:bbuddy_app/features/main_app/screens/widgets/widget.dart';
+import 'package:bbuddy_app/core/core.dart';
+import 'package:bbuddy_app/config/config.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 import 'checkin_history_card.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -19,54 +18,43 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var tm = context.watch<ThemeProvider>();
-    Color? textColor = tm.isDarkMode ? AppColors.textlight : AppColors.textdark;
-    final Color backgroundColor = (tm.isDarkMode ? AppColors.darkscreen : AppColors.lightscreen[100])!;
-    
+    // ignore: unused_local_variable
+    Color textColor = tm.isDarkMode
+        ? const Color.fromRGBO(238, 238, 238, 0.933)
+        : AppColors.textdark;
     return Scaffold(
-      backgroundColor: backgroundColor,
       body: SafeArea(
         child: ListView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: HeadHomePageWidget(context, text_color: textColor),
+              child: const HeadHomePageWidget(),
             ),
             Padding(
               padding: EdgeInsets.only(left: 28.w, bottom: 12.w),
-              child: Text(
-                "Check-In Story",
-                style: TextStyle(
-                    color: textColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 20.w),
-              ),
+              child: Text("Check-In Story",
+                  style: Theme.of(context).textTheme.headlineSmall),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.w),
-              child: CheckInHistoryCard(
-                textColor: Colors.white,
-                backgroundColor: backgroundColor,
+              child: Builder(
+                builder: (context) => CheckInHistoryCard(
+                  bloc: context.read<CheckInHistoryBloc>(),
+                ),
               ),
-            ),
+            )
           ],
         ),
       ),
       bottomNavigationBar: BottomBar(),
     );
   }
-
-
-  void onSeeAllTapped() {
-  }
-
-
-  void onDepressionHealingTapped() {
-  }
-
-  void onSearchIconTapped() {
-  }
 }
-

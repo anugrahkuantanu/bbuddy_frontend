@@ -21,9 +21,9 @@ class Nav {
     String url, {
     Object? arguments,
   }) =>
-      Navigator.pushNamed(
-        context,
+      Navigator.of(context).pushNamedAndRemoveUntil(
         url,
+        (route) => false,
         arguments: arguments,
       );
 
@@ -33,10 +33,9 @@ class Nav {
     Object? arguments,
     Object? result,
   }) {
-    Navigator.pushReplacementNamed(
+    Navigator.pushNamed(
       context,
       url,
-      result: result,
       arguments: arguments,
     );
   }

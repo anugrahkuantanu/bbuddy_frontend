@@ -1,13 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/foundation.dart';
 
 class Http extends HttpManager {
   Http({String? baseUrl, Map<String, dynamic>? headers})
       : super(baseUrl!, headers!);
+  void addHeaders(Map<String, dynamic>? headers) {
+    _dio.options.headers.addAll(headers ?? {});
+  }
 }
 
 class HttpManager {
@@ -19,11 +23,10 @@ class HttpManager {
 
     // how to solve flutter CERTIFICATE_VERIFY_FAILED error while performing a POST request?
     if (kIsWeb) {
-      _dio.options.headers['content-Type'] = '*';
+      _dio.options.headers['Content-Type'] = '*';
       _dio.options.headers['Access-Control-Allow-Origin'] = '*';
       _dio.options.headers['Access-Control-Allow-Methods'] = '*';
     }
-
     if (!kIsWeb) {
       (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
           (HttpClient client) {
@@ -432,4 +435,115 @@ class HttpManager {
     }
     return response!;
   }
+
+  // Future<Stream<dynamic>?> streamGet(
+  //   String url, {
+  //   Map<String, dynamic>? params,
+  //   Options? options,
+  //   CancelToken? token,
+  //   void Function(Uint8List data)? onReceiveData,
+  // }) async {
+  //   try {
+  //     _dio.options.headers['Accept'] = 'text/event-stream';
+  //     _dio.options.headers['Cache-Control'] = 'no-cache';
+  //     final response = await _dio.get<ResponseBody>(
+  //       url,
+  //       options: Options(responseType: ResponseType.stream),
+  //       queryParameters: params,
+  //       cancelToken: token,
+  //     );
+  //     StreamTransformer<Uint8List, List<int>> unit8Transformer =
+  //         StreamTransformer.fromHandlers(
+  //       handleData: (data, sink) {
+  //         sink.add(List<int>.from(data));
+  //       },
+  //     );
+  //     final stream = response.data?.stream
+  //         .transform(unit8Transformer)
+  //         .transform(const Utf8Decoder())
+  //         .transform(const LineSplitter());
+  //     return stream;
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
+  //   return null;
+  // }
+
+  Future<Stream<dynamic>?> streamPost(
+    String url, {
+    dynamic data,
+    Map<String, dynamic>? params,
+    Options? options,
+    CancelToken? token,
+    void Function(Uint8List data)? onReceiveData,
+    void Function(String response)? onReceiveResponse,
+  }) async {
+    try {
+      _dio.options.headers['Accept'] = 'text/event-stream';
+      _dio.options.headers['Cache-Control'] = 'no-cache';
+      _dio.options.headers['Content-Type'] = 'application/json';
+      final response = await _dio.post<ResponseBody>(
+        url,
+        data: data,
+        options: Options(responseType: ResponseType.stream),
+        queryParameters: params,
+        cancelToken: token,
+      );
+      StreamTransformer<Uint8List, List<int>> unit8Transformer =
+          StreamTransformer.fromHandlers(
+        handleData: (data, sink) {
+          sink.add(List<int>.from(data));
+        },
+      );
+
+      final stream = response.data?.stream
+          .transform(unit8Transformer)
+          .transform(const Utf8Decoder())
+          .transform(const LineSplitter());
+
+      return stream;
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
+  // Future<void> streamPost(
+  //   String url, {
+  //   dynamic data,
+  //   Map<String, dynamic>? params,
+  //   Options? options,
+  //   CancelToken? token,
+  //   void Function(Uint8List data)? onReceiveData,
+  // }) async {
+  //   try {
+  //     final response = await _dio.post(
+  //       url,
+  //       data: data,
+  //       queryParameters: params,
+  //       options: Options(responseType: ResponseType.stream),
+  //       cancelToken: token,
+  //       onReceiveProgress: (received, total) {
+  //         // You can implement progress tracking here if needed
+  //       },
+  //     );
+  //     StreamTransformer<Uint8List, List<int>> unit8Transformer =
+  //         StreamTransformer.fromHandlers(
+  //       handleData: (data, sink) {
+  //         sink.add(List<int>.from(data));
+  //       },
+  //     );
+
+  //     response.data?.stream
+  //         .transform(unit8Transformer)
+  //         .transform(const Utf8Decoder())
+  //         .transform(const LineSplitter())
+  //         .listen((event) {
+  //       print(event);
+  //     });
+  //     //print(response.data.stream);
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
+  // }
 }

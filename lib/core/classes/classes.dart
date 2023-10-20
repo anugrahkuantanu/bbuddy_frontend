@@ -6,3 +6,5 @@ export './http_manager.dart';
 export './route_manager.dart';
 export './theme_manager.dart';
 export './theme_provider.dart';
+export './websocket_manager.dart';
+export './chat_manager.dart';

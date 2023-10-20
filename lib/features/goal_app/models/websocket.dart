@@ -30,9 +30,8 @@ class WebSocket {
     // ensure there's no duplicated channel
     await close();
     _shouldReconnect = true;
-
     _channel = WebSocketChannel.connect(Uri.parse(url));
-    
+
     await _listen(url);
     // print("websocket connected!");
   }

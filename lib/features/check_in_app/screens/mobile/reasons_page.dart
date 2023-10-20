@@ -1,20 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'textbox.dart';
-import '../bloc/bloc.dart';
 import '../widget/widget.dart';
+
+class ReasonPageBloc {
+  final List<String> entities = [
+    'School',
+    'Work',
+    'Family',
+    'Relation-ships',
+    'Partner',
+    'Money',
+    'Health',
+    'Friend-ship',
+    'Social Media',
+    'Good Sleep',
+    'Career',
+    'Goals',
+    'Sex',
+    'Boredom',
+    'Addict-ion',
+    'Food',
+    'Other',
+  ];
+
+  final Map<String, IconData> iconsMap = {
+    'School': Icons.school,
+    'Work': Icons.work,
+    'Family': Icons.family_restroom,
+    'Relation-ships': Icons.favorite,
+    'Partner': Icons.favorite_border,
+    'Money': Icons.attach_money,
+    'Health': Icons.health_and_safety,
+    'Friend-ship': Icons.emoji_people,
+    'Social Media': Icons.social_distance,
+    'Good Sleep': Icons.nights_stay,
+    'Career': Icons.work_outline,
+    'Goals': Icons.check_box_outline_blank,
+    'Sex': Icons.people_alt,
+    'Boredom': Icons.sentiment_dissatisfied,
+    'Addict-ion': Icons.smoking_rooms,
+    'Food': Icons.fastfood,
+    'Other': Icons.more_horiz,
+  };
+
+  IconData getIcon(String entity) {
+    return iconsMap[entity]!;
+  }
+
+  double computeEmojiSize(double screenWidth) {
+    if (screenWidth < 380) {
+      return screenWidth * 0.08.w;
+    } else if (screenWidth < 400) {
+      return screenWidth * 0.10.w;
+    } else {
+      return screenWidth * 0.09.w;
+    }
+  }
+
+
+  double computeHighSpace(double screenWidth, double screenHeight) {
+    if (screenWidth < 380) {
+      return screenHeight * 0.03;
+    } else if (screenWidth < 400) {
+      return screenHeight * 0.06;
+    } else {
+      return screenHeight * 0.04;
+    }
+  }
+}
 
 
 class ReasonPage extends StatefulWidget {
   const ReasonPage({Key? key, 
   this.feeling, 
   this.feelingForm,
-  this.backgroundColor,
   this.textColor,
   }): super(key: key);
   final String? feeling;
   final String? feelingForm;
-  final Color? backgroundColor;
   final Color? textColor;
 
   @override
@@ -38,7 +102,6 @@ class _ReasonPageState extends State<ReasonPage>
         builder: (context) {
           String enteredReason = '';
           bool showError = false;
-
           return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return AlertDialog(
@@ -85,8 +148,6 @@ class _ReasonPageState extends State<ReasonPage>
                               feeling: widget.feeling,
                               feelingForm: widget.feelingForm,
                               reasonEntity: enteredReason,
-                              backgroundColor: widget.backgroundColor,
-                              textColor: widget.textColor,
                             ),
                           ),
                         );
@@ -113,8 +174,6 @@ class _ReasonPageState extends State<ReasonPage>
             feeling: widget.feeling,
             feelingForm: widget.feelingForm,
             reasonEntity: entity,
-            backgroundColor: widget.backgroundColor,
-            textColor: widget.textColor,
           ),
         ),
       );
@@ -127,25 +186,26 @@ class _ReasonPageState extends State<ReasonPage>
     double screenHeight = MediaQuery.of(context).size.height;
 
     double emojiSize = _bloc.computeEmojiSize(screenWidth);
-    double textSize = _bloc.computeTextSize(screenWidth);
     double highSpace = _bloc.computeHighSpace(screenWidth, screenHeight);
     
     double entityButtonWidth = screenWidth / 4; // Adjusted for some padding and spacing
 
     return Scaffold(
-      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-        backgroundColor: widget.backgroundColor,
         elevation: 0,
         title: Text(
           '',
           style: TextStyle(color: widget.textColor),
         ),
         iconTheme: IconThemeData(color: widget.textColor),
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () => Navigator.pop(context),
+      ),
       ),
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16.0.w),
+          padding: EdgeInsets.all(8.0.w),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -165,10 +225,9 @@ class _ReasonPageState extends State<ReasonPage>
                 Container(
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.all(8.0.w),
+                      padding: EdgeInsets.all(.0.w),
                       child: Wrap(
-                        // spacing: 10.0.w,
-                        spacing: 25.0.w,
+                        spacing: 20.0.w,
                         runSpacing: highSpace,
                         children: _bloc.entities.map((entity) {
                           return SizedBox(
@@ -176,11 +235,13 @@ class _ReasonPageState extends State<ReasonPage>
                             child: EntityButton(
                               entity: entity,
                               icon: _bloc.getIcon(entity),
-                              emojiSize: emojiSize,
-                              textColor: widget.textColor,
+                              iconSize: emojiSize,
                               onTap: () => _handleButtonPress(entity),
-                              fontSize: textSize,
-
+                              style: TextStyle(
+                                fontSize: 12.w,
+                                color: Theme.of(context).textTheme.labelSmall!.color,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           );
                         }).toList(),

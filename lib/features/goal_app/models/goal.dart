@@ -58,7 +58,7 @@ enum GoalType {
 }
 
 class Goal {
-  int? id;
+  String? id;
   DateTime? createTime;
   String description;
   GoalType? type;

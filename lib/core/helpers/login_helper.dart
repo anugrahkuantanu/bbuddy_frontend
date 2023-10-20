@@ -1,45 +1,41 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-
-import '../../config/config.dart';
-import '../core.dart';
-import 'package:dio/dio.dart';
-
-
-// void doAuth(BuildContext context, String username, String password) async {
-//   AppCache ac = AppCache();
-//   ac.doLogin(username, password);
-//   if (await ac.isLogin()) {
-//     SchedulerBinding.instance.addPostFrameCallback((_) {
-//       Nav.to(context, '/');
-//       showMessage(context, 'Login Successful');
-//     });
-//   }
-// }
-
-// Future<Map<String, String>> authData() async {
-//   AppCache ac = AppCache();
-//   return ac.auth();
-// }
+import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
+import 'package:bbuddy_app/features/auth_firebase/loading/loading_screen.dart';
+import 'package:bbuddy_app/features/auth_firebase/dialogs/dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 void doLogout(BuildContext context) async {
-  AppCache ac = AppCache();
-  ac.doLogout();
-  checkLogin(context, auth: true);
-  showMessage(context, 'Logout Successfull');
+  context.read<AppBloc>().add(const AppEventLogOut());
 }
 
-void checkLogin(
-  BuildContext context, {
-  bool? auth = false,
-  String? loginUrl = ApiEndpoint.appLoginUrl,
-}) {
-  AppCache ac = AppCache();
-  ac.isLogin().then((value) {
-    if (value == false && auth! == true) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Nav.to(context, loginUrl!);
-      });
-    }
-  });
+void loadingAndDisplayAuthError(BuildContext context, AppState appState) {
+  if (appState.isLoading) {
+    LoadingScreen.instance().show(
+      context: context,
+      text: 'Loading...',
+    );
+  } else {
+    LoadingScreen.instance().hide();
+  }
+
+  final authError = appState.authError;
+  if (authError != null) {
+    showAuthError(
+      authError: authError,
+      context: context,
+    );
+  }
+}
+
+void hideLoading(BuildContext context, AppState appState) {
+  if (!appState.isLoading) {
+    LoadingScreen.instance().hide();
+  }
+}
+
+Future<String?> getIdToken() async {
+  String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
+  return token;
 }

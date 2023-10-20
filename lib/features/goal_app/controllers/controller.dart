@@ -1,1 +1,2 @@
-export 'main/goals_controller.dart';
+export 'goals_controller.dart';
+export 'progress_controller.dart';

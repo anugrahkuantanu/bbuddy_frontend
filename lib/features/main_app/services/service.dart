@@ -1,1 +1,1 @@
-export './stats.dart';
+export '../../../core/services/stats.dart';

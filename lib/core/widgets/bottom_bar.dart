@@ -8,7 +8,7 @@ import '../utils/bottom_util.dart';
 
 // ignore: must_be_immutable
 class BottomBar extends StatelessWidget {
-  int index = 0;
+  int indexColor = 0;
   int len = 0;
 
   List<ButtonData>? buttonDatas;
@@ -16,10 +16,16 @@ class BottomBar extends StatelessWidget {
     buttonDatas = buttonDatas ??
         [
           ButtonData(icon: Icons.home, label: 'Home', link: '/'),
-          ButtonData(icon: Icons.check_circle, label: 'Check-In', link: '/checkIn'),
           ButtonData(
-              icon: Icons.lightbulb, label: 'Reflections', link: '/reflections'),
-          ButtonData(icon: Icons.check_box_outline_blank, label: 'Goals', link: '/goals'),
+              icon: Icons.check_circle, label: 'Check-In', link: '/checkIn'),
+          ButtonData(
+              icon: Icons.lightbulb,
+              label: 'Reflections',
+              link: '/reflections'),
+          ButtonData(
+              icon: Icons.check_box_outline_blank,
+              label: 'Goals',
+              link: '/goals'),
         ];
   }
 
@@ -29,25 +35,17 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     len = buttonDatas!.length;
     var tm = context.read<ThemeProvider>();
-    index = tm.index;
+    indexColor = tm.index;
 
     if (len > 1) {
       return BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: index,
+        currentIndex: indexColor,
         onTap: (val) {
           tm.setNavIndex(val);
-          index = val;
+          indexColor = val;
           navigator(context);
         },
-        // items: [
-        //   if (len > 1)
-        //     for (ButtonData bd in buttonDatas)
-        //       bottomNavigationBarItem(
-        //         icon: Icon(bd.icon),
-        //         label: bd.label,
-        //       ),
-        // ],
         items: buttonData
             .map(
               (e) => bottomNavigationBarItem(
@@ -63,6 +61,8 @@ class BottomBar extends StatelessWidget {
   }
 
   void navigator(BuildContext context) {
-    Nav.to(context, buttonData[index].link!);
+    //Navigator.pushNamedAndRemoveUntil(
+    //    context, buttonData[indexColor].link!, (routes) => false);
+    Nav.toNamed(context, buttonData[indexColor].link!);
   }
 }

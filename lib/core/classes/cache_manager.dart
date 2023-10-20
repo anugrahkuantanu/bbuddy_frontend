@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
@@ -23,6 +22,7 @@ class Cache {
     } else if (value is bool) {
       await _storage.write(key: key, value: value.toString());
     } else {
+      // ignore: avoid_print
       print("Invalid Type");
     }
   }

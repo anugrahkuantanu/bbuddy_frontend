@@ -1,5 +1,3 @@
-import '../services/reflections.dart';
-
 class BaseInsight {
   final String content;
 
@@ -8,7 +6,7 @@ class BaseInsight {
   String type() {
     throw UnimplementedError();
   }
-  
+
   factory BaseInsight.fromJson(Map<String, dynamic> json) {
     return BaseInsight(content: json['content'] as String);
   }
@@ -21,10 +19,10 @@ class HumanInsight extends BaseInsight {
   String type() {
     return "human";
   }
+
   factory HumanInsight.fromJson(Map<String, dynamic> json) {
     return HumanInsight(content: json['content'] as String);
   }
-
 }
 
 class AIInsight extends BaseInsight {
@@ -34,14 +32,13 @@ class AIInsight extends BaseInsight {
   String type() {
     return "ai";
   }
+
   factory AIInsight.fromJson(Map<String, dynamic> json) {
     return AIInsight(
-        content: json['content'] as String,
+      content: json['content'] as String,
     );
   }
-
 }
-
 
 class ReflectionPerTopic {
   final String topic;
@@ -53,7 +50,7 @@ class ReflectionPerTopic {
     required this.humanInsight,
     required this.aiInsights,
   });
-  
+
   factory ReflectionPerTopic.fromJson(Map<String, dynamic> json) {
     return ReflectionPerTopic(
       topic: json['topic'] as String,
@@ -68,19 +65,19 @@ class ReflectionPerTopic {
 class Reflection {
   final String heading;
   final List<ReflectionPerTopic> topicReflections;
-  
+
   Reflection({
     required this.heading,
     required this.topicReflections,
-   });
+  });
 
   factory Reflection.fromJson(Map<String, dynamic> json) {
     return Reflection(
       heading: json['heading'] as String,
       topicReflections: List<ReflectionPerTopic>.from(
-        json['topic_reflections'].map((topic) => ReflectionPerTopic.fromJson(topic)),
+        json['topic_reflections']
+            .map((topic) => ReflectionPerTopic.fromJson(topic)),
       ),
     );
   }
 }
-

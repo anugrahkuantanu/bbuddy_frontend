@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "528052100662",
+    "project_id": "bbuddy-c1de3",
+    "storage_bucket": "bbuddy-c1de3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528052100662:android:35b2fb9283f90d5bea4297",
+        "android_client_info": {
+          "package_name": "com.example.bbuddy_frontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528052100662-c02dl43p8sd0v0q8mvejpcu6rc252qln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bbuddy_frontend",
+            "certificate_hash": "5b068d044746de53f8a3dda6251768d4dd870fc4"
+          }
+        },
+        {
+          "client_id": "528052100662-q17f1e3cn2hoer4oahdv7jl1cshr1ggd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuWTcCzham_ahhUlQ24mTK1uBaplwOFLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528052100662-50f8dr56008hc730peej1q76mj26afrr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "528052100662-ga9t8c0qqgc6o2096mbpguj3bfq5nl87.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bbuddyFrontend"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

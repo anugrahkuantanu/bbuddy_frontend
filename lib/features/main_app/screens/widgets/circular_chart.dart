@@ -37,7 +37,7 @@ class CircularChartWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16.0.w,
                 fontWeight: FontWeight.bold,
-                color: text_color ?? Colors.white,
+                color: Theme.of(context).textTheme.bodySmall!.color,
               ),
             ),
           ),
@@ -59,7 +59,7 @@ class CirclePainter extends CustomPainter {
     final radius = size.width / 2;
 
     final paint = Paint()
-      ..color = Colors.white
+      ..color = Colors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.0; // Adjust the strokeWidth as desired
 

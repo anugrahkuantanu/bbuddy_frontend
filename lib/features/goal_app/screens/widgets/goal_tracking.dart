@@ -8,25 +8,23 @@ class GoalTrackingWidget extends StatelessWidget {
   final Color? grafikcolor;
 
   const GoalTrackingWidget(
-      {required this.finishedCount, required this.milestone, this.grafikcolor});
+      {super.key, required this.finishedCount, required this.milestone, this.grafikcolor});
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: Size(414, 896));
-    double screenWidth = MediaQuery.of(context).size.width;
 
     final double progress =
         finishedCount / milestone; // Calculate the progress value
 
     return Align(
       alignment: Alignment.center,
-      child: Container(
+      child: SizedBox(
         width: 150.0.w,
         height: 150.0.w,
         child: CircularChartWidget(
           radius: 120.w,
           progress: progress,
-          color: grafikcolor ?? Color.fromARGB(255, 59, 157, 157),
-          label: '${finishedCount}/${milestone}',
+          color: grafikcolor ?? const Color.fromARGB(255, 59, 157, 157),
+          label: '$finishedCount/$milestone',
         ),
       ),
     );

@@ -51,20 +51,5 @@ class ActionButtons extends StatelessWidget {
       doLogout(context);
     }
     Nav.to(context, link);
-    // switch (index) {
-    //   case 'Home':
-    //     Nav.to(context, '/');
-    //     break;
-    //   case 'About':
-    //     Nav.to(context, '/about');
-    //     break;
-    //   case 'Contact':
-    //     Nav.to(context, '/contact');
-    //     break;
-    //   case 'News':
-    //     Nav.to(context, '/news');
-    //     break;
-    //   default:
-    // }
   }
 }

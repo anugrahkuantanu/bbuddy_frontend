@@ -2,7 +2,6 @@ import 'dart:convert';
 import '../../reflection_app/models/reflection.dart';
 
 List<ReflectionPerTopic> parseReflections(String responseBody) {
-    print(responseBody);
   final List<Map<String, dynamic>> jsonList =
       List<Map<String, dynamic>>.from(jsonDecode(responseBody));
   return jsonList
