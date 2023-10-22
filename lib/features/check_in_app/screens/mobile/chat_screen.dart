@@ -47,7 +47,7 @@ class ChatScreenState extends State<ChatScreen> {
   int dotsPosition = 0;
   late Timer? _timer;
   Chat? chat;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -84,15 +84,16 @@ class ChatScreenState extends State<ChatScreen> {
       getResponseAndStore();
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) { // 4. Scroll to bottom once everything is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // 4. Scroll to bottom once everything is rendered
       _scrollToBottom();
     });
   }
 
-    _scrollToBottom() {
+  _scrollToBottom() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
   }
@@ -106,7 +107,7 @@ class ChatScreenState extends State<ChatScreen> {
   }
 
   void _handleIncomingMessage(
-    dynamic messageType, dynamic message, dynamic sender) async {
+      dynamic messageType, dynamic message, dynamic sender) async {
     //add(StartChatEvent(dotsPosition: 0));
     int lastIndex = messages.length - 1;
     if (messageType == 'start' && sender == "bot") {
@@ -138,7 +139,7 @@ class ChatScreenState extends State<ChatScreen> {
       }
       //add(EndChatEvent());
     }
-    _scrollToBottom(); 
+    _scrollToBottom();
   }
 
   void _handleConnectionError(dynamic error) {
@@ -187,7 +188,7 @@ class ChatScreenState extends State<ChatScreen> {
         ),
       );
     });
-    _scrollToBottom(); 
+    _scrollToBottom();
   }
 
   void navigateBackToHomePage() {
