@@ -47,6 +47,7 @@ class ChatScreenState extends State<ChatScreen> {
   int dotsPosition = 0;
   late Timer? _timer;
   Chat? chat;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -82,18 +83,30 @@ class ChatScreenState extends State<ChatScreen> {
     } else {
       getResponseAndStore();
     }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) { // 4. Scroll to bottom once everything is rendered
+      _scrollToBottom();
+    });
+  }
+
+    _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
   void dispose() {
     super.dispose();
-
+    _scrollController.dispose();
     // Cancel the timer in the dispose method
     _timer?.cancel();
   }
 
   void _handleIncomingMessage(
-      dynamic messageType, dynamic message, dynamic sender) async {
+    dynamic messageType, dynamic message, dynamic sender) async {
     //add(StartChatEvent(dotsPosition: 0));
     int lastIndex = messages.length - 1;
     if (messageType == 'start' && sender == "bot") {
@@ -125,6 +138,7 @@ class ChatScreenState extends State<ChatScreen> {
       }
       //add(EndChatEvent());
     }
+    _scrollToBottom(); 
   }
 
   void _handleConnectionError(dynamic error) {
@@ -173,6 +187,7 @@ class ChatScreenState extends State<ChatScreen> {
         ),
       );
     });
+    _scrollToBottom(); 
   }
 
   void navigateBackToHomePage() {
@@ -230,6 +245,7 @@ class ChatScreenState extends State<ChatScreen> {
                 child: Stack(
                   children: [
                     ListView.builder(
+                      controller: _scrollController,
                       itemCount: messages.length,
                       itemBuilder: (BuildContext context, int index) {
                         Message message = messages[index];

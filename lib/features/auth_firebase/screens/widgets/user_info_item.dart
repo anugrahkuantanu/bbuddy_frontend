@@ -36,6 +36,7 @@ class UserInfoItem extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 16.sp,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
             SizedBox(height: 4.h),
             Text(
@@ -45,6 +46,7 @@ class UserInfoItem extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 fontSize: 14.sp,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
