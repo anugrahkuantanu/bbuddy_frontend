@@ -82,11 +82,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       final user = userCredential.user!;
+
       final http = locator.get<Http>();
 
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
-
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
@@ -123,6 +123,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       final user = userCredential.user!;
+      final http = locator.get<Http>();
+
+      String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
+      http.addHeaders({'token': token!});
+
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,

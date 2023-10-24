@@ -10,7 +10,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<!-- YOUR_REVERSED_BUNDLE_IDENTIFIER should be your bundle identifier, but reversed. For example, if your bundle identifier is com.example.myapp, then the value should be myapp.example.com -->
-				<string>com.bbuddy.bbuddyfrontend</string>
+				<string>com.bbuddy.bbuddycoaching</string>
 			</array>
 		</dict>
 	</array>
@@ -41,7 +41,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.528052100662-se7j75cvjscvlmguscj8i2ni9ag698a4</string>
+				<string>com.googleusercontent.apps.528052100662-vs3gs2tf8ee5ecaticr05k72drlcogn1</string>
 			</array>
 		</dict>
 	</array>
