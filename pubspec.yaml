@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.1+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=2.18.0 <3.0.0"
@@ -51,7 +51,6 @@ dependencies:
   firebase_auth: ^4.9.0
   uuid: ^3.0.6
   flutter_hooks: ^0.18.2+1
-  image_picker: ^0.8.4+11
   cloud_firestore: ^4.9.1
   get_it: ^7.2.0
   google_sign_in: ^6.1.5
@@ -74,6 +73,25 @@ dev_dependencies:
 
   mockito: ^5.1.0
   change_app_package_name: ^1.0.0
+  flutter_launcher_icons: "^0.13.1"
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/BBuddy_logo2.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/images/BBuddy_logo2.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/BBuddy_logo2.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/BBuddy_logo2.png"
 
 flutter:
   uses-material-design: true

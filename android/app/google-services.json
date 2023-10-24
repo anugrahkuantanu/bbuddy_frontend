@@ -7,14 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:528052100662:android:35b2fb9283f90d5bea4297",
+        "mobilesdk_app_id": "1:528052100662:android:1a8d85bfab5872ddea4297",
         "android_client_info": {
-          "package_name": "com.example.bbuddy_frontend"
+          "package_name": "com.bbuddy.bbuddy"
         }
       },
       "oauth_client": [
         {
-          "client_id": "528052100662-50f8dr56008hc730peej1q76mj26afrr.apps.googleusercontent.com",
+          "client_id": "528052100662-l5ue48e0v05lv8f5lc96ioa43q83sa6q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -29,6 +29,93 @@
             {
               "client_id": "528052100662-50f8dr56008hc730peej1q76mj26afrr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "528052100662-ga9t8c0qqgc6o2096mbpguj3bfq5nl87.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bbuddyFrontend"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528052100662:android:00f78dfa33720a6eea4297",
+        "android_client_info": {
+          "package_name": "com.bbuddy.bbuddycoaching"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528052100662-l5ue48e0v05lv8f5lc96ioa43q83sa6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuWTcCzham_ahhUlQ24mTK1uBaplwOFLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528052100662-50f8dr56008hc730peej1q76mj26afrr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "528052100662-ga9t8c0qqgc6o2096mbpguj3bfq5nl87.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bbuddyFrontend"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528052100662:android:47df6a8decc1d225ea4297",
+        "android_client_info": {
+          "package_name": "com.bbuddy.bbuddyfrontend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528052100662-1gr2kfn6bv6mp9c4l6iv5m32qpcm3uav.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bbuddy.bbuddyfrontend",
+            "certificate_hash": "5b068d044746de53f8a3dda6251768d4dd870fc4"
+          }
+        },
+        {
+          "client_id": "528052100662-l5ue48e0v05lv8f5lc96ioa43q83sa6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuWTcCzham_ahhUlQ24mTK1uBaplwOFLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528052100662-50f8dr56008hc730peej1q76mj26afrr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "528052100662-ga9t8c0qqgc6o2096mbpguj3bfq5nl87.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bbuddyFrontend"
+              }
             }
           ]
         }
