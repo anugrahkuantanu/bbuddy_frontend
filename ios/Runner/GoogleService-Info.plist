@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>528052100662-se7j75cvjscvlmguscj8i2ni9ag698a4.apps.googleusercontent.com</string>
+	<string>528052100662-vs3gs2tf8ee5ecaticr05k72drlcogn1.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.528052100662-se7j75cvjscvlmguscj8i2ni9ag698a4</string>
+	<string>com.googleusercontent.apps.528052100662-vs3gs2tf8ee5ecaticr05k72drlcogn1</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>528052100662-c02dl43p8sd0v0q8mvejpcu6rc252qln.apps.googleusercontent.com</string>
+	<string>528052100662-1gr2kfn6bv6mp9c4l6iv5m32qpcm3uav.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyBZ9lPuSJgYSXOps_FrWWQ37haDLlhdeFM</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.bbuddy.bbuddyfrontend</string>
+	<string>com.bbuddy.bbuddycoaching</string>
 	<key>PROJECT_ID</key>
 	<string>bbuddy-c1de3</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:528052100662:ios:fe0d434cdbb16b91ea4297</string>
+	<string>1:528052100662:ios:0a1c75b387dc5b7aea4297</string>
 </dict>
 </plist>
