@@ -212,7 +212,7 @@ class _ReasonPageState extends State<ReasonPage>
                 Container(
                   padding: EdgeInsets.all(10.0.w),
                   child: Text(
-                    "Select a reason associated with your ${widget.feeling}",
+                    "Select a reason associated with your ${widget.feeling!.toLowerCase()}",
                     style: TextStyle(
                       fontSize: 22.0.sp,
                       fontWeight: FontWeight.bold,

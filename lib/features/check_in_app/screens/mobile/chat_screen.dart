@@ -260,7 +260,7 @@ class ChatScreenState extends State<ChatScreen> {
                               : Alignment.centerRight,
                           child: Container(
                             margin: EdgeInsets.fromLTRB(25, 10, 25,
-                                index == messages.length - 1 ? 80 : 10),
+                                index == messages.length - 1 ? 20 : 10),
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: message.isBot
