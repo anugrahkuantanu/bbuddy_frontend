@@ -94,7 +94,7 @@ _buildFeelingButtons(BuildContext context, List<Map<String, dynamic>> feelings, 
                 TextButton(
                   onPressed: () => _navigateToFeelingFormScreen(context, feelings[i+1]['name']!),
                   child: Text(
-                    feelings[i]['emoji'],
+                    feelings[i+1]['emoji'],
                     style: TextStyle(
                       fontSize: emojiSize,
                     ),
