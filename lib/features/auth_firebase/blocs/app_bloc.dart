@@ -47,9 +47,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final user = userCredential.user!;
 
       final http = locator.get<Http>();
-
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
+
+
 
       emit(AppStateLoggedIn(
         isLoading: false,
@@ -62,6 +63,28 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       ));
     }
   }
+
+
+Future<bool> isFirstTime() async {
+  final user = FirebaseAuth.instance.currentUser;
+
+  // If the user is not authenticated, consider it their first time.
+  if (user == null) {
+    return true;
+  }
+
+  // Check if the user exists in Firestore.
+  final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+
+  // If the user doesn't exist in Firestore, consider it their first time.
+  if (!userDoc.exists) {
+    return true;
+  }
+
+  return false;
+}
+
+
 
   Future<void> _googleLogin(
       AppEventGoogleLogin event, Emitter<AppState> emit) async {
@@ -82,9 +105,24 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
       final user = userCredential.user!;
+      
+
+      final userRef = FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid);
+DocumentSnapshot userDoc = await userRef.get();
+
+if (userDoc.exists) {
+  Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+  bool? firstUser = userData['firstUser'] as bool?;
+  print("Is first user? $firstUser");
+} else {
+  print("User document doesn't exist.");
+}
+
+await userRef.set({'firstUser': false}, SetOptions(merge: true));
+
+
 
       final http = locator.get<Http>();
-
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
       emit(AppStateLoggedIn(
@@ -175,7 +213,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         'userName': event.userName,
         'lastName': event.lastName,
         'firstName': event.firstName,
-        'email': event.email
+        'email': event.email,
+        'firstUser': true,
       });
 
       // emit(AppStateLoggedIn(
@@ -217,49 +256,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       isLoading: false,
     ));
   }
-
-  // Future<void> _deleteAccount(
-  //     AppEventDeleteAccount event, Emitter<AppState> emit) async {
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   if (user == null) {
-  //     emit(const AppStateLoggedOut(
-  //       isLoading: false,
-  //     ));
-  //     return;
-  //   }
-  //   emit(AppStateLoggedIn(
-  //     isLoading: true,
-  //     user: user,
-  //   ));
-  //   try {
-  //     final folderContents =
-  //         await FirebaseStorage.instance.ref(user.uid).listAll();
-  //     for (final item in folderContents.items) {
-  //       await item.delete().catchError((_) {});
-  //     }
-  //     await FirebaseStorage.instance.ref(user.uid).delete().catchError((_) {});
-
-  //     final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-  //     await userRef.delete();
-
-  //     await user.delete();
-  //     await FirebaseAuth.instance.signOut();
-  //     emit(const AppStateLoggedOut(
-  //       isLoading: false,
-  //     ));
-  //   } on FirebaseAuthException catch (e) {
-  //     emit(AppStateLoggedIn(
-  //       isLoading: false,
-  //       user: user,
-  //       // images: state.images ?? [],
-  //       authError: AuthError.from(e),
-  //     ));
-  //   } on FirebaseException {
-  //     emit(const AppStateLoggedOut(
-  //       isLoading: false,
-  //     ));
-  //   }
-  // }
 
   Future<void> _deleteAccount(
     AppEventDeleteAccount event, Emitter<AppState> emit) async {
