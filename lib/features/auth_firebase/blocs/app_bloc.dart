@@ -1,8 +1,10 @@
+import 'package:bbuddy_app/welcome_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:bbuddy_app/core/core.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:bbuddy_app/features/auth_firebase/errors/auth_error.dart';
@@ -46,15 +48,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       );
       final user = userCredential.user!;
 
+
+
       final http = locator.get<Http>();
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
 
+      print(await isFirstUser(userCredential));
 
 
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
+        firstUser: await isFirstUser(userCredential),
       ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
@@ -65,36 +71,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
 
-Future<bool> isFirstTime() async {
-  final user = FirebaseAuth.instance.currentUser;
-
-  // If the user is not authenticated, consider it their first time.
-  if (user == null) {
-    return true;
-  }
-
-  // Check if the user exists in Firestore.
-  final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
-
-  // If the user doesn't exist in Firestore, consider it their first time.
-  if (!userDoc.exists) {
-    return true;
-  }
-
-  return false;
-}
-
-
-
   Future<void> _googleLogin(
-      AppEventGoogleLogin event, Emitter<AppState> emit) async {
-    emit(const AppStateLoggedOut(
+    AppEventGoogleLogin event, Emitter<AppState> emit) async {
+          emit(const AppStateLoggedOut(
       isLoading: true,
     ));
 
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
 
     final credential = GoogleAuthProvider.credential(
       accessToken: gAuth.accessToken,
@@ -103,24 +88,21 @@ Future<bool> isFirstTime() async {
 
     try {
       final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       final user = userCredential.user!;
-      
 
-      final userRef = FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid);
-DocumentSnapshot userDoc = await userRef.get();
+      final firstUserResult = await isFirstUser(userCredential);
 
-if (userDoc.exists) {
-  Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
-  bool? firstUser = userData['firstUser'] as bool?;
-  print("Is first user? $firstUser");
-} else {
-  print("User document doesn't exist.");
-}
-
-await userRef.set({'firstUser': false}, SetOptions(merge: true));
-
-
+      final userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user!.uid);
+          await userRef.set({
+            'userName': '',
+            'lastName': '',
+            'firstName': '',
+            'email': user.email,
+            'firstUser': true,
+          });
 
       final http = locator.get<Http>();
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
@@ -128,6 +110,7 @@ await userRef.set({'firstUser': false}, SetOptions(merge: true));
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
+        firstUser: firstUserResult,
       ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
@@ -139,10 +122,6 @@ await userRef.set({'firstUser': false}, SetOptions(merge: true));
 
   Future<void> _appleLogin(
       AppEventAppleLogin event, Emitter<AppState> emit) async {
-    emit(const AppStateLoggedOut(
-      isLoading: true,
-    ));
-
     // Get the Apple ID credential using Apple Sign In
     final appleCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -161,6 +140,19 @@ await userRef.set({'firstUser': false}, SetOptions(merge: true));
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       final user = userCredential.user!;
+      final firstUserResult = await isFirstUser(userCredential);
+
+      final userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user!.uid);
+          await userRef.set({
+            'userName': '',
+            'lastName': '',
+            'firstName': '',
+            'email': user.email,
+            'firstUser': true,
+          });
+
       final http = locator.get<Http>();
 
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
@@ -169,6 +161,7 @@ await userRef.set({'firstUser': false}, SetOptions(merge: true));
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
+        firstUser: firstUserResult,
       ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
