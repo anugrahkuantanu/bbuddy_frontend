@@ -1,3 +1,4 @@
+import 'package:bbuddy_app/core/classes/classes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/bloc.dart';

@@ -22,7 +22,8 @@ class Agreementscreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(flex: 1),
+              const Spacer(flex: 1,),
+              const Logo(),
               Text(
                 "Welcome to bbuddy",
                 textAlign: TextAlign.center,

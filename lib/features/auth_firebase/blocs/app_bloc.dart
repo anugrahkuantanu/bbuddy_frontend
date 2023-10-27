@@ -92,14 +92,15 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final user = userCredential.user!;
 
       final firstUserResult = await isFirstUser(userCredential);
+      List<String>? getName = FirebaseAuth.instance.currentUser?.displayName?.split(" ");
 
       final userRef = FirebaseFirestore.instance
         .collection('users')
         .doc(userCredential.user!.uid);
           await userRef.set({
             'userName': '',
-            'lastName': '',
-            'firstName': '',
+            'lastName': getName?.last ?? '',
+            'firstName': getName?.first ?? '',
             'email': user.email,
             'firstUser': true,
           });
