@@ -1,4 +1,5 @@
 import 'package:bbuddy_app/features/auth_firebase/auth_firebase_app.dart';
+import 'package:bbuddy_app/features/startscreen/startscreen_app.dart';
 
 import '../core/classes/route_manager.dart';
 import '../features/main_app/app.dart';
@@ -11,6 +12,7 @@ class Routes extends RouteManager {
   Routes() {
     //addAll(AuthApp().routes);
     addAll(AuthFirebaseApp().routes);
+    addAll(StartscreenApp().routes);
     addAll(App().routes);
     addAll(CheckInApp().routes);
     addAll(GoalApp().routes);

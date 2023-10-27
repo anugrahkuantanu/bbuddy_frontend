@@ -92,7 +92,7 @@ class Agreementscreen extends StatelessWidget {
                     onPressed: (){
                     final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
                     userRef.update({'firstUser': false});
-                    Nav.to(context, '/');
+                    Nav.toNamed(context, '/intro');
                     },
                     child: Row(
                       children: [

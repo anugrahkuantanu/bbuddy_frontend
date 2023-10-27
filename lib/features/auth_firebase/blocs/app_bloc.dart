@@ -1,4 +1,4 @@
-import 'package:bbuddy_app/agreement_screen.dart';
+import 'package:bbuddy_app/features/startscreen/screen/agreement_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
