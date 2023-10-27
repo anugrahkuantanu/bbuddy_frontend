@@ -99,7 +99,7 @@ flutter:
   assets:
     - assets/images/BBuddy_logo2.png
     - assets/icons/
-    - assets/intro/
+    - assets/introduction/
     - assets/images/
 
 flutter_icons:

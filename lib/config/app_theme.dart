@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class ThemeProvider extends BaseThemeProvider {
   int _index = 0;
   // late ThemeMode? _themeMode;
-  ThemeMode _themeMode = ThemeMode.dark;
+  ThemeMode _themeMode = ThemeMode.light;
 
   ThemeProvider() {
     loadThemeMode().then((mode) {
@@ -33,7 +33,7 @@ class ThemeProvider extends BaseThemeProvider {
 
   Future<ThemeMode> loadThemeMode() async {
     final prefs = await SharedPreferences.getInstance();
-    return ThemeMode.values[prefs.getInt('theme_mode') ?? 0];
+    return ThemeMode.values[prefs.getInt('theme_mode') ?? 1];
   }
 
   get index => _index;
