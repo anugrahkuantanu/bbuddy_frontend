@@ -43,7 +43,7 @@ abstract class StatelessController extends StatelessWidget {
           goalBloc.add(LoadGoals());
           goalBloc.add(CountReflections());
           if(appState.firstUser == true){
-            Nav.toNamed(context, '/intro');
+            Nav.toNamed(context, '/agreement');
           }
           else{
             Nav.toNamed(context, '/');

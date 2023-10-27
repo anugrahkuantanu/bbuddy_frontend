@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+class Agreementscreen extends StatelessWidget {
+  const Agreementscreen({Key? key}) : super(key: key);
   
 
   @override
