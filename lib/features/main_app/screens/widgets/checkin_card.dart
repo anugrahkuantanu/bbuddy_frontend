@@ -15,7 +15,7 @@ class CheckInCard extends StatelessWidget {
   final Widget? vectorBottom;
   final Widget? vectorTop;
   final double? borderRadius;
-  final Widget? icon;
+  final IconData? icon;
   final Function()? onTap;
   final Color? borderColor; // New parameter for border color
 
@@ -75,7 +75,7 @@ class CheckInCard extends StatelessWidget {
                     right: 25.w,
                   ),
                   child: Icon(
-                    icon as IconData?,
+                    icon,
                     size: ((screenWidth - 80.w) / 3),
                     color: text_color ?? Colors.white,
                   ),

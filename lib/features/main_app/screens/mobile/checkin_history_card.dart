@@ -84,8 +84,9 @@ class CheckInHistoryCard extends StatelessWidget {
                       tm.setNavIndex(1);
                       Nav.toNamed(context, '/checkIn');
                     },
-                    title: 'No check-ins available',
-                    body: 'No check-ins available',
+                    icon: Icons.add,
+                    // title: 'No check-ins available',
+                    // body: 'No check-ins available',
                     text_color: Colors.white,
                   );
                 }
