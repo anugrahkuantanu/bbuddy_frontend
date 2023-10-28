@@ -5,11 +5,13 @@ import 'package:introduction_screen/introduction_screen.dart';
 
 
 class MyIntroScreen extends StatelessWidget {
+  const MyIntroScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
 
     final pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
       imageFlex: 2,
       bodyPadding: EdgeInsets.fromLTRB(16.0.w, 0.0, 16.0.w, 0.0),
       titlePadding: const EdgeInsets.only(top: 0, bottom: 0.0),
@@ -107,13 +109,13 @@ class MyIntroScreen extends StatelessWidget {
       next: const Icon(Icons.navigate_next),
       done: const Text("Start", style: TextStyle(fontWeight: FontWeight.w500)),
       dotsDecorator: DotsDecorator(
-        size: const Size.square(10.0),
-        activeSize: const Size(20.0, 10.0),
+        size: Size.square(10.0.w),
+        activeSize: Size(20.0.w, 10.0.w),
         activeColor: Theme.of(context).primaryColor,
         color: Colors.black26,
-        spacing: const EdgeInsets.symmetric(horizontal: 3.0),
+        spacing: EdgeInsets.symmetric(horizontal: 3.0.w),
         activeShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(25.0.w),
         ),
       ),
     );

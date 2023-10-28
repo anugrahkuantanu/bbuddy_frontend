@@ -27,7 +27,11 @@ class _TextBoxState extends State<TextBox> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return WillPopScope (
+      onWillPop : () async {
+        return Navigator.canPop(context);
+              },
+      child: Scaffold(
       appBar: AppBar(
         elevation: 0,
       ),
@@ -111,6 +115,7 @@ class _TextBoxState extends State<TextBox> {
                                 showWarning = true;
                               });
                             } else {
+                              Navigator.popUntil(context,(route)=> route.isFirst);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -123,7 +128,9 @@ class _TextBoxState extends State<TextBox> {
                                     isPastCheckin: false,
                                   ),
                                 ),
+                             
                               );
+
                             }
                           },
                           child: Text(
@@ -150,6 +157,7 @@ class _TextBoxState extends State<TextBox> {
           ),
         ),
       ),
+    )
     );
   }
 }

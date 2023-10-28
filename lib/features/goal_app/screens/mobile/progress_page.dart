@@ -114,6 +114,7 @@ class ProgressPageState extends State<ProgressPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        centerTitle: true,
         title: const Text("Progess Page"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back), // Replace with your desired icon

@@ -43,23 +43,20 @@ Future<String?> getIdToken() async {
 
 
 Future<bool> isFirstUser(UserCredential userCredential) async {
-  final user = FirebaseAuth.instance.currentUser;
+  //final user = FirebaseAuth.instance.currentUser;
   final userRef = FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid);
   DocumentSnapshot userDoc = await userRef.get();
 
   // If the user is not authenticated, consider it their first time.
   if (!userDoc.exists) { 
-      print('first user from google or apple');
       return true;
   } else {
     Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
     bool? firstUser = userData['firstUser'] as bool?;
 
     if (firstUser == true) {
-      print('first user from register');
       return true;
     } else {
-      print('not first user');
       return false;
     }
   }

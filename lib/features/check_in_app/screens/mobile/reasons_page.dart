@@ -199,7 +199,7 @@ class _ReasonPageState extends State<ReasonPage>
         ),
         iconTheme: IconThemeData(color: widget.textColor),
         leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context),
       ),
       ),

@@ -80,11 +80,9 @@ class _GoalChatPageState extends State<GoalChatPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
+        centerTitle: true,
         title: const Text(
-          'Coach',
-          style: TextStyle(
-            color: Colors.white,
-          ),
+          'Coach'
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back), // add your custom icon here
