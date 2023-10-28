@@ -70,7 +70,7 @@ class LoginScreen extends HookWidget {
                 ),
                 SizedBox(height: 20.0.h),
                 Button(
-                  label: 'Sing In',
+                  label: 'Sign In',
                   onPressed: () {
                     final email = emailController.text;
                     final password = passwordController.text;

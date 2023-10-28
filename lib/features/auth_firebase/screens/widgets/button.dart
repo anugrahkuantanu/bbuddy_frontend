@@ -5,7 +5,7 @@ class Button extends StatelessWidget {
   final String label;
   final void Function() onPressed;
 
-  Button({required this.label, required this.onPressed});
+  const Button({super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +14,12 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         style: ThemeHelper().buttonStyle().copyWith(
             backgroundColor: MaterialStateProperty.all<Color>(
-                Color.fromRGBO(17, 32, 55, 1.0))),
+                const Color.fromRGBO(17, 32, 55, 1.0))),
         child: Padding(
-          padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+          padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
           child: Text(
             label.toUpperCase(),
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ),

@@ -24,7 +24,7 @@ class ProgressPage extends StatefulWidget {
 
 class ProgressPageState extends State<ProgressPage> {
   late ProgressBloc _progressBloc;
-
+  bool deletionInProgress = false;
   @override
   void initState() {
     super.initState();
@@ -81,6 +81,8 @@ class ProgressPageState extends State<ProgressPage> {
                   return const LoadingUI();
                 } else if (state is ProgressLoaded) {
                   return _buildProgressUI(state.goal);
+                } else if (state is NavigateToChatState) {
+                  return const LoadingUI();
                 } else {
                   return const ErrorUI(
                       errorMessage: "Some error occurred"); // Fallback
@@ -121,15 +123,20 @@ class ProgressPageState extends State<ProgressPage> {
           },
         ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              context.read<GoalBloc>().add(DeleteGoal(goal: widget.goal));
-            },
-          ),
+          deletionInProgress
+              ? const CircularProgressIndicator()
+              : IconButton(
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      deletionInProgress = true;
+                    });
+                    context.read<GoalBloc>().add(DeleteGoal(goal: widget.goal));
+                  },
+                ),
         ],
       ),
       body: SafeArea(
