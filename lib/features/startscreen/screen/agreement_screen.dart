@@ -25,7 +25,7 @@ class Agreementscreen extends StatelessWidget {
               const Spacer(flex: 1,),
               const Logo(),
               Text(
-                "Welcome to bbuddy",
+                "Before we continue ....",
                 textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
@@ -34,7 +34,7 @@ class Agreementscreen extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "Bbuddy is a wellness and coaching platform. Bbuddy does not provide the mediacal and healthcare advices",
+                "Buddy is a wellness and coaching platform. Please be aware that Buddy does not dispense medical or healthcare advice. Pleaase  Consult  a qualified healthcare professional for any medical concerns.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Theme.of(context)

@@ -20,7 +20,7 @@ class MyIntroScreen extends StatelessWidget {
       pages: [
         PageViewModel(
           title: "",
-          body: "Homescreen, here you can see not only the checkin and reflection counter, but also last 4 check-in history",
+          body: "Welcome to bbuddy, where your Journey to mental conciousness begins.",
           image: Center(child: Image.asset('assets/introduction/introduction1.jpeg', width: double.maxFinite,)),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -31,7 +31,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "Check-in. In this screen you can do checkin, and tell the bot about how are you feeling",
+          body: "Let's create our first checkin, where you will be able tell us about how you are feeling.",
           image: Center(child: Image.asset('assets/introduction/introduction2.jpeg', width: double.maxFinite)),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -42,7 +42,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "Hannah will hear and help you",
+          body: "After understanding how your feeling, Hannah will be able to help you right away ",
           image: Center(child: Image.asset('assets/introduction/introduction3.jpeg', width: double.maxFinite)),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -53,7 +53,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "",
+          body: " Lets start reflecting on our thoughts and actions, with the right questoins one will get the right answers he/she seeks.",
           image: Center(child: Image.asset('assets/introduction/introduction4.jpeg', width: double.maxFinite,)),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -64,7 +64,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "",
+          body: "Start working on your goals with ease, just press on the plus sign or let Hannah create a weekly goal for you, which she thinks you need to fix your problems, just press on \"+ Create Goal\" ",
           image: Center(child: Image.asset('assets/introduction/introduction5.jpeg', width: double.maxFinite)),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -75,7 +75,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "",
+          body: "Know how close you are, track your progess.",
           image: Center(child: Image.asset('assets/introduction/introduction6.jpeg', width: double.maxFinite)),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
@@ -86,7 +86,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "",
+          body: "Talk with Hannah about your goals and milestones. ",
           image: Center(child: Image.asset('assets/introduction/introduction7.jpeg', width: double.maxFinite)),
           decoration: pageDecoration.copyWith(
             contentMargin: const EdgeInsets.symmetric(horizontal: 16),
