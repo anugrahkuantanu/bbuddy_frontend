@@ -65,7 +65,7 @@ class Agreementscreen extends StatelessWidget {
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           // Add your link to the Terms and Conditions here
-                          launchUrl(Uri.parse("https://bbuddy.ai/privacy"));
+                          launchUrl(Uri.parse("https://bbuddy.ai/termcondition"));
                         },
                     ),
                     const TextSpan(
