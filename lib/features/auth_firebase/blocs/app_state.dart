@@ -20,7 +20,7 @@ class AppStateLoggedIn extends AppState {
   const AppStateLoggedIn({
     required bool isLoading,
     required this.user,
-    this.firstUser = false,
+    required this.firstUser,
     AuthError? authError,
   }) : super(
           isLoading: isLoading,

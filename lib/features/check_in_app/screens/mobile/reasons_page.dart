@@ -221,31 +221,29 @@ class _ReasonPageState extends State<ReasonPage>
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 40),
-                Container(
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(.0.w),
-                      child: Wrap(
-                        spacing: 20.0.w,
-                        runSpacing: highSpace,
-                        children: _bloc.entities.map((entity) {
-                          return SizedBox(
-                            width: entityButtonWidth,
-                            child: EntityButton(
-                              entity: entity,
-                              icon: _bloc.getIcon(entity),
-                              iconSize: emojiSize,
-                              onTap: () => _handleButtonPress(entity),
-                              style: TextStyle(
-                                fontSize: 12.w,
-                                color: Theme.of(context).textTheme.labelSmall!.color,
-                                fontWeight: FontWeight.w500,
-                              ),
+                const SizedBox(height: 40),
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(.0.w),
+                    child: Wrap(
+                      spacing: 20.0.w,
+                      runSpacing: highSpace,
+                      children: _bloc.entities.map((entity) {
+                        return SizedBox(
+                          width: entityButtonWidth,
+                          child: EntityButton(
+                            entity: entity,
+                            icon: _bloc.getIcon(entity),
+                            iconSize: emojiSize,
+                            onTap: () => _handleButtonPress(entity),
+                            style: TextStyle(
+                              fontSize: 12.w,
+                              color: Theme.of(context).textTheme.labelSmall!.color,
+                              fontWeight: FontWeight.w500,
                             ),
-                          );
-                        }).toList(),
-                      ),
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),

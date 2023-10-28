@@ -45,10 +45,8 @@ abstract class StatelessController extends StatelessWidget {
           if(appState.firstUser == true){
             Nav.toNamed(context, '/agreement');
           }
-          else{
-            // var tm = context.read<ThemeProvider?>();
-            // tm?.setNavIndex(1);
-            Nav.toNamed(context, '/checkIn');
+          else {
+            Nav.toNamed(context, '/');
           }
         } else if (appState is AppStateLoggedOut) {
           Nav.toNamed(context, '/login');

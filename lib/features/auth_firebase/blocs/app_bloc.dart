@@ -1,10 +1,8 @@
-import 'package:bbuddy_app/features/startscreen/screen/agreement_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:bbuddy_app/core/core.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:bbuddy_app/features/auth_firebase/errors/auth_error.dart';
@@ -54,13 +52,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
 
-      print(await isFirstUser(userCredential));
+      //print(await isFirstUser(userCredential));
 
 
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
-        firstUser: await isFirstUser(userCredential),
+        firstUser: await isFirstUser(user),
       ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
@@ -91,7 +89,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       await FirebaseAuth.instance.signInWithCredential(credential);
       final user = userCredential.user!;
 
-      final firstUserResult = await isFirstUser(userCredential);
+      final firstUserResult = await isFirstUser(user);
       List<String>? getName = FirebaseAuth.instance.currentUser?.displayName?.split(" ");
 
       final userRef = FirebaseFirestore.instance
@@ -141,7 +139,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       final user = userCredential.user!;
-      final firstUserResult = await isFirstUser(userCredential);
+      final firstUserResult = await isFirstUser(user);
 
       final userRef = FirebaseFirestore.instance
         .collection('users')
@@ -232,9 +230,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         isLoading: false,
       ));
     } else {
+      final firstUserResult = await isFirstUser(user);
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
+        firstUser: firstUserResult
       ));
     }
   }
@@ -260,9 +260,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     ));
     return;
   }
+  final firstUserResult = await isFirstUser(user);
   emit(AppStateLoggedIn(
     isLoading: true,
     user: user,
+    firstUser: firstUserResult
   ));
   try {
     // Deleting user data from Firebase Storage
@@ -303,9 +305,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       isLoading: false,
     ));
   } on FirebaseAuthException catch (e) {
+    final firstUserResult = await isFirstUser(user);
     emit(AppStateLoggedIn(
       isLoading: false,
       user: user,
+      firstUser: firstUserResult,
       // images: state.images ?? [],
       authError: AuthError.from(e),
     ));

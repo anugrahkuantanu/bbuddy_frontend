@@ -42,9 +42,9 @@ Future<String?> getIdToken() async {
 }
 
 
-Future<bool> isFirstUser(UserCredential userCredential) async {
+Future<bool> isFirstUser(User user) async {
   //final user = FirebaseAuth.instance.currentUser;
-  final userRef = FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid);
+  final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
   DocumentSnapshot userDoc = await userRef.get();
 
   // If the user is not authenticated, consider it their first time.
