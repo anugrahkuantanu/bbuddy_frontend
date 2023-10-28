@@ -27,34 +27,19 @@ class Agreementscreen extends StatelessWidget {
               Text(
                 "Before we continue ....",
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .headlineSmall!
-                    .copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineSmall
               ),
               const Spacer(),
               Text(
                 "Buddy is a wellness and coaching platform. Please be aware that Buddy does not dispense medical or healthcare advice. Pleaase  Consult  a qualified healthcare professional for any medical concerns.",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .color!
-                      .withOpacity(0.64),
-                ),
+                style: Theme.of(context).textTheme.bodyMedium
               ),
               const Spacer(flex: 2,),
               Text.rich(
                 TextSpan(
                   text: "By continuing, you agree to the ",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .color!
-                        .withOpacity(0.64),
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   children: <TextSpan>[
                     TextSpan(
                       text: "Terms and Conditions",
@@ -99,13 +84,7 @@ class Agreementscreen extends StatelessWidget {
                       children: [
                         Text(
                           "Agree and continue",
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .color!
-                                    .withOpacity(0.8),
-                              ),
+                          style: Theme.of(context).textTheme.bodyMedium
                         ),
                         const SizedBox(width: kDefaultPadding / 4),
                         Icon(
