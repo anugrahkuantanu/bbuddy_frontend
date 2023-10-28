@@ -124,7 +124,6 @@ class ProgressPageState extends State<ProgressPage> {
           IconButton(
             icon: const Icon(
               Icons.delete,
-              color: Colors.white,
             ),
             onPressed: () {
               context.read<GoalBloc>().add(DeleteGoal(goal: widget.goal));

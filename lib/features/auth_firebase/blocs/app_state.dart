@@ -16,9 +16,11 @@ abstract class AppState {
 @immutable
 class AppStateLoggedIn extends AppState {
   final User user;
+  final bool? firstUser;
   const AppStateLoggedIn({
     required bool isLoading,
     required this.user,
+    this.firstUser = false,
     AuthError? authError,
   }) : super(
           isLoading: isLoading,

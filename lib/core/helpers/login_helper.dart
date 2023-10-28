@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:bbuddy_app/features/auth_firebase/blocs/bloc.dart';
@@ -38,4 +39,28 @@ void hideLoading(BuildContext context, AppState appState) {
 Future<String?> getIdToken() async {
   String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
   return token;
+}
+
+
+Future<bool> isFirstUser(UserCredential userCredential) async {
+  final user = FirebaseAuth.instance.currentUser;
+  final userRef = FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid);
+  DocumentSnapshot userDoc = await userRef.get();
+
+  // If the user is not authenticated, consider it their first time.
+  if (!userDoc.exists) { 
+      print('first user from google or apple');
+      return true;
+  } else {
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+    bool? firstUser = userData['firstUser'] as bool?;
+
+    if (firstUser == true) {
+      print('first user from register');
+      return true;
+    } else {
+      print('not first user');
+      return false;
+    }
+  }
 }

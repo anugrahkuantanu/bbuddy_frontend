@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -23,9 +25,10 @@ abstract class StatelessController extends StatelessWidget {
     return BlocConsumer<AppBloc, AppState>(listener: (context, appState) {
       if (appState.authError == null && !appState.isLoading) {
         if (appState is AppStateLoggedIn) {
+
           // init stats (counterStats) provider
           final counterStats =
-              Provider.of<CounterStats>(context, listen: false);
+          Provider.of<CounterStats>(context, listen: false);
           counterStats.checkCounterStats();
 
           // init check in history bloc
@@ -39,9 +42,12 @@ abstract class StatelessController extends StatelessWidget {
           final goalBloc = context.read<GoalBloc>();
           goalBloc.add(LoadGoals());
           goalBloc.add(CountReflections());
-
-          //Navigation to the main app
-          Nav.toNamed(context, '/');
+          if(appState.firstUser == true){
+            Nav.toNamed(context, '/agreement');
+          }
+          else{
+            Nav.toNamed(context, '/');
+          }
         } else if (appState is AppStateLoggedOut) {
           Nav.toNamed(context, '/login');
           Provider.of<CounterStats>(context, listen: false).clearCounterStats();

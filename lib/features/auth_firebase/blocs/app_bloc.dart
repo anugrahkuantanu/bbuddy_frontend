@@ -1,8 +1,10 @@
+import 'package:bbuddy_app/features/startscreen/screen/agreement_screen.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:bbuddy_app/core/core.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:bbuddy_app/features/auth_firebase/errors/auth_error.dart';
@@ -46,14 +48,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       );
       final user = userCredential.user!;
 
-      final http = locator.get<Http>();
 
+
+      final http = locator.get<Http>();
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
+
+      print(await isFirstUser(userCredential));
+
 
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
+        firstUser: await isFirstUser(userCredential),
       ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
@@ -63,15 +70,16 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
+
   Future<void> _googleLogin(
-      AppEventGoogleLogin event, Emitter<AppState> emit) async {
-    emit(const AppStateLoggedOut(
+    AppEventGoogleLogin event, Emitter<AppState> emit) async {
+          emit(const AppStateLoggedOut(
       isLoading: true,
     ));
 
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
-
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+
 
     final credential = GoogleAuthProvider.credential(
       accessToken: gAuth.accessToken,
@@ -80,16 +88,30 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
     try {
       final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      await FirebaseAuth.instance.signInWithCredential(credential);
       final user = userCredential.user!;
 
-      final http = locator.get<Http>();
+      final firstUserResult = await isFirstUser(userCredential);
+      List<String>? getName = FirebaseAuth.instance.currentUser?.displayName?.split(" ");
 
+      final userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user!.uid);
+          await userRef.set({
+            'userName': '',
+            'lastName': getName?.last ?? '',
+            'firstName': getName?.first ?? '',
+            'email': user.email,
+            'firstUser': true,
+          });
+
+      final http = locator.get<Http>();
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
       http.addHeaders({'token': token!});
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
+        firstUser: firstUserResult,
       ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
@@ -101,10 +123,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   Future<void> _appleLogin(
       AppEventAppleLogin event, Emitter<AppState> emit) async {
-    emit(const AppStateLoggedOut(
-      isLoading: true,
-    ));
-
     // Get the Apple ID credential using Apple Sign In
     final appleCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -123,6 +141,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       final UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(oauthCredential);
       final user = userCredential.user!;
+      final firstUserResult = await isFirstUser(userCredential);
+
+      final userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userCredential.user!.uid);
+          await userRef.set({
+            'userName': '',
+            'lastName': '',
+            'firstName': '',
+            'email': user.email,
+            'firstUser': true,
+          });
+
       final http = locator.get<Http>();
 
       String? token = await FirebaseAuth.instance.currentUser?.getIdToken();
@@ -131,6 +162,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(AppStateLoggedIn(
         isLoading: false,
         user: user,
+        firstUser: firstUserResult,
       ));
     } on FirebaseAuthException catch (e) {
       emit(AppStateLoggedOut(
@@ -175,7 +207,8 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         'userName': event.userName,
         'lastName': event.lastName,
         'firstName': event.firstName,
-        'email': event.email
+        'email': event.email,
+        'firstUser': true,
       });
 
       // emit(AppStateLoggedIn(
@@ -217,49 +250,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       isLoading: false,
     ));
   }
-
-  // Future<void> _deleteAccount(
-  //     AppEventDeleteAccount event, Emitter<AppState> emit) async {
-  //   final user = FirebaseAuth.instance.currentUser;
-  //   if (user == null) {
-  //     emit(const AppStateLoggedOut(
-  //       isLoading: false,
-  //     ));
-  //     return;
-  //   }
-  //   emit(AppStateLoggedIn(
-  //     isLoading: true,
-  //     user: user,
-  //   ));
-  //   try {
-  //     final folderContents =
-  //         await FirebaseStorage.instance.ref(user.uid).listAll();
-  //     for (final item in folderContents.items) {
-  //       await item.delete().catchError((_) {});
-  //     }
-  //     await FirebaseStorage.instance.ref(user.uid).delete().catchError((_) {});
-
-  //     final userRef = FirebaseFirestore.instance.collection('users').doc(user.uid);
-  //     await userRef.delete();
-
-  //     await user.delete();
-  //     await FirebaseAuth.instance.signOut();
-  //     emit(const AppStateLoggedOut(
-  //       isLoading: false,
-  //     ));
-  //   } on FirebaseAuthException catch (e) {
-  //     emit(AppStateLoggedIn(
-  //       isLoading: false,
-  //       user: user,
-  //       // images: state.images ?? [],
-  //       authError: AuthError.from(e),
-  //     ));
-  //   } on FirebaseException {
-  //     emit(const AppStateLoggedOut(
-  //       isLoading: false,
-  //     ));
-  //   }
-  // }
 
   Future<void> _deleteAccount(
     AppEventDeleteAccount event, Emitter<AppState> emit) async {
