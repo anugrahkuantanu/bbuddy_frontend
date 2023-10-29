@@ -31,7 +31,7 @@ class Agreementscreen extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "Buddy is a wellness and coaching platform. Please be aware that Buddy does not dispense medical or healthcare advice. Pleaase  Consult  a qualified healthcare professional for any medical concerns.",
+                "Bbuddy is a wellness and coaching platform. Please be aware that Buddy does not dispense medical or healthcare advice. Pleaase  Consult  a qualified healthcare professional for any medical concerns.",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium
               ),
