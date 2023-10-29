@@ -17,7 +17,7 @@ class Agreementscreen extends StatelessWidget {
     const kDefaultPadding = 20.0;
     return Scaffold(
       body: 
-      Padding(padding: EdgeInsets.symmetric(horizontal: 18),
+      Padding(padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +72,7 @@ class Agreementscreen extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
               FittedBox(
                 child: TextButton(
                     onPressed: (){

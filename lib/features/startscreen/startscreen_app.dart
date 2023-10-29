@@ -1,6 +1,5 @@
 import 'package:bbuddy_app/core/classes/route_manager.dart';
-import 'package:bbuddy_app/features/startscreen/screen/agreement_screen.dart';
-import 'package:bbuddy_app/features/startscreen/screen/introduction_screen.dart';
+import 'package:bbuddy_app/features/startscreen/screens/screen.dart';
 
 class StartscreenApp extends RouteManager {
   static const String name = '';
@@ -9,6 +8,6 @@ class StartscreenApp extends RouteManager {
 
   StartscreenApp() {
     addRoute(StartscreenApp.agreement, (context) => const Agreementscreen());
-    addRoute(StartscreenApp.intro, (context) => MyIntroScreen());
+    addRoute(StartscreenApp.intro, (context) => const MyIntroScreen());
   }
 }
