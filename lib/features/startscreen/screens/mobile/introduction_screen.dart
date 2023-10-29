@@ -109,11 +109,11 @@ class MyIntroScreen extends StatelessWidget {
       next: const Icon(Icons.navigate_next),
       done: const Text("Start", style: TextStyle(fontWeight: FontWeight.w500)),
       dotsDecorator: DotsDecorator(
-        size: Size.square(10.0.w),
-        activeSize: Size(20.0.w, 10.0.w),
+        size: Size(6.0.w, 6.0.w), // Reduced size of dots
+        activeSize: Size(12.0.w, 6.0.w), // Reduced active size
         activeColor: Theme.of(context).primaryColor,
         color: Colors.black26,
-        spacing: EdgeInsets.symmetric(horizontal: 3.0.w),
+        spacing: EdgeInsets.symmetric(horizontal: 2.0.w), // Reduced spacing
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.0.w),
         ),
