@@ -22,20 +22,23 @@ class Agreementscreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Spacer(flex: 1,),
+              // const Spacer(flex: 1,),
+              const SizedBox(height: 30,),
               const Logo(),
               Text(
                 "Before we continue ....",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall
               ),
-              const Spacer(),
+              // const Spacer(),
+              const SizedBox(height: 80,),
               Text(
                 "Bbuddy is a wellness and coaching platform. Please be aware that bbuddy does not dispense medical or healthcare advice. Please  consult  a qualified healthcare professional for any medical concerns.",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium
               ),
-              const Spacer(flex: 2,),
+              // const Spacer(flex: 2,),
+              const SizedBox(height: 30,),
               Text.rich(
                 TextSpan(
                   text: "By continuing, you agree to the ",
