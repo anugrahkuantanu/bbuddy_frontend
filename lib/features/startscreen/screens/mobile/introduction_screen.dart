@@ -22,7 +22,7 @@ class MyIntroScreen extends StatelessWidget {
       pages: [
         PageViewModel(
           title: "",
-          body: "Welcome to bbuddy, where your Journey to mental conciousness begins.",
+          body: "Welcome to bbuddy, where your journey to mental conciousness begins.",
           image: Center(child: Image.asset('assets/introduction/introduction1.jpeg', width: double.maxFinite.w,)),
           decoration: pageDecoration.copyWith(
             contentMargin: EdgeInsets.symmetric(horizontal: 16.h),
@@ -33,7 +33,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "Let's create our first checkin, where you will be able tell us about how you are feeling.",
+          body: "Let's create our first checkin, where you will be able to tell us about how you are feeling.",
           image: Center(child: Image.asset('assets/introduction/introduction2.jpeg', width: double.maxFinite.w)),
           decoration: pageDecoration.copyWith(
             contentMargin: EdgeInsets.symmetric(horizontal: 16.h),
@@ -44,7 +44,7 @@ class MyIntroScreen extends StatelessWidget {
         ),
         PageViewModel(
           title: "",
-          body: "After understanding how your feeling, Hannah will be able to help you right away ",
+          body: "After understanding how you are feeling, Hannah will be able to help you right away ",
           image: Center(child: Image.asset('assets/introduction/introduction3.jpeg', width: double.maxFinite.w)),
           decoration: pageDecoration.copyWith(
             contentMargin: EdgeInsets.symmetric(horizontal: 16.h),

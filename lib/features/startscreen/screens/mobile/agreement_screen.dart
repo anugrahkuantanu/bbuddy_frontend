@@ -16,8 +16,8 @@ class Agreementscreen extends StatelessWidget {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     const kDefaultPadding = 20.0;
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 18),
+      body: 
+      SingleChildScrollView(padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +31,7 @@ class Agreementscreen extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "Bbuddy is a wellness and coaching platform. Please be aware that Buddy does not dispense medical or healthcare advice. Pleaase  Consult  a qualified healthcare professional for any medical concerns.",
+                "Bbuddy is a wellness and coaching platform. Please be aware that bbuddy does not dispense medical or healthcare advice. Please  consult  a qualified healthcare professional for any medical concerns.",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium
               ),
