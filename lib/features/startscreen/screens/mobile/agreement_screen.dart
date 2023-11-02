@@ -16,8 +16,8 @@ class Agreementscreen extends StatelessWidget {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     const kDefaultPadding = 20.0;
     return Scaffold(
-      body: 
-      Padding(padding: const EdgeInsets.symmetric(horizontal: 18),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 18),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
